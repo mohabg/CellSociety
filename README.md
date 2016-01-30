@@ -9,7 +9,19 @@ The goal of Cell Society is to design and implement a program that will allow th
 We wanted to design a UI that is as simple and straightforward for the user as possible. Some basic functionality that we have thought of include an option for the user to first load any specific simulation they want. To this end, a simple drop down menu called "upload" or "choose" will allow the user to load a specific simulation file, preferably a separate xml file, that will instantiate a new simulation. We also want the user to play, pause, and replay the simulation at any time they choose so we will also incorporate separate buttons that will handle those cases. There will also be an interactive component with the grid in which the user can click on a cell to change a single cell's state manually, thus allowing for different observances of a particular simulation. Other than that,we will do our best to make the grid responsive and functional to the size of the window it is being run on, and position the wall, graph, and buttons in such a way that makes it very intuitive and simple for the user.
 
 #Design Details
+
+Classes:
+
+- Cell: class holds individual cells and information corresponding to each cell, including the position of the cell in the grid, its neighbors, and methods for manipulating state properties.
+- Grid: class is centered around a 2D array of Cell objects and primarily serves as a container for the cells. There will be methods for accessing and manipulating data within the Grid.
+- Simulation: abstract class that stands as the supper class for various types of simulations and is used to update the current state of the simulation in the back-end. The Simulation subclasses will contain specific information relevant to the specific simulations they represent.
+- MainHandler: class holds the main for the project and runs step-by-step what actions are required to create and run each simulation. This includes working with the XMLReader and UIManager and combining separate functionality into a working project.
+- XMLReader: class is passed the uploaded XML file and parses the game rules and returns them back to the MainHandler for instantiation.
+-UIManager: handles front-end input events and graphically renders the simulation. 
+
 #Design Considerations
+
+Grid - we considered a number of options for the actual Grid, including a GridPane and a TilePane. We decided to use a 2D array right now because we feel it's the most reliable option that we can ensure will work.
 #Team Responsibilities
 
 We decided to divide the project into three main roles. David will work primarily on the front-end development of this project, which includes designing the visual layouts of the various screens and the look of the grids and corresponding graphs. Mohab will work primarily on the back-end development, which includes designing the code that actually runs and creates the simulations. Adam will work on merging the gap between the front-end and back-end development, which includes the creation of the XML files for loading into the simulations and populating the cell grids.
