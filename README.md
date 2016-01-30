@@ -22,7 +22,9 @@ Classes:
 
 #Design Considerations
 
-Grid - we considered a number of options for the actual Grid, including a GridPane and a TilePane. We decided to use a 2D array right now because we feel it's the most reliable option that we can ensure will work.
+One of the main considerations we made for this project was the tradeoff between subclassing cells vs. subclassing simulations. We decided against the former because we felt there wasn't enough of a difference between different cells that would require handling these differences in subclasses and wanted the Cell class as more of an overall structural object. On the other hand, we felt that different simulations had unique features that required subclasses for them. Another consideration was how to contain the actual Grid, and we considered various options including a GridPane and a TilePane. We decided to use a 2D array right now because we feel it's the most reliable option that we can ensure will work.
+
+
 #Team Responsibilities
 
 We decided to divide the project into three main roles. David will work primarily on the front-end development of this project, which includes designing the visual layouts of the various screens and the look of the grids and corresponding graphs. Mohab will work primarily on the back-end development, which includes designing the code that actually runs and creates the simulations. Adam will work on merging the gap between the front-end and back-end development, which includes the creation of the XML files for loading into the simulations and populating the cell grids.
