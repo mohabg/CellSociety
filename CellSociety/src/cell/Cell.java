@@ -21,6 +21,12 @@ public class Cell {
 
     public Cell(Cell toUse){
         myX = toUse.getX();
+        myY = toUse.getY();
+        currState = toUse.getState();
+    }
+
+    public Cell clone(){
+        return new Cell(myX,myY,currState);
     }
 
     public void setX(int x){
