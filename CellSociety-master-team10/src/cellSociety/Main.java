@@ -7,13 +7,11 @@ public class Main extends Application {
     public static void main(String[] args){
         launch(args);
     }
+
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Cell Society");
-
-        MainDriver driver = new MainDriver();
-        driver.createScene(primaryStage);
-
-
+        Display toDisplay = new Display();
+        toDisplay.createScene(primaryStage);
     }
 
 }
