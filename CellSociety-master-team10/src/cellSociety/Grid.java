@@ -9,10 +9,10 @@ import javafx.scene.paint.Color;
  * Created by davidyan on 1/31/16.
  */
 public class Grid {
-    protected Cell[][] myGrid;
-    protected int gridWidth,gridHeight;
-    protected double myStrokeWidth = 0.05;
-    protected Color myStrokeColor = Color.DARKGRAY;
+    private Cell[][] myGrid;
+    private int gridWidth,gridHeight;
+    private double myStrokeWidth = 0.05;
+    private Color myStrokeColor = Color.DARKGRAY;
 
     public Grid(Cell baseCell, int width, int height){
         myGrid = new Cell[width][height];

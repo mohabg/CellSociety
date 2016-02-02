@@ -7,9 +7,9 @@ import javafx.scene.shape.Shape;
 
 public class Cell {
 
-    protected int myX, myY;
-    protected int currState;
-    protected Shape myShape;
+    private int myX, myY;
+    private int currState;
+    private Shape myShape;
 
     public Cell(int state){
         currState = state;
