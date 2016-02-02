@@ -29,8 +29,6 @@ public class CellIterator implements Iterable<Cell> {
                 return !started || (myCurrentX < myWidth - 1) || (myCurrentY < myHeight - 1);
             }
             public Cell next() {
-
-                // Special case for the first cell
                 if (!started) {
                     started = true;
                     return myGrid.getCell(0, 0);

@@ -12,14 +12,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import cell.Cell;
+
 /**
  * Created by davidyan on 2/1/16.
  */
 public class Display {
     private Scene myScene;
     private Group myRoot;
-    private Button guiPlay, guiPause, guiStep, guiReload;
-    private Slider guiSlider;
+    private Button myPlay, myPause, myStep, myReplay;
+    private Slider mySlider;
     private GridPane myGrid;
     private Canvas myCanvas;
     private Grid myGrid2;
@@ -45,24 +46,24 @@ public class Display {
         myGrid2.draw(myCanvas);
         myGrid.add(myCanvas, 0, 0, 8, 5);
 
-        guiSlider = new Slider(0, 100, 50);
-        guiSlider.setShowTickMarks(true);
-        guiSlider.setShowTickLabels(true);
-        guiSlider.setMajorTickUnit(10.0);
-        guiSlider.setBlockIncrement(10.0);
+        mySlider = new Slider(0, 100, 50);
+        mySlider.setShowTickMarks(true);
+        mySlider.setShowTickLabels(true);
+        mySlider.setMajorTickUnit(10.0);
+        mySlider.setBlockIncrement(10.0);
 
-        guiSlider.setMinWidth(225);
+        mySlider.setMinWidth(225);
 
-        guiPlay = new Button("Play");
-        guiPause = new Button("Pause");
-        guiStep = new Button("Step");
-        guiReload = new Button("\u21BA");
+        myPlay = new Button("Play");
+        myPause = new Button("Pause");
+        myStep = new Button("Step");
+        myReplay = new Button("\u21BA");
 
-        myGrid.add(guiPlay, 0, 6);
-        myGrid.add(guiPause, 1, 6);
-        myGrid.add(guiStep, 2, 6);
-        myGrid.add(guiReload, 3, 6);
-        myGrid.add(guiSlider, 4, 6, 5, 1);
+        myGrid.add(myPlay, 0, 6);
+        myGrid.add(myPause, 1, 6);
+        myGrid.add(myStep, 2, 6);
+        myGrid.add(myReplay, 3, 6);
+        myGrid.add(mySlider, 4, 6, 5, 1);
 
         myRoot.getChildren().add(myGrid);
         stage.setScene(myScene);
