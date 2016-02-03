@@ -26,7 +26,7 @@ public class CellIterator implements Iterable<Cell> {
             private boolean started = false;
 
             public boolean hasNext() {
-                return !started || (myCurrentX < myWidth - 1) || (myCurrentY < myHeight - 1);
+                return (!started || (myCurrentX < myWidth - 1) || (myCurrentY < myHeight - 1));
             }
             public Cell next() {
                 if (!started) {
@@ -43,9 +43,6 @@ public class CellIterator implements Iterable<Cell> {
                 return retCell;
             }
 
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
         };
         return cellIt;
     }

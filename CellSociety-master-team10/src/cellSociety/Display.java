@@ -11,6 +11,15 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.control.Menu;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyCombination.Modifier;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.BorderPane;
+
 import cell.Cell;
 
 /**
@@ -24,10 +33,12 @@ public class Display {
     private GridPane myGrid;
     private Canvas myCanvas;
     private Grid myGrid2;
+    private MenuItem menuNew, menuOpen, menuExit;
 
     public void createScene(Stage stage) {
         myRoot = new Group();
         myScene = new Scene(myRoot, 1200, 700);
+        makeToolbar();
 
         Cell base = new Cell(0);
         myGrid2 = new Grid(base,20,20);
@@ -68,6 +79,30 @@ public class Display {
         myRoot.getChildren().add(myGrid);
         stage.setScene(myScene);
         stage.show();
+    }
+
+    public void makeToolbar(){
+        Menu fileMenu = new Menu("CellSociety Menu");
+        menuNew = new MenuItem("New");
+        menuOpen = new MenuItem("Open");
+        menuExit = new MenuItem("Exit");
+
+        Modifier modifier;
+
+        modifier = KeyCombination.META_DOWN;
+        menuOpen.setAccelerator(new KeyCodeCombination(KeyCode.O, modifier));
+        menuNew.setAccelerator(new KeyCodeCombination(KeyCode.N, modifier));
+        menuExit.setAccelerator(new KeyCodeCombination(KeyCode.W, modifier));
+
+        fileMenu.getItems().addAll(menuNew, menuOpen, menuExit);
+
+        MenuBar menuBar = new MenuBar();
+
+        menuBar.useSystemMenuBarProperty().set(true);
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(menuBar);
+        myRoot.getChildren().add(borderPane);
+        menuBar.getMenus().add(fileMenu);
     }
 
     public void drawGrid(Canvas toUseCanvas, Grid toUseGrid){
