@@ -19,6 +19,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyCombination.Modifier;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 import cell.Cell;
 
@@ -39,9 +41,10 @@ public class Display {
         myRoot = new Group();
         myScene = new Scene(myRoot, 1200, 700);
         makeToolbar();
+        checkEventsMenu(stage);
 
         Cell base = new Cell(0);
-        myGrid2 = new Grid(base,20,20);
+        myGrid2 = new Grid(base,30,30);
 
         myGrid = new GridPane();
         myGrid.setAlignment(Pos.CENTER);
@@ -103,6 +106,14 @@ public class Display {
         borderPane.setTop(menuBar);
         myRoot.getChildren().add(borderPane);
         menuBar.getMenus().add(fileMenu);
+    }
+    public void checkEventsMenu(Stage s){
+        menuExit.setOnAction(new EventHandler<ActionEvent>() {
+             public void handle(ActionEvent e) {
+                //System.out.println("time to close");
+                s.close();
+            }
+        });
     }
 
     public void drawGrid(Canvas toUseCanvas, Grid toUseGrid){

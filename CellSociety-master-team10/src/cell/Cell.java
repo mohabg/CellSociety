@@ -3,17 +3,13 @@
  * @Date: Jan 31
  */
 package cell;
-import javafx.scene.shape.Shape;
-
 public class Cell {
 
-    private int myX, myY;
-    private int currState;
-    private Shape myShape;
+    protected int myX, myY;
+    protected int currState;
 
     public Cell(int state){
         currState = state;
-        //myShape = new Shape(Rectangle);
     }
 
     public Cell(int x, int y, int state){

@@ -1,7 +1,6 @@
 package cell;
 
 import cellSociety.Grid;
-
 import java.util.*;
 
 

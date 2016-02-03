@@ -2,16 +2,12 @@ package cellSociety;
 
 import cell.Cell;
 import cell.CellIterator;
-import javafx.scene.paint.Color;
 /**
  * Created by davidyan on 1/31/16.
  */
 public class Grid {
     private Cell[][] myGrid;
     private int gridWidth,gridHeight;
-    private double myStrokeWidth = 0.05;
-    private Color myStrokeColor = Color.DARKGRAY;
-
     public Grid(Cell baseCell, int width, int height){
         myGrid = new Cell[width][height];
         gridWidth = width;
