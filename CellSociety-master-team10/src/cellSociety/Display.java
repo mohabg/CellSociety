@@ -21,7 +21,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.LineChart;
 import cell.Cell;
 
 /**
@@ -36,6 +37,7 @@ public class Display {
     private Canvas myCanvas;
     private Grid myGrid2;
     private MenuItem menuNew, menuOpen, menuExit;
+    private LineChart<Number, Number> myGraph;
 
     public void createScene(Stage stage) {
         myRoot = new Group();
@@ -78,7 +80,7 @@ public class Display {
         myGrid.add(myStep, 2, 6);
         myGrid.add(myReplay, 3, 6);
         myGrid.add(mySlider, 4, 6, 5, 1);
-
+        drawGraph();
         myRoot.getChildren().add(myGrid);
         stage.setScene(myScene);
         stage.show();
@@ -140,6 +142,21 @@ public class Display {
         gc.setStroke(myStrokeColor);
         gc.setLineWidth(myStrokeWidth * cellWidth * 2.0);
         gc.strokeRect(0.0, 0.0, width, height);
+
+    }
+
+    public void drawGraph() {
+
+        NumberAxis xAxis = new NumberAxis(0,100,10);
+        NumberAxis yAxis = new NumberAxis(0.0, 1.0, .10);
+
+        myGraph = new LineChart<Number,Number>(xAxis,yAxis);
+
+        myGraph.setTitle("Cell Simulation");
+        myGraph.setCreateSymbols(false);
+        myGraph.setLegendVisible(false);
+
+        myGrid.add(myGraph, 10, 2, 2, 1);
 
     }
 
