@@ -3,16 +3,26 @@ public class Actor {
 	private int xLocation;
 	private int yLocation;
 	private double energy;
+	private double initialEnergy;
 	private double energyDepletionRate;
+	private double timeSinceReproduced = 0;
 	
 	public Actor(int x, int y, double actorEnergy, double depletionRate){
 		xLocation = x;
 		yLocation = y;
 		energy = actorEnergy;
+		initialEnergy = actorEnergy;
 		energyDepletionRate = depletionRate;
 	}
 	public Actor reproduce(){
-		return new Actor(xLocation, yLocation, energy, energyDepletionRate);
+		timeSinceReproduced = 0;
+		return new Actor(xLocation, yLocation, initialEnergy, energyDepletionRate);
+	}
+	public double getTimeSinceReproduced(){
+		return timeSinceReproduced;
+	}
+	public void updateTimeSinceReproduced(double time){
+		timeSinceReproduced += time;
 	}
 	public void move(int x, int y){
 		xLocation = x;

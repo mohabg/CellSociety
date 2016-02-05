@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+
 
 public class SegregationSimulation extends Simulation {
 	private int noAgent = 0;
@@ -24,10 +24,6 @@ public class SegregationSimulation extends Simulation {
 	}
 	public void setSecondAgentParameter(int secondAgentCell){
 		secondAgent = secondAgentCell;
-	}
-	@Override
-	public void initialize(ArrayList<Integer> cellStates) {
-		
 	}
 	
 	@Override

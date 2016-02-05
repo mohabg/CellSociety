@@ -1,4 +1,3 @@
-import java.util.*;
 
 public class GameOfLifeSimulation extends Simulation{
 	private int liveState = 1;
@@ -13,11 +12,6 @@ public class GameOfLifeSimulation extends Simulation{
 	public void setDeadStateParameter(int deadCell){
 		deadState = deadCell;
 	}
-	@Override
-	public void initialize(ArrayList<Integer> cellStates) {
-		
-	}
-
 	@Override
 	public Cell updateCellState(Cell cell) {
 		int liveNeighbors = 0;

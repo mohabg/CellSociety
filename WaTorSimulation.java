@@ -17,9 +17,10 @@ public class WaTorSimulation extends Simulation{
 	}
 	//Maps X Location -> Y Location -> Actor
 	private HashMap<Integer, HashMap<Integer, Actor>> cellToActorMap;
-	
-	private double fishReproductionTime = 1.0;
-	private double sharkReproductionTime = 1.0;
+	private double lastRunTime;
+	private double chronon = 1000 / 60;
+	private double fishReproductionTime = 100 * chronon;
+	private double sharkReproductionTime = 100 * chronon;
 	private double sharkDepletionRate = 0.1;
 	private double eatFishRegenerationRate = 1.0;
 	private double sharkEnergy = 100;
@@ -27,6 +28,9 @@ public class WaTorSimulation extends Simulation{
 	private int fishCell = 1;
 	private int sharkCell = 2;
 	
+	public void setChrononParameter(double time){
+		chronon = time;
+	}
 	public void setFishReproductionTimeParameter(double time){
 		fishReproductionTime = time;
 	}
@@ -55,19 +59,35 @@ public class WaTorSimulation extends Simulation{
 	public WaTorSimulation(Grid grid) {
 		super(grid);
 		cellToActorMap = new HashMap<Integer, HashMap<Integer, Actor>>();
+		lastRunTime = System.currentTimeMillis();
 	}
-
 	@Override
-	public void initialize(ArrayList<Integer> cellStates) {
+	public void initialize(ArrayList<Integer> cellStates){
+		int statesListIndex = 0;
+		CellIterator cellIt = getGrid().getCellIterator();
+		while(cellIt.iterator().hasNext()){
+			int cellState = cellStates.get(statesListIndex++);
+			Cell nextCell = cellIt.iterator().next();
+			nextCell.setState(cellState);
 		
+			if(cellState == fishCell){
+				addToMap(new Fish(nextCell.getX(), nextCell.getY(), 0, 0));
+			}
+			if(cellState == sharkCell){
+				addToMap(new Shark(nextCell.getX(), nextCell.getY(), sharkEnergy, sharkDepletionRate));
+			}
+		}
 	}
-
 	@Override
 	public Cell updateCellState(Cell cell) {
-		Actor cellActor = cellToActorMap.get(cell.getX()).get(cell.getY());
+		if(System.currentTimeMillis() - lastRunTime >= chronon){
+			lastRunTime = System.currentTimeMillis();
+			Actor cellActor = cellToActorMap.get(cell.getX()).get(cell.getY());
+		
 		if(cellActor instanceof Shark){
 			Shark shark = (Shark) cellActor;
 			shark.depleteEnergy();
+			reproduceIfAllowed(shark, false);
 			if(shark.isDead()){
 				removeFromMap(shark);
 				cell.setState(emptyCell);
@@ -88,7 +108,6 @@ public class WaTorSimulation extends Simulation{
 			}
 			if(neighborFish.size() == 0 && emptyCells.size() > 0){
 				moveAtRandom(shark, emptyCells);
-				cell.setState(emptyCell);
 			}
 			else if(neighborFish.size() > 0){
 				//Eat Fish at random
@@ -107,6 +126,7 @@ public class WaTorSimulation extends Simulation{
 		}
 		if(cellActor instanceof Fish){
 			Fish fish = (Fish) cellActor;
+			reproduceIfAllowed(fish, true);
 			ArrayList<Cell> emptyCells = new ArrayList<Cell>();
 			for(Cell neighborCell : getGrid().getNonDiagonalNeighbors(cell)){
 				Actor neighborActor = cellToActorMap.get(neighborCell.getX()).get(neighborCell.getY());
@@ -115,15 +135,37 @@ public class WaTorSimulation extends Simulation{
 				}
 			}
 			moveAtRandom(fish, emptyCells);
-			cell.setState(emptyCell);
+		}
 		}
 		return cell;
+	}
+	public void reproduceIfAllowed(Actor actor, boolean useFishReproductionTime){
+		Actor newActor;
+		double reproductionTime = sharkReproductionTime;
+		if(useFishReproductionTime){
+			reproductionTime = fishReproductionTime;
+		}
+		if(actor.getTimeSinceReproduced() >= reproductionTime){
+			if(useFishReproductionTime){
+				newActor = (Fish) actor.reproduce();
+			}
+			else{
+				newActor = (Shark) actor.reproduce();
+			}
+			addToMap(newActor);
+		}
+		else{
+			actor.updateTimeSinceReproduced(chronon);
+		}
 	}
 	public void moveAtRandom(Actor actor, ArrayList<Cell> emptyCells){
 		Random rand = new Random();
 		int randomCell = rand.nextInt(emptyCells.size());
 		Cell newLocation = emptyCells.get(randomCell);
+		
+		getGrid().getCell(actor.getX(), actor.getY()).setState(emptyCell);
 		removeFromMap(actor);
+		
 		actor.move(newLocation.getX(), newLocation.getY());
 		if(actor instanceof Shark){
 			newLocation.setState(sharkCell);

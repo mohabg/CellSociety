@@ -15,7 +15,13 @@ public abstract class Simulation {
 		return myGrid;
 	}
 	//Initializes cells row by row
-	public abstract void initialize(ArrayList<Integer> cellStates);
+	public void initialize(ArrayList<Integer> cellStates){
+		int statesListIndex = 0;
+		CellIterator cellIt = myGrid.getCellIterator();
+		while(cellIt.iterator().hasNext()){
+			cellIt.iterator().next().setState(cellStates.get(statesListIndex++));
+		}
+	}
 	
 	public void run(){
 		while(!isPaused){

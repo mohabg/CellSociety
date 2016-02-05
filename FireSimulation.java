@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+
 import java.util.Random;
 
 public class FireSimulation extends Simulation{
@@ -22,10 +22,6 @@ public class FireSimulation extends Simulation{
 	}
 	public void setBurningParameter(int burningCell){
 		burning = burningCell;
-	}
-	@Override
-	public void initialize(ArrayList<Integer> cellStates) {
-		
 	}
 	
 	@Override
