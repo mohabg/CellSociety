@@ -1,12 +1,7 @@
-/**
- * @Author: David Yan
- * @Date: Jan 31
- */
-package cell;
 public class Cell {
 
-    protected int myX, myY;
-    protected int currState;
+    private int myX, myY;
+    private int currState;
 
     public Cell(int state){
         currState = state;
@@ -23,7 +18,14 @@ public class Cell {
         myY = toUse.getY();
         currState = toUse.getState();
     }
-
+    public Boolean isState(int state){
+    	return currState == state;
+    }
+    public Boolean isDiagonalNeighborWith(Cell otherCell){
+    	//X locations and Y locations both differ by 1
+    	return (Math.abs(myX - otherCell.getX()) == 1) && (Math.abs(myY - otherCell.getY()) == 1);
+    }
+    
     public Cell clone(){
         return new Cell(myX,myY,currState);
     }
@@ -46,6 +48,4 @@ public class Cell {
     public int getState(){
         return currState;
     }
-
-
 }
