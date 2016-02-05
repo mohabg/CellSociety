@@ -1,4 +1,8 @@
 import java.util.*;
+
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 /**
  * Created by davidyan on 1/31/16.
  */
@@ -87,6 +91,33 @@ public class Grid {
 
     public CellIterator getCellIterator() {
         return new CellIterator(this);
+    }
+    
+    public void draw(Canvas canvas) {
+        HashMap<Integer, Color> myColorMap = new HashMap<>();
+        myColorMap.put(0,Color.LIGHTBLUE);
+        myColorMap.put(1,Color.ORANGE);
+        myColorMap.put(2,Color.PURPLE);
+
+        double myStrokeWidth = 0.05;
+        double width = canvas.getWidth();
+        double height = canvas.getHeight();
+
+        double cellWidth = width / (gridWidth + myStrokeWidth * (gridWidth - 1));
+        double cellHeight = height / (gridHeight + myStrokeWidth * (gridHeight - 1));
+
+        double x, y;
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        for (Cell cell : getCellIterator()) {
+            gc.setFill(myColorMap.get(cell.getState()));
+            x = cellWidth * myStrokeWidth + cellWidth * cell.getX() + (cell.getX() - 1) * cellWidth * myStrokeWidth;
+            y = cellWidth * myStrokeWidth + cellHeight * cell.getY() + (cell.getY() - 1) * cellHeight * myStrokeWidth;
+            gc.fillRect(x, y, cellWidth, cellHeight);
+        }
+        gc.setStroke(Color.DARKGRAY);
+        gc.setLineWidth(myStrokeWidth * cellWidth * 2.0);
+        gc.strokeRect(0.0, 0.0, width, height);
+
     }
 
 }
