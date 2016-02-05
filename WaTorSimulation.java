@@ -87,11 +87,12 @@ public class WaTorSimulation extends Simulation{
 		if(cellActor instanceof Shark){
 			Shark shark = (Shark) cellActor;
 			shark.depleteEnergy();
-			reproduceIfAllowed(shark, false);
 			if(shark.isDead()){
 				removeFromMap(shark);
 				cell.setState(emptyCell);
+				return cell;
 			}
+			reproduceIfAllowed(shark, false);
 			ArrayList<Cell> emptyCells = new ArrayList<Cell>();
 			ArrayList<Fish> neighborFish = new ArrayList<Fish>();
 			
