@@ -1,3 +1,7 @@
+package src.controller.Simulation;
+
+import src.Model.Cell;
+import src.View.Grid;
 
 public class GameOfLifeSimulation extends Simulation{
 	private int liveState = 1;

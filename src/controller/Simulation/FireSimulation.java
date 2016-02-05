@@ -1,5 +1,8 @@
-
+package src.controller.Simulation;
 import java.util.Random;
+
+import src.Model.Cell;
+import src.View.Grid;
 
 public class FireSimulation extends Simulation{
 	private int empty = 0;

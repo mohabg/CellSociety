@@ -1,4 +1,4 @@
-
+package src.Model;
 public class Actor {
 	private int xLocation;
 	private int yLocation;
@@ -43,7 +43,7 @@ public class Actor {
 	public void depleteEnergy(){
 		energy -= energyDepletionRate;
 	}
-	public Boolean isDead(){
+	public boolean isDead(){
 		return energy <= 0;
 	}
 	public void setEnergy(double newEnergy){

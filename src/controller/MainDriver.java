@@ -1,5 +1,7 @@
-package cellSociety;
-import cell.Cell;
+package src.controller;
+import src.Model.Cell;
+import src.View.Display;
+import src.View.Grid;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;

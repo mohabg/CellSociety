@@ -1,4 +1,9 @@
+package src.controller.Simulation;
 import java.util.*;
+
+import src.Model.Cell;
+import src.View.Grid;
+import src.controller.CellIterator;
 
 public abstract class Simulation {
 	

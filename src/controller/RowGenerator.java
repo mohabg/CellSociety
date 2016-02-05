@@ -1,4 +1,4 @@
-package controller;
+package src.controller;
 
 public class RowGenerator {
 	public static void main(String[] args){

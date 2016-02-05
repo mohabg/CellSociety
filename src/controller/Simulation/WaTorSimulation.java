@@ -1,6 +1,12 @@
+package src.controller.Simulation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import src.Model.Actor;
+import src.Model.Cell;
+import src.View.Grid;
+import src.controller.CellIterator;
 
 public class WaTorSimulation extends Simulation{
 	public class Fish extends Actor{

@@ -1,4 +1,8 @@
+package src.controller.Simulation;
 
+import src.Model.Cell;
+import src.View.Grid;
+import src.controller.CellIterator;
 
 public class SegregationSimulation extends Simulation {
 	private int noAgent = 0;

@@ -1,5 +1,8 @@
+package src.controller;
 import java.util.*;
 
+import src.View.Grid;
+import src.Model.Cell;
 
 public class CellIterator implements Iterable<Cell> {
 

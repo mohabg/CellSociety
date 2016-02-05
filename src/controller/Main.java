@@ -1,4 +1,4 @@
-package cellSociety;
+package src.controller;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

@@ -1,3 +1,7 @@
+package src.View;
+import src.Model.Cell;
+import src.controller.CellIterator;
+
 import java.util.*;
 
 import javafx.scene.canvas.Canvas;

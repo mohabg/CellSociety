@@ -1,4 +1,4 @@
-package cellSociety;
+package src.controller;
 
 /**
  * Created by davidyan on 2/4/16.

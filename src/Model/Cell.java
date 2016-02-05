@@ -1,3 +1,4 @@
+package src.Model;
 public class Cell {
 
     private int myX, myY;

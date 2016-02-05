@@ -1,4 +1,4 @@
-package cellSociety;
+package src.View;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -15,6 +15,7 @@ import javafx.scene.input.KeyCombination.Modifier;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import src.controller.EventListener;
 
 /**
  * Created by davidyan on 2/1/16.
