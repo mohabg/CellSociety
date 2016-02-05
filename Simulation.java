@@ -32,12 +32,13 @@ public abstract class Simulation {
 		isPaused = true;
 	}
 	
-	public void step(){
+	public Grid step(){
 		oldGrid = myGrid.getGridClone();
 		CellIterator cellIt = oldGrid.getCellIterator();
 		while(cellIt.iterator().hasNext()){
 			myGrid.setCell(updateCellState(cellIt.iterator().next()));
 		}
+		return myGrid;
 	}
 	public abstract Cell updateCellState(Cell cell);
 }
