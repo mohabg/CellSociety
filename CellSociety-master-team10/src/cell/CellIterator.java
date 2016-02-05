@@ -4,17 +4,17 @@ import cellSociety.Grid;
 import java.util.*;
 
 
+
 public class CellIterator implements Iterable<Cell> {
 
     private Grid myGrid;
-    private int myWidth;
-    private int myHeight;
-
+    private int myGridWidth;
+    private int myGridHeight;
 
     public CellIterator(Grid grid) {
         myGrid = grid;
-        myWidth = grid.getGridWidth();
-        myHeight = grid.getGridHeight();
+        myGridWidth = grid.getGridWidth();
+        myGridHeight = grid.getGridHeight();
     }
 
     public Iterator<Cell> iterator() {
@@ -25,7 +25,7 @@ public class CellIterator implements Iterable<Cell> {
             private boolean started = false;
 
             public boolean hasNext() {
-                return (!started || (myCurrentX < myWidth - 1) || (myCurrentY < myHeight - 1));
+                return ((myCurrentX < myGridWidth - 1) || (myCurrentY < myGridHeight - 1) || !started);
             }
             public Cell next() {
                 if (!started) {
@@ -34,7 +34,7 @@ public class CellIterator implements Iterable<Cell> {
                 }
 
                 myCurrentX++;
-                if (myCurrentX >= myWidth) {
+                if (myCurrentX >= myGridWidth) {
                     myCurrentY++;
                     myCurrentX = 0;
                 }

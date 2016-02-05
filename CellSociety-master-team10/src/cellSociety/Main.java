@@ -10,8 +10,7 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Cell Society");
-        Display toDisplay = new Display();
-        toDisplay.createScene(primaryStage);
+        MainDriver driver = new MainDriver(primaryStage);
     }
 
 }
