@@ -20,6 +20,6 @@ public class MainHandler extends Application{
 	}
 
 	public void start(Stage s) throws Exception {
-		
+		s.setTitle("Cell Society");
 	}
 }

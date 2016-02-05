@@ -2,6 +2,12 @@
 <simulation type = "Wator">
 
 <params>
+<param chronon = "15"></param>
+<param fishReproductionTime = "1500"></param>
+<param sharkReproductionTime = "1500"></param>
+<param sharkDepletionRate = "0.1"></param>
+<param eatFishRegenerationRate = "1"></param>
+<param sharkEnergy = "100"></param>
 </params>
 
 <states>
