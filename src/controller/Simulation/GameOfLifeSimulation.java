@@ -26,16 +26,12 @@ public class GameOfLifeSimulation extends Simulation{
 		}
 		if(cell.isState(liveState)){
 			if(liveNeighbors != 2 && liveNeighbors != 3){
-				Cell updatedCell = cell.clone();
-				updatedCell.setState(deadState);
-				return updatedCell;
+				cell.setState(deadState);
 			}
 		}
 		if(cell.isState(deadState)){
 			if(liveNeighbors == 3){
-				Cell updatedCell = cell.clone();
-				updatedCell.setState(liveState);
-				return updatedCell;
+				cell.setState(liveState);
 			}
 		}
 		return cell;

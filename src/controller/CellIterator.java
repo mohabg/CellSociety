@@ -19,7 +19,6 @@ public class CellIterator implements Iterable<Cell> {
 
     public Iterator<Cell> iterator() {
         Iterator<Cell> cellIt = new Iterator<Cell>() {
-
             private int myCurrentX = 0;
             private int myCurrentY = 0;
             private boolean started = false;

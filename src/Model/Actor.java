@@ -14,12 +14,14 @@ public class Actor {
 		initialEnergy = actorEnergy;
 		energyDepletionRate = depletionRate;
 	}
-	public Actor reproduce(){
-		timeSinceReproduced = 0;
-		return new Actor(xLocation, yLocation, initialEnergy, energyDepletionRate);
-	}
 	public double getTimeSinceReproduced(){
 		return timeSinceReproduced;
+	}
+	public void resetTimeSinceReproduced(){
+		timeSinceReproduced = 0;
+	}
+	public double getDepletionRate(){
+		return energyDepletionRate;
 	}
 	public void updateTimeSinceReproduced(double time){
 		timeSinceReproduced += time;

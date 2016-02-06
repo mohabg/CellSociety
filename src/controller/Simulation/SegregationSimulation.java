@@ -1,5 +1,8 @@
 package src.controller.Simulation;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import src.Model.Cell;
 import src.View.Grid;
 import src.controller.CellIterator;
@@ -50,18 +53,24 @@ public class SegregationSimulation extends Simulation {
 				differentAgents++;
 			}
 		}
-		double similarPercentage = (similarAgents) / (similarAgents + differentAgents);
+		double similarPercentage = 0;
+		if(similarAgents + differentAgents > 0){
+		 similarPercentage = (similarAgents) / (similarAgents + differentAgents);
+		}
 		if(similarPercentage <= satisfiedPercentage){
 			//Dissatisfied Agent
 			CellIterator cellIt = getGrid().getCellIterator();
-			while(cellIt.iterator().hasNext()){
-				Cell emptyCell = cellIt.iterator().next();
+			ArrayList<Cell> emptyCells = new ArrayList<Cell>();
+			for(Cell emptyCell: cellIt){
 				if(emptyCell.isState(noAgent)){
-					//Move Agent to Empty Cell
-					emptyCell.setState(currentState);
-					cell.setState(noAgent);
+					emptyCells.add(emptyCell);
 				}
 			}
+			Random rand = new Random();
+			int randomCellIndex = rand.nextInt(emptyCells.size());
+			Cell randomEmptyCell = emptyCells.get(randomCellIndex);
+			randomEmptyCell.setState(currentState);
+			cell.setState(noAgent);
 		}
 		//Satisfied Agent
 		return cell;

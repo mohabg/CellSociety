@@ -7,7 +7,7 @@ import src.controller.CellIterator;
 
 public abstract class Simulation {
 	
-	private Grid oldGrid;
+	private Grid newGrid;
 	private Grid myGrid;
 	private boolean isPaused;
 	
@@ -23,8 +23,8 @@ public abstract class Simulation {
 	public void initialize(ArrayList<Integer> cellStates){
 		int statesListIndex = 0;
 		CellIterator cellIt = myGrid.getCellIterator();
-		while(cellIt.iterator().hasNext()){
-			cellIt.iterator().next().setState(cellStates.get(statesListIndex++));
+		for(Cell cell : cellIt){
+			cell.setState(cellStates.get(statesListIndex++));
 		}
 	}
 	
@@ -38,12 +38,12 @@ public abstract class Simulation {
 	}
 	
 	public Grid step(){
-		oldGrid = myGrid.getGridClone();
-		CellIterator cellIt = oldGrid.getCellIterator();
-		while(cellIt.iterator().hasNext()){
-			myGrid.setCell(updateCellState(cellIt.iterator().next()));
+		newGrid = myGrid.getGridClone();
+		CellIterator cellIt = myGrid.getCellIterator();
+		for(Cell cell: cellIt){
+			newGrid.setCell(updateCellState(cell));
 		}
-		return myGrid;
+		return newGrid;
 	}
 	public abstract Cell updateCellState(Cell cell);
 }

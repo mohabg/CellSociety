@@ -60,22 +60,27 @@ public class Grid {
 	
 	public ArrayList<Cell> getNonDiagonalNeighbors(Cell cell){
 		ArrayList<Cell> neighbors = getAllNeighbors(cell);
-		
-		for(Cell neighborCell: neighbors){
-			if(cell.isDiagonalNeighborWith(neighborCell)){
-				neighbors.remove(neighborCell);
+		Iterator<Cell> neighborIterator = neighbors.iterator();
+		while(neighborIterator.hasNext()){
+			Cell neighborcell = neighborIterator.next();
+			if(cell.isDiagonalNeighborWith(neighborcell)){
+				neighborIterator.remove();
 			}
 		}
 		return neighbors;
 	}
 	
 	public Grid getGridClone(){
-		Grid copy = new Grid(new Cell(0, 0, 0), gridWidth, gridHeight);
-		CellIterator cellIt = this.getCellIterator();
-		while(cellIt.iterator().hasNext()){
-			copy.setCell(cellIt.iterator().next().clone());
-		}
-		return copy;
+		Grid copyGrid = new Grid(new Cell(0, 0, 0), gridWidth, gridHeight);
+		Cell[][] copy = copyGrid.myGrid;
+		for(int i=0;i<gridWidth;i++){
+            for(int j=0;j<gridHeight;j++){
+                copy[i][j] = new Cell(0, 0, 0);
+                copy[i][j].setX(i);
+                copy[i][j].setY(j);
+            }
+        }
+		return copyGrid;
 	}
 	
     public int getGridWidth() {

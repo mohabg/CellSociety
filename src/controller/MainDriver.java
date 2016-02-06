@@ -9,8 +9,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Random;
-
+import src.controller.Simulation.*;
 public class MainDriver implements EventListener {
 
     private Display myDisplay;
@@ -23,8 +24,18 @@ public class MainDriver implements EventListener {
     private Cell baseCell = new Cell(0);
     private Grid myGrid = new Grid(baseCell,25,25);
     Duration length;
+    private WaTorSimulation mySim;
 
     public MainDriver(Stage stage) {
+    	
+    	Random r = new Random();
+    	ArrayList<Integer> cellStates = new ArrayList<Integer>();
+        for(Cell cell: myGrid.getCellIterator()){
+            int randy = r.nextInt(3);
+            cellStates.add(randy);
+        }
+        mySim = new WaTorSimulation(myGrid);
+        mySim.initialize(cellStates);
         myStage = stage;
         setSimulationFPS(myFPS);
         myRoot = new Group();
@@ -62,16 +73,11 @@ public class MainDriver implements EventListener {
         myAnimation.pause();
         isRunning = false;
         step();
+       // mySim.step();
     }
 
     private void step() {
-        Random r = new Random();
-        Grid newGrid = myGrid;
-        for(Cell cell: newGrid.getCellIterator()){
-            int randy = r.nextInt(3);
-            cell.setState(randy);
-        }
-        myDisplay.draw(newGrid);
+        myDisplay.draw(mySim.step());
     }
 
 }
