@@ -1,10 +1,8 @@
-package src.controller;
-
 public class RowGenerator {
 	public static void main(String[] args){
 		String str = "";
-		int X = 50;
-		int Y = 50;
+		int X = 25;
+		int Y = 25;
 		int NUM_STATES = 3;
 		for(int x=0; x<X; x++){
 			str+="<cells row = \"";
@@ -13,7 +11,7 @@ public class RowGenerator {
 				if(y!=(Y-1))
 					str+=" ";
 			}
-			str+="\">\n";
+			str+="\"> </cells>\n";
 		}
 		System.out.println(str);
 	}

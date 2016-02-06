@@ -11,12 +11,12 @@
 </states>
 
 <dimensions>
-<xLen = "XLEN"></xLen>
-<yLen = "YLEN"></yLen>
+<dimen xLen = "XLEN"></dimen>
+<dimen yLen = "YLEN"></dimen>
 </dimensions>
 
 <grid>
-<cells row = "INITIAL STATES SEPARATED BY SPACES">
+<cells row = "INITIAL STATES SEPARATED BY SPACES"> </cells>
 </grid>
 
 </simulation>
