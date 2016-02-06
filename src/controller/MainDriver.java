@@ -45,7 +45,7 @@ public class MainDriver implements EventListener {
 		myDisplay = new Display(myScene, myRoot);
 		myDisplay.addEventListener(this);
 
-		File file = new File("src/XML_Files/Fire.xml");
+		File file = new File("src/XML_Files/Wator.xml");
 		XMLParser parser = new XMLParser(file);
 		HashMap<Integer[], Integer> cellsMap = parser.getCellsMap();
 		int xLen = parser.getXLen();
@@ -53,7 +53,8 @@ public class MainDriver implements EventListener {
 		myGrid = parser.makeCellsGrid(cellsMap, xLen, yLen);
 		statesMap = parser.getStatesMap();
 		ArrayList<Double> paramsList = parser.getParamsList();
-		mySim = setSim(parser.getSimType(), paramsList);
+		ArrayList<Integer> statesList = parser.getStatesList();
+		mySim = setSim(parser.getSimType(), paramsList, statesList);
 		myStage.setTitle(mySim.returnTitle());
 		myDisplay.setGraphTitle(mySim.returnTitle());
 		myDisplay.draw(myGrid, statesMap);
@@ -62,7 +63,7 @@ public class MainDriver implements EventListener {
 		myStage.show();
 	}
 
-	public Simulation setSim(String simType, ArrayList<Double> paramsList){
+	public Simulation setSim(String simType, ArrayList<Double> paramsList, ArrayList<Integer> statesList){
 		if(simType.equals("Fire")){
 			mySim = new FireSimulation(myGrid);
 			((FireSimulation) mySim).setProbCatch(paramsList.get(0));
@@ -72,6 +73,7 @@ public class MainDriver implements EventListener {
 		if(simType.equals("Wator")){
 			mySim = new WaTorSimulation(myGrid);
 			((WaTorSimulation) mySim).setParameters(paramsList);
+			((WaTorSimulation) mySim).initialize(statesList);
 		}
 		if(simType.equals("Segregation"))
 			mySim = new SegregationSimulation(myGrid);

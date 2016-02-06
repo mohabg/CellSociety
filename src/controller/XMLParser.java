@@ -32,6 +32,7 @@ public class XMLParser {
 	private HashMap<Integer[], Integer> cellsMap = new HashMap<Integer[], Integer>();
 	private HashMap<Integer, Color> statesMap = new HashMap<Integer, Color>();
 	private ArrayList<Double> paramsList = new ArrayList<Double>();
+	private ArrayList<Integer> statesList = new ArrayList<Integer>();
 	
 	public XMLParser(File myFile) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
 		fileCheck(myFile);
@@ -40,30 +41,6 @@ public class XMLParser {
 		Document doc = builder.parse(myFile);
 		doc.getDocumentElement().normalize();
 		parseFile(doc);
-	}
-
-	public HashMap<Integer[], Integer> getCellsMap(){
-		return cellsMap;
-	}
-
-	public HashMap<Integer, Color> getStatesMap(){
-		return statesMap;
-	}
-
-	public ArrayList<Double> getParamsList(){
-		return paramsList;
-	}
-
-	public int getXLen(){
-		return xLen;
-	}
-
-	public int getYLen(){
-		return yLen;
-	}
-	
-	public String getSimType(){
-		return simType;
 	}
 
 	public void fileCheck(File file) throws IOException{
@@ -103,9 +80,9 @@ public class XMLParser {
 		}
 	}
 
-	public void createParamsList(NodeList states){
-		for(int x=0; x<states.getLength(); x++){
-			Node node = states.item(x);
+	public void createParamsList(NodeList params){
+		for(int x=0; x<params.getLength(); x++){
+			Node node = params.item(x);
 			NamedNodeMap map = node.getAttributes();
 			for(int y=0; y<map.getLength(); y++){
 				paramsList.add(Double.parseDouble(map.item(y).getTextContent()));
@@ -135,6 +112,7 @@ public class XMLParser {
 			Map.Entry<Integer[], Integer> pair = (Map.Entry)it.next();
 			Integer[] dimens = pair.getKey();
 			int state = map.get(dimens);
+			statesList.add(state);
 			Cell cell = new Cell(dimens[0], dimens[1], state);
 			grid.setCell(cell);
 		}
@@ -146,5 +124,33 @@ public class XMLParser {
 		NamedNodeMap yDimen = dimen.item(1).getAttributes();
 		xLen = Integer.parseInt(xDimen.getNamedItem("xLen").getTextContent());
 		yLen = Integer.parseInt(yDimen.getNamedItem("yLen").getTextContent());
+	}
+	
+	public HashMap<Integer[], Integer> getCellsMap(){
+		return cellsMap;
+	}
+
+	public HashMap<Integer, Color> getStatesMap(){
+		return statesMap;
+	}
+
+	public ArrayList<Double> getParamsList(){
+		return paramsList;
+	}
+
+	public int getXLen(){
+		return xLen;
+	}
+
+	public int getYLen(){
+		return yLen;
+	}
+	
+	public String getSimType(){
+		return simType;
+	}
+	
+	public ArrayList<Integer> getStatesList(){
+		return statesList;
 	}
 }

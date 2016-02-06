@@ -95,7 +95,7 @@ public class WaTorSimulation extends Simulation{
 			}
 		}
 	}
-	@Override
+	
 	public Grid step(){
 		Grid myGrid = getGrid();
 		CellIterator cellIt = myGrid.getCellIterator();
@@ -104,7 +104,7 @@ public class WaTorSimulation extends Simulation{
 		}
 		return myGrid;
 	}
-	@Override
+	
 	public void initialize(ArrayList<Integer> cellStates){
 		int statesListIndex = 0;
 		CellIterator cellIt = getGrid().getCellIterator();
@@ -120,7 +120,7 @@ public class WaTorSimulation extends Simulation{
 			}
 		}
 	}
-	@Override
+	
 	public Cell updateCellState(Cell cell) {
 			lastRunTime = System.currentTimeMillis();
 			Actor cellActor = cellToActorMap.get(cell.getX()).get(cell.getY());
