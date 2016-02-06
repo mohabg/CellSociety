@@ -9,7 +9,7 @@ public class FireSimulation extends Simulation{
 	private int tree = 1;
 	private int burning = 2;
 	//probCatch range: 0.0 - 1.0
-	private double probCatch = 0.5;
+	private double probCatch = 0.01;
 	
 	public FireSimulation(Grid grid) {
 		super(grid);
@@ -41,7 +41,7 @@ public class FireSimulation extends Simulation{
 				if(neighborCell.isState(burning)){
 					Random rand = new Random();
 					double randomProbability = rand.nextDouble();
-					if(randomProbability >= probCatch){
+					if(randomProbability <= probCatch){
 						cell.setState(burning);
 					}
 				}

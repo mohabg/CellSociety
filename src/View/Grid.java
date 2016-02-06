@@ -70,8 +70,7 @@ public class Grid {
 	}
 	
 	public Grid getGridClone(){
-<<<<<<< HEAD
-		Grid copyGrid = new Grid(new Cell(0, 0, 0), gridWidth, gridHeight);
+		Grid copyGrid = new Grid(gridWidth, gridHeight);
 		Cell[][] copy = copyGrid.myGrid;
 		for(int i=0;i<gridWidth;i++){
             for(int j=0;j<gridHeight;j++){
@@ -81,14 +80,6 @@ public class Grid {
             }
         }
 		return copyGrid;
-=======
-		Grid copy = new Grid(gridWidth, gridHeight);
-		CellIterator cellIt = this.getCellIterator();
-		while(cellIt.iterator().hasNext()){
-			copy.setCell(cellIt.iterator().next().clone());
-		}
-		return copy;
->>>>>>> e4c51f7c606f8089b33588393b4d999fa7793239
 	}
 	
     public int getGridWidth() {
