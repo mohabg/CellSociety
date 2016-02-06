@@ -54,6 +54,7 @@ public class MainDriver implements EventListener {
 		HashMap<String, Double> paramsMap = parser.getParamsMap();
 		mySim = new FireSimulation(myGrid);
 		myStage.setTitle(mySim.returnTitle());
+		myDisplay.setGraphTitle(mySim.returnTitle());
 		myDisplay.draw(myGrid, statesMap);
 		
 		myStage.setScene(myScene);

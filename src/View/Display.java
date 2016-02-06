@@ -142,12 +142,16 @@ public class Display {
 
         myGraph = new LineChart<Number, Number>(xAxis,yAxis);
 
-        myGraph.setTitle("Cell Simulation");
         myGraph.setCreateSymbols(false);
         myGraph.setLegendVisible(false);
 
         myGrid.add(myGraph, 10, 2, 2, 1);
     }
+    
+    public void setGraphTitle(String s){
+    	myGraph.setTitle(s);
+    }
+    
     public void draw(Grid grid, HashMap<Integer, Color> statesMap) {
         myCanvas.getGraphicsContext2D().setFill(Color.DARKGRAY);
         myCanvas.getGraphicsContext2D().fillRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
