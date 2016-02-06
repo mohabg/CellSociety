@@ -34,7 +34,7 @@ public class MainDriver implements EventListener {
 	private Scene myScene;
 	private Grid myGrid;
 	Duration length;
-	HashMap<Integer, Color> statesMap;
+	HashMap<Integer, Color> statesMap = new HashMap<Integer, Color>();
 	Simulation mySim;
 
 	public MainDriver(Stage stage) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException {
@@ -42,23 +42,9 @@ public class MainDriver implements EventListener {
 		setSimulationFPS(myFPS);
 		myRoot = new Group();
 		myScene = new Scene(myRoot, 1100, 700);
-		myDisplay = new Display(myScene, myRoot);
+		myDisplay = new Display(myScene, myRoot, stage);
 		myDisplay.addEventListener(this);
-
-		File file = new File("src/XML_Files/Wator.xml");
-		XMLParser parser = new XMLParser(file);
-		HashMap<Integer[], Integer> cellsMap = parser.getCellsMap();
-		int xLen = parser.getXLen();
-		int yLen = parser.getYLen();
-		myGrid = parser.makeCellsGrid(cellsMap, xLen, yLen);
-		statesMap = parser.getStatesMap();
-		ArrayList<Double> paramsList = parser.getParamsList();
-		ArrayList<Integer> statesList = parser.getStatesList();
-		mySim = setSim(parser.getSimType(), paramsList, statesList);
-		myStage.setTitle(mySim.returnTitle());
-		myDisplay.setGraphTitle(mySim.returnTitle());
-		myDisplay.draw(myGrid, statesMap);
-
+		
 		myStage.setScene(myScene);
 		myStage.show();
 	}
@@ -118,9 +104,26 @@ public class MainDriver implements EventListener {
 			myAnimation.play();
 		}
 	}
+	
+	public void onFileSelection(File myFile) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException, ParserConfigurationException, SAXException, IOException{
+		File file = myDisplay.getFile();
+		XMLParser parser = new XMLParser(myFile);
+		HashMap<Integer[], Integer> cellsMap = parser.getCellsMap();
+		int xLen = parser.getXLen();
+		int yLen = parser.getYLen();
+		myGrid = parser.makeCellsGrid(cellsMap, xLen, yLen);
+		statesMap = parser.getStatesMap();
+		ArrayList<Double> paramsList = parser.getParamsList();
+		ArrayList<Integer> statesList = parser.getStatesList();
+		mySim = setSim(parser.getSimType(), paramsList, statesList);
+		myStage.setTitle(mySim.returnTitle());
+		myDisplay.setGraphTitle(mySim.returnTitle());
+		myDisplay.draw(myGrid, statesMap);
+	}
 
 	private void step() {
-		myDisplay.draw(mySim.step(), statesMap);
+		if(statesMap.size() > 0)
+			myDisplay.draw(mySim.step(), statesMap);
 	}
 
 }
