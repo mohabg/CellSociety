@@ -9,6 +9,9 @@ import src.View.Grid;
 import src.controller.CellIterator;
 
 public class WaTorSimulation extends Simulation{
+	public String returnTitle(){
+		return "WaTor Simulation";
+	}
 	public class Fish extends Actor{
 		
 		public Fish(int x, int y, double actorEnergy, double depletionRate){

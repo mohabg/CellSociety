@@ -53,10 +53,10 @@ public class Display {
 //        drawGrid(myCanvas,myGrid2);
         myGrid.add(myCanvas, 0, 0, 8, 5);
 
-        mySlider = new Slider(0, 100, 50);
+        mySlider = new Slider(0, 20, 2);
         mySlider.setShowTickMarks(true);
         mySlider.setShowTickLabels(true);
-        mySlider.setMajorTickUnit(10.0);
+        mySlider.setMajorTickUnit(1);
         mySlider.setBlockIncrement(10.0);
 
         mySlider.setMinWidth(225);
@@ -79,7 +79,9 @@ public class Display {
         myPlay.setOnAction(event -> listener.playAnimation());
         myPause.setOnAction(event ->listener.pauseAnimation());
         myStep.setOnAction(event ->listener.stepAnimation());
-
+        mySlider.valueProperty().addListener(event -> {
+			listener.onSliderMove((int)mySlider.getValue());
+		});
     }
 
     public void makeToolbar(Group root){

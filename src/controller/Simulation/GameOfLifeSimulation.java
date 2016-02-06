@@ -16,6 +16,9 @@ public class GameOfLifeSimulation extends Simulation{
 	public void setDeadStateParameter(int deadCell){
 		deadState = deadCell;
 	}
+	public String returnTitle(){
+		return "Game Of Life Simulation";
+	}
 	@Override
 	public Cell updateCellState(Cell cell) {
 		int liveNeighbors = 0;

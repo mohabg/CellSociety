@@ -53,6 +53,7 @@ public class MainDriver implements EventListener {
 		statesMap = parser.getStatesMap();
 		HashMap<String, Double> paramsMap = parser.getParamsMap();
 		mySim = new FireSimulation(myGrid);
+		myStage.setTitle(mySim.returnTitle());
 		myDisplay.draw(myGrid, statesMap);
 		
 		myStage.setScene(myScene);
@@ -64,11 +65,14 @@ public class MainDriver implements EventListener {
 		myAnimation = new Timeline();
 		myAnimation.setCycleCount(Timeline.INDEFINITE);
 		if (FPS != 0) {
-			length = Duration.millis(500);
+			length = Duration.millis(1000/FPS);
+		}else if (FPS==0){
+			length = Duration.INDEFINITE;	
+		}
+		if(FPS!=0){
 			KeyFrame frame = new KeyFrame(length, e -> step());
 			myAnimation.getKeyFrames().add(frame);
-		} //else length should be indefinite, add more to this as I get slider working
-
+		}
 	}
 
 	public void playAnimation() {
@@ -85,6 +89,14 @@ public class MainDriver implements EventListener {
 		myAnimation.pause();
 		isRunning = false;
 		step();
+	}
+	
+	public void onSliderMove(int newValue) {
+		boolean resume = isRunning;
+		setSimulationFPS(newValue);
+		if (resume) {
+			myAnimation.play();
+		}
 	}
 
 	private void step() {

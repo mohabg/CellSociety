@@ -7,4 +7,5 @@ public interface EventListener {
     void playAnimation();
     void pauseAnimation();
     void stepAnimation();
+    void onSliderMove(int toUseValue);
 }

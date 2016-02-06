@@ -46,4 +46,10 @@ public abstract class Simulation {
 		return newGrid;
 	}
 	public abstract Cell updateCellState(Cell cell);
+
+	public String returnTitle() {
+		return "";
+		// TODO Auto-generated method stub
+		
+	}
 }

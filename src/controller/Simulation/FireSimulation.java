@@ -9,7 +9,7 @@ public class FireSimulation extends Simulation{
 	private int tree = 1;
 	private int burning = 2;
 	//probCatch range: 0.0 - 1.0
-	private double probCatch = 0.01;
+	private double probCatch = 0.5;
 	
 	public FireSimulation(Grid grid) {
 		super(grid);
@@ -25,6 +25,9 @@ public class FireSimulation extends Simulation{
 	}
 	public void setBurningParameter(int burningCell){
 		burning = burningCell;
+	}
+	public String returnTitle(){
+		return "Fire Simulation";
 	}
 	
 	@Override

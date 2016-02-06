@@ -32,7 +32,9 @@ public class SegregationSimulation extends Simulation {
 	public void setSecondAgentParameter(int secondAgentCell){
 		secondAgent = secondAgentCell;
 	}
-	
+	public String returnTitle(){
+		return "Segregation Simulation";
+	}
 	@Override
 	public Cell updateCellState(Cell cell) {
 		int currentState = cell.getState();
