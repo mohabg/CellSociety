@@ -1,4 +1,6 @@
 package src.View;
+import java.util.HashMap;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -144,10 +146,10 @@ public class Display {
 
         myGrid.add(myGraph, 10, 2, 2, 1);
     }
-    public void draw(Grid grid) {
+    public void draw(Grid grid, HashMap<Integer, Color> statesMap) {
         myCanvas.getGraphicsContext2D().setFill(Color.DARKGRAY);
         myCanvas.getGraphicsContext2D().fillRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
-        grid.draw(myCanvas);
+        grid.draw(myCanvas, statesMap);
     }
 
 

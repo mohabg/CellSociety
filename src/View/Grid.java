@@ -16,18 +16,17 @@ public class Grid {
     private int gridWidth,gridHeight;
     private ArrayList<Cell> neighbors;
     
-    public Grid(Cell baseCell, int width, int height){
+    public Grid(int width, int height){
         myGrid = new Cell[width][height];
         neighbors = new ArrayList<Cell>();
         gridWidth = width;
         gridHeight = height;
-        for(int i=0;i<gridWidth;i++){
-            for(int j=0;j<gridHeight;j++){
-                myGrid[i][j] = baseCell.clone();
-                myGrid[i][j].setX(i);
-                myGrid[i][j].setY(j);
-            }
-        }
+//        for(int i=0;i<gridWidth;i++){
+//            for(int j=0;j<gridHeight;j++){
+//                myGrid[i][j].setX(i);
+//                myGrid[i][j].setY(j);
+//            }
+//        }
     }
     
 	public ArrayList<Cell> getAllNeighbors(Cell cell) {
@@ -70,7 +69,7 @@ public class Grid {
 	}
 	
 	public Grid getGridClone(){
-		Grid copy = new Grid(new Cell(0, 0, 0), gridWidth, gridHeight);
+		Grid copy = new Grid(gridWidth, gridHeight);
 		CellIterator cellIt = this.getCellIterator();
 		while(cellIt.iterator().hasNext()){
 			copy.setCell(cellIt.iterator().next().clone());
@@ -97,11 +96,7 @@ public class Grid {
         return new CellIterator(this);
     }
     
-    public void draw(Canvas canvas) {
-        HashMap<Integer, Color> myColorMap = new HashMap<>();
-        myColorMap.put(0,Color.LIGHTBLUE);
-        myColorMap.put(1,Color.ORANGE);
-        myColorMap.put(2,Color.PURPLE);
+    public void draw(Canvas canvas, HashMap<Integer, Color> myColorMap) {
 
         double myStrokeWidth = 0.05;
         double width = canvas.getWidth();
@@ -122,6 +117,17 @@ public class Grid {
         gc.setLineWidth(myStrokeWidth * cellWidth * 2.0);
         gc.strokeRect(0.0, 0.0, width, height);
 
+    }
+    
+    public String toString(){
+    	String str = "";
+    	for(int x=0; x<gridWidth; x++){
+    		for(int y=0; y<gridHeight; y++){
+    			System.out.println("("+x+", "+y+") State: "+getCell(x,y).getState());
+    		}
+    		str+="\n";
+    	}
+    	return str;
     }
 
 }

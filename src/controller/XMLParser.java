@@ -2,28 +2,37 @@ package src.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javafx.scene.paint.Color;
+import src.Model.Cell;
+import src.View.Grid;
+
 
 public class XMLParser {
 	private String simType;
 	private int xLen;
 	private int yLen;
-	private ArrayList<HashMap<Integer[], Integer>> cellsMap = new ArrayList<HashMap<Integer[], Integer>>();
-	private HashMap<Integer, String> statesMap = new HashMap<Integer, String>();
+	private HashMap<Integer[], Integer> cellsMap = new HashMap<Integer[], Integer>();
+	private HashMap<Integer, Color> statesMap = new HashMap<Integer, Color>();
 	private HashMap<String, Double> paramsMap = new HashMap<String, Double>();
-	
-	public XMLParser(File myFile) throws ParserConfigurationException, SAXException, IOException{
+
+	public XMLParser(File myFile) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
 		fileCheck(myFile);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
@@ -31,7 +40,27 @@ public class XMLParser {
 		doc.getDocumentElement().normalize();
 		parseFile(doc);
 	}
-	
+
+	public HashMap<Integer[], Integer> getCellsMap(){
+		return cellsMap;
+	}
+
+	public HashMap<Integer, Color> getStatesMap(){
+		return statesMap;
+	}
+
+	public HashMap<String, Double> getParamsMap(){
+		return paramsMap;
+	}
+
+	public int getXLen(){
+		return xLen;
+	}
+
+	public int getYLen(){
+		return yLen;
+	}
+
 	public void fileCheck(File file) throws IOException{
 		String fileExtension = file.getName();
 		int pos = fileExtension.lastIndexOf(".");
@@ -42,56 +71,75 @@ public class XMLParser {
 			throw new IOException("Invalid file (Load xml)."); 
 		}
 	}
-	
-	public void parseFile(Document doc){
+
+	public void parseFile(Document doc) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
 		simType = doc.getDocumentElement().getNodeName();
 		NodeList states = doc.getElementsByTagName("state");
 		createStatesMap(states);
-		NodeList dimensions = doc.getElementsByTagName("state");
+		NodeList dimensions = doc.getElementsByTagName("dimen");
 		setDimensions(dimensions);
 		NodeList cells = doc.getElementsByTagName("cells");
 		createCellsMap(cells);
 		NodeList params = doc.getElementsByTagName("param");
 		createParamsMap(params);
 	}
-	
-	public void createStatesMap(NodeList states){
+
+	public void createStatesMap(NodeList states) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
 		for(int x=0; x<states.getLength(); x++){
 			Node node = states.item(x);
 			NamedNodeMap map = node.getAttributes();
 			Node value = map.getNamedItem("value");
 			Node color = map.getNamedItem("color");
-			statesMap.put(Integer.parseInt(value.getTextContent()), color.getTextContent());
+			Color myColor;
+			Field field = Class.forName("javafx.scene.paint.Color").getField(color.getTextContent()); // toLowerCase because the color fields are RED or red, not Red
+			myColor = (Color)field.get(null);
+			int state = Integer.parseInt(value.getTextContent());
+			System.out.println(state+" "+myColor.toString());
+			statesMap.put(state, myColor);
 		}
 	}
-	
+
 	public void createParamsMap(NodeList states){
 		for(int x=0; x<states.getLength(); x++){
 			Node node = states.item(x);
 			NamedNodeMap map = node.getAttributes();
 			Node value = map.getNamedItem("param");
-			paramsMap.put(value.getNodeName(), Double.parseDouble(value.getTextContent()));
+			//paramsMap.put(value.getNodeValue(), Double.parseDouble(value.getTextContent()));
 		}
 	}
-	
+
 	public void createCellsMap(NodeList cells){
 		for(int x=0; x<cells.getLength(); x++){
 			Node node = cells.item(x);
-			String str = node.getTextContent();
+			NamedNodeMap map = node.getAttributes();
+			String str = map.getNamedItem("row").getTextContent();
 			String[] stringArr = str.split(" ");
 			Integer[] intArr = new Integer[stringArr.length];
 			for(int y=0; y<intArr.length; y++){
-				int state = intArr[y];
+				int state = Integer.parseInt(stringArr[y]);
 				Integer[] dimens = {x, y};
-				HashMap<Integer[], Integer> cellMapping = new HashMap<Integer[], Integer>();
-				cellMapping.put(dimens, state);
-				cellsMap.add(cellMapping);
+				cellsMap.put(dimens, state);
 			}
 		}
 	}
 	
-	public void setDimensions(NodeList dimensions){
-		xLen = Integer.parseInt(dimensions.item(0).getNodeName());
-		yLen = Integer.parseInt(dimensions.item(1).getNodeName());
+	public Grid makeCellsGrid(HashMap<Integer[], Integer> map, int xLen, int yLen){
+		Grid grid = new Grid(xLen, yLen);
+		Iterator<Entry<Integer[], Integer>> it = map.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<Integer[], Integer> pair = (Map.Entry)it.next();
+			Integer[] dimens = pair.getKey();
+			int state = map.get(dimens);
+			Cell cell = new Cell(dimens[0], dimens[1], state);
+			grid.setCell(cell);
+		}
+		return grid;
+	}
+
+	public void setDimensions(NodeList dimen){
+		NamedNodeMap xDimen = dimen.item(0).getAttributes();
+		NamedNodeMap yDimen = dimen.item(1).getAttributes();
+		xLen = Integer.parseInt(xDimen.getNamedItem("xLen").getTextContent());
+		yLen = Integer.parseInt(yDimen.getNamedItem("yLen").getTextContent());
 	}
 }
