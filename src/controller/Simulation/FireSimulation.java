@@ -8,8 +8,7 @@ public class FireSimulation extends Simulation{
 	private int empty = 0;
 	private int tree = 1;
 	private int burning = 2;
-	//probCatch range: 0.0 - 1.0
-	private double probCatch = 0.5;
+	private double probCatch;
 	
 	public FireSimulation(Grid grid) {
 		super(grid);

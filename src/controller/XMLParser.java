@@ -3,6 +3,7 @@ package src.controller;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -30,8 +31,8 @@ public class XMLParser {
 	private int yLen;
 	private HashMap<Integer[], Integer> cellsMap = new HashMap<Integer[], Integer>();
 	private HashMap<Integer, Color> statesMap = new HashMap<Integer, Color>();
-	private HashMap<String, Double> paramsMap = new HashMap<String, Double>();
-
+	private ArrayList<Double> paramsList = new ArrayList<Double>();
+	
 	public XMLParser(File myFile) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
 		fileCheck(myFile);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -49,8 +50,8 @@ public class XMLParser {
 		return statesMap;
 	}
 
-	public HashMap<String, Double> getParamsMap(){
-		return paramsMap;
+	public ArrayList<Double> getParamsList(){
+		return paramsList;
 	}
 
 	public int getXLen(){
@@ -59,6 +60,10 @@ public class XMLParser {
 
 	public int getYLen(){
 		return yLen;
+	}
+	
+	public String getSimType(){
+		return simType;
 	}
 
 	public void fileCheck(File file) throws IOException{
@@ -73,7 +78,7 @@ public class XMLParser {
 	}
 
 	public void parseFile(Document doc) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
-		simType = doc.getDocumentElement().getNodeName();
+		simType = doc.getElementsByTagName("simulation").item(0).getAttributes().getNamedItem("type").getTextContent();
 		NodeList states = doc.getElementsByTagName("state");
 		createStatesMap(states);
 		NodeList dimensions = doc.getElementsByTagName("dimen");
@@ -81,7 +86,7 @@ public class XMLParser {
 		NodeList cells = doc.getElementsByTagName("cells");
 		createCellsMap(cells);
 		NodeList params = doc.getElementsByTagName("param");
-		createParamsMap(params);
+		createParamsList(params);
 	}
 
 	public void createStatesMap(NodeList states) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
@@ -94,17 +99,17 @@ public class XMLParser {
 			Field field = Class.forName("javafx.scene.paint.Color").getField(color.getTextContent()); // toLowerCase because the color fields are RED or red, not Red
 			myColor = (Color)field.get(null);
 			int state = Integer.parseInt(value.getTextContent());
-			System.out.println(state+" "+myColor.toString());
 			statesMap.put(state, myColor);
 		}
 	}
 
-	public void createParamsMap(NodeList states){
+	public void createParamsList(NodeList states){
 		for(int x=0; x<states.getLength(); x++){
 			Node node = states.item(x);
 			NamedNodeMap map = node.getAttributes();
-			Node value = map.getNamedItem("param");
-			//paramsMap.put(value.getNodeValue(), Double.parseDouble(value.getTextContent()));
+			for(int y=0; y<map.getLength(); y++){
+				paramsList.add(Double.parseDouble(map.item(y).getTextContent()));
+			}
 		}
 	}
 

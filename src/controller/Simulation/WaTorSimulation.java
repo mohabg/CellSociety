@@ -27,15 +27,24 @@ public class WaTorSimulation extends Simulation{
 	//Maps X Location -> Y Location -> Actor
 	private HashMap<Integer, HashMap<Integer, Actor>> cellToActorMap;
 	private double lastRunTime;
-	private double chronon = 1000 / 60;
-	private double fishReproductionTime = 10 * chronon;
-	private double sharkReproductionTime = 10 * chronon;
-	private double sharkDepletionRate = 0.1;
-	private double eatFishRegenerationRate = 1.0;
-	private double sharkEnergy = 10;
+	private double chronon;
+	private double fishReproductionTime;
+	private double sharkReproductionTime;
+	private double sharkDepletionRate;
+	private double eatFishRegenerationRate;
+	private double sharkEnergy;
 	private int emptyCell = 0;
 	private int fishCell = 1;
 	private int sharkCell = 2;
+	
+	public void setParameters(ArrayList<Double> params){
+		chronon = params.get(0);
+		fishReproductionTime = params.get(1);
+		sharkReproductionTime = params.get(2);
+		sharkDepletionRate = params.get(3);
+		eatFishRegenerationRate = params.get(4);
+		sharkEnergy = params.get(5);
+	}
 	
 	public void setChrononParameter(double time){
 		chronon = time;

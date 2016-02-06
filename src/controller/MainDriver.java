@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import javax.xml.parsers.ParserConfigurationException;
@@ -51,14 +52,30 @@ public class MainDriver implements EventListener {
 		int yLen = parser.getYLen();
 		myGrid = parser.makeCellsGrid(cellsMap, xLen, yLen);
 		statesMap = parser.getStatesMap();
-		HashMap<String, Double> paramsMap = parser.getParamsMap();
-		mySim = new FireSimulation(myGrid);
+		ArrayList<Double> paramsList = parser.getParamsList();
+		mySim = setSim(parser.getSimType(), paramsList);
 		myStage.setTitle(mySim.returnTitle());
 		myDisplay.setGraphTitle(mySim.returnTitle());
 		myDisplay.draw(myGrid, statesMap);
-		
+
 		myStage.setScene(myScene);
 		myStage.show();
+	}
+
+	public Simulation setSim(String simType, ArrayList<Double> paramsList){
+		if(simType.equals("Fire")){
+			mySim = new FireSimulation(myGrid);
+			((FireSimulation) mySim).setProbCatch(paramsList.get(0));
+		}
+		if(simType.equals("Life"))
+			mySim = new GameOfLifeSimulation(myGrid);
+		if(simType.equals("Wator")){
+			mySim = new WaTorSimulation(myGrid);
+			((WaTorSimulation) mySim).setParameters(paramsList);
+		}
+		if(simType.equals("Segregation"))
+			mySim = new SegregationSimulation(myGrid);
+		return mySim;
 	}
 
 	private void setSimulationFPS(double FPS) {
@@ -91,7 +108,7 @@ public class MainDriver implements EventListener {
 		isRunning = false;
 		step();
 	}
-	
+
 	public void onSliderMove(int newValue) {
 		boolean resume = isRunning;
 		setSimulationFPS(newValue);
