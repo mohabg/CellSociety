@@ -3,7 +3,8 @@ public class Cell {
 
     private int myX, myY;
     private int currState;
-
+    private Actor myActor;
+    
     public Cell(int state){
         currState = state;
     }
@@ -13,7 +14,15 @@ public class Cell {
         myY = y;
         currState = state;
     }
-
+    public Actor getActor(){
+    	return myActor;
+    }
+    public void setActor(Actor actorToSet){
+    	myActor = actorToSet;
+    }
+    public void removeActor(){
+    	myActor = null;
+    }
     public Cell(Cell toUse){
         myX = toUse.getX();
         myY = toUse.getY();
