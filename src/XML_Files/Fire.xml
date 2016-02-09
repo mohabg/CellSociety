@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation type = "Fire">
+
+<params>
+<param probCatch = "0.5"></param>
+</params>
+
+<states>
+<state value = "0" color = "YELLOW" type="Empty"></state>
+<state value = "1" color = "GREEN" type="Tree"></state>
+<state value = "2" color = "RED" type="Burning"></state>
+</states>
+
+<dimensions>
+<dimen xLen = "25"></dimen>
+<dimen yLen = "25"></dimen>
+</dimensions>
+
+<grid>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 2 0 0 2 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 2 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+<cells row = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"> </cells>
+
+</grid>
+
+</simulation>

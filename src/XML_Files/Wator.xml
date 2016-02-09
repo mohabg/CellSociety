@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation type = "Wator">
+
+<params>
+<param chronon = "15"></param>
+<param fishReproductionTime = "1500"></param>
+<param sharkReproductionTime = "1500"></param>
+<param sharkDepletionRate = "0.1"></param>
+<param eatFishRegenerationRate = "1"></param>
+<param sharkEnergy = "100"></param>
+</params>
+
+<states>
+<state value = "0" color = "BLUE"></state>
+<state value = "1" color = "BLACK"></state>
+<state value = "2" color = "GREEN"></state>
+</states>
+
+<dimensions>
+<dimen xLen = "25"></dimen>
+<dimen yLen = "25"></dimen>
+</dimensions>
+
+<grid>
+	
+<cells row = "2 1 1 1 1 0 1 1 0 1 1 1 2 2 1 0 1 1 1 2 1 0 1 1 1"> </cells>
+<cells row = "2 2 1 1 0 2 1 1 1 0 1 1 0 0 2 1 1 0 1 1 1 2 0 1 0"> </cells>
+<cells row = "1 0 1 1 1 1 1 2 2 0 0 1 2 1 1 1 1 1 2 0 2 0 2 0 2"> </cells>
+<cells row = "1 1 0 2 1 0 1 0 0 2 1 2 0 1 0 0 1 2 2 1 0 0 1 1 1"> </cells>
+<cells row = "1 1 1 1 2 2 1 1 0 2 2 0 1 2 1 1 2 1 2 1 1 2 1 1 1"> </cells>
+<cells row = "0 0 0 2 2 1 2 0 1 0 1 2 1 1 0 0 1 2 2 0 1 1 2 1 1"> </cells>
+<cells row = "1 2 1 2 1 2 2 1 1 1 2 0 2 1 2 0 1 2 1 2 1 2 0 1 1"> </cells>
+<cells row = "1 1 2 0 0 2 2 1 1 1 2 0 1 0 0 1 1 1 0 1 1 1 2 1 0"> </cells>
+<cells row = "0 2 2 1 2 1 1 1 1 2 0 0 1 2 1 2 2 1 0 1 1 1 1 1 0"> </cells>
+<cells row = "1 1 1 1 2 2 1 1 1 0 2 2 1 0 2 1 1 2 1 1 1 2 1 0 2"> </cells>
+<cells row = "2 0 2 1 1 1 1 1 0 1 2 1 1 0 2 0 1 2 1 2 1 0 2 2 0"> </cells>
+<cells row = "0 1 0 1 1 2 0 1 2 0 2 0 2 1 1 1 2 1 1 1 1 1 0 0 1"> </cells>
+<cells row = "1 2 2 1 2 0 1 1 2 0 1 1 1 1 1 0 1 2 0 1 2 2 1 0 2"> </cells>
+<cells row = "1 1 1 1 1 1 0 1 0 1 0 1 0 2 2 1 1 2 0 1 0 1 1 2 1"> </cells>
+<cells row = "0 1 1 2 0 0 1 1 2 1 0 2 1 1 1 0 1 1 0 0 2 0 0 2 1"> </cells>
+<cells row = "2 2 1 0 0 1 1 2 2 0 1 0 1 2 2 2 1 1 1 1 1 0 2 1 1"> </cells>
+<cells row = "1 1 1 1 2 2 2 1 1 1 1 1 1 1 0 1 2 1 0 0 1 1 1 1 2"> </cells>
+<cells row = "0 1 1 0 1 0 2 1 1 1 0 1 1 0 0 1 0 1 1 2 2 1 2 1 1"> </cells>
+<cells row = "0 0 0 2 2 1 1 1 2 1 2 1 2 1 1 1 2 0 2 2 2 1 2 1 1"> </cells>
+<cells row = "0 0 2 1 2 1 1 2 2 0 0 1 1 0 2 0 2 2 0 1 1 0 0 0 2"> </cells>
+<cells row = "0 2 1 1 0 1 2 1 0 0 0 1 1 1 1 2 2 0 2 0 0 1 1 2 0"> </cells>
+<cells row = "1 1 2 1 1 1 0 1 0 1 1 2 1 1 0 0 0 1 1 1 1 1 1 0 0"> </cells>
+<cells row = "0 2 1 1 0 0 0 1 1 1 2 1 1 2 0 2 2 2 1 2 2 2 2 0 0"> </cells>
+<cells row = "1 0 2 2 1 2 1 1 2 1 1 0 2 0 1 0 1 0 1 2 2 1 2 2 1"> </cells>
+<cells row = "2 2 1 1 1 2 0 1 1 0 1 1 1 1 1 1 1 2 0 1 0 0 0 0 2"> </cells>
+
+</grid>
+
+</simulation>

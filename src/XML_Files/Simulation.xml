@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation type = "TYPE">
+
+<params>
+</params>
+
+<states>
+<state value = "0" color = "COLOR1"></state>
+<state value = "1" color = "COLOR2"></state>
+<state value = "2" color = "COLOR3"></state>
+</states>
+
+<dimensions>
+<dimen xLen = "XLEN"></dimen>
+<dimen yLen = "YLEN"></dimen>
+</dimensions>
+
+<grid>
+<cells row = "INITIAL STATES SEPARATED BY SPACES"> </cells>
+</grid>
+
+</simulation>
