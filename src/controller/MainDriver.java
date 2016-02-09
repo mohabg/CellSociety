@@ -36,6 +36,7 @@ public class MainDriver implements EventListener {
 	Duration length;
 	HashMap<Integer, Color> statesMap = new HashMap<Integer, Color>();
 	Simulation mySim;
+	HashMap<String, Simulation> defaultSimTypes = new HashMap<String, Simulation>();
 
 	public MainDriver(Stage stage) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException {
 		myStage = stage;
@@ -44,26 +45,29 @@ public class MainDriver implements EventListener {
 		myScene = new Scene(myRoot, 1100, 700);
 		myDisplay = new Display(myScene, myRoot, stage);
 		myDisplay.addEventListener(this);
-		
 		myStage.setScene(myScene);
+		setupSims();
 		myStage.show();
 	}
 
 	public Simulation setSim(String simType, ArrayList<Double> paramsList, ArrayList<Integer> statesList){
-		if(simType.equals("Fire")){
-			mySim = new FireSimulation(myGrid);
-			((FireSimulation) mySim).setProbCatch(paramsList.get(0));
-		}
-		if(simType.equals("Life"))
-			mySim = new GameOfLifeSimulation(myGrid);
-		if(simType.equals("Wator")){
-			mySim = new WaTorSimulation(myGrid);
-			((WaTorSimulation) mySim).setParameters(paramsList);
-			((WaTorSimulation) mySim).initialize(statesList);
-		}
-		if(simType.equals("Segregation"))
-			mySim = new SegregationSimulation(myGrid);
+		HashMap<String, Simulation> simTypes = new HashMap<String, Simulation>();
+		simTypes.put("Fire", new FireSimulation(myGrid));
+		simTypes.put("Life", new GameOfLifeSimulation(myGrid));
+		simTypes.put("Segregation", new SegregationSimulation(myGrid));
+		simTypes.put("Wator", new WaTorSimulation(myGrid));
+		mySim = simTypes.get(simType);
+		mySim.setParameters(paramsList);
+		if(simType.equals("Wator"))
+			mySim.initialize(statesList);
 		return mySim;
+	}
+	
+	public void setupSims(){
+		defaultSimTypes.put("Fire", new FireSimulation());
+		defaultSimTypes.put("Life", new GameOfLifeSimulation());
+		defaultSimTypes.put("Segregation", new SegregationSimulation());
+		defaultSimTypes.put("Wator", new WaTorSimulation());
 	}
 
 	private void setSimulationFPS(double FPS) {
@@ -107,7 +111,7 @@ public class MainDriver implements EventListener {
 	
 	public void onFileSelection(File myFile) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException, ParserConfigurationException, SAXException, IOException{
 		File file = myDisplay.getFile();
-		XMLParser parser = new XMLParser(myFile);
+		XMLParser parser = new XMLParser(myFile, defaultSimTypes);
 		HashMap<Integer[], Integer> cellsMap = parser.getCellsMap();
 		int xLen = parser.getXLen();
 		int yLen = parser.getYLen();

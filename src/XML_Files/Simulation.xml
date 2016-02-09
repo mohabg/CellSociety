@@ -2,6 +2,7 @@
 <simulation type = "TYPE">
 
 <params>
+<param name = "VALUE"></param>
 </params>
 
 <states>

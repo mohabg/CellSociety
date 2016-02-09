@@ -38,12 +38,31 @@ public class WaTorSimulation extends Simulation{
 	private int sharkCell = 2;
 	
 	public void setParameters(ArrayList<Double> params){
+		double CHRONON_DEFAULT = 1000/60;
+		double FISH_REPRO_DEFAULT = 10*1000/60;
+		double SHARK_REPRO_DEFAULT = 10*1000/60;
+		double SHARK_DEP_DEFAULT = 0.1;
+		double FISH_REG_DEFAULT = 1;
+		double SHARK_ENERGY_DEFAULT = 100;
+		double DEFAULT_VALUE = -1/999;
 		chronon = params.get(0);
 		fishReproductionTime = params.get(1);
 		sharkReproductionTime = params.get(2);
 		sharkDepletionRate = params.get(3);
 		eatFishRegenerationRate = params.get(4);
 		sharkEnergy = params.get(5);
+		if(params.get(0) == DEFAULT_VALUE)
+			chronon = CHRONON_DEFAULT;
+		if(params.get(1) == DEFAULT_VALUE)
+			fishReproductionTime = FISH_REPRO_DEFAULT;
+		if(params.get(2) == DEFAULT_VALUE)
+			sharkReproductionTime = SHARK_REPRO_DEFAULT;
+		if(params.get(3) == DEFAULT_VALUE)
+			sharkDepletionRate = SHARK_DEP_DEFAULT;
+		if(params.get(4) == DEFAULT_VALUE)
+			eatFishRegenerationRate = FISH_REG_DEFAULT;
+		if(params.get(5) == DEFAULT_VALUE)
+			sharkEnergy = SHARK_ENERGY_DEFAULT;
 	}
 	
 	public void setChrononParameter(double time){
@@ -79,6 +98,11 @@ public class WaTorSimulation extends Simulation{
 		populateCellToActorMap();
 		lastRunTime = System.currentTimeMillis();
 	}
+	
+	public WaTorSimulation() {
+		
+	}
+
 	public void populateCellToActorMap() {
 		cellToActorMap = new HashMap<Integer, HashMap<Integer, Actor>>();
 		Grid myGrid = getGrid();
@@ -230,5 +254,17 @@ public class WaTorSimulation extends Simulation{
 	}
 	public void addToMap(Actor actor){
 		cellToActorMap.get(actor.getX()).put(actor.getY(), actor);
+	}
+
+	@Override
+	public ArrayList<String> getParameters() {
+		ArrayList<String> params = new ArrayList<String>();
+		params.add("chronon");
+		params.add("fishReproductionTime");
+		params.add("sharkReproductionTime");
+		params.add("sharkDepletionRate");
+		params.add("eatFishRegenerationRate");
+		params.add("sharkEnergy");
+		return params;
 	}
 }

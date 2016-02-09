@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 import javafx.scene.paint.Color;
 import src.Model.Cell;
 import src.View.Grid;
+import src.controller.Simulation.Simulation;
 
 
 public class XMLParser {
@@ -33,9 +34,11 @@ public class XMLParser {
 	private HashMap<Integer, Color> statesMap = new HashMap<Integer, Color>();
 	private ArrayList<Double> paramsList = new ArrayList<Double>();
 	private ArrayList<Integer> statesList = new ArrayList<Integer>();
-	
-	public XMLParser(File myFile) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
-		fileCheck(myFile);
+	private HashMap<String, Simulation> simTypes = new HashMap<String, Simulation>();
+
+	public XMLParser(File myFile, HashMap<String, Simulation> simTypes) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
+		this.simTypes = simTypes;
+		fileExtensionCheck(myFile);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document doc = builder.parse(myFile);
@@ -43,19 +46,26 @@ public class XMLParser {
 		parseFile(doc);
 	}
 
-	public void fileCheck(File file) throws IOException{
+	public void fileExtensionCheck(File file) throws IOException{
 		String fileExtension = file.getName();
 		int pos = fileExtension.lastIndexOf(".");
 		if(fileExtension.length() >= 4 && !(pos >= fileExtension.length()-3)){
 			fileExtension = fileExtension.substring(pos+1);
 		}
 		if(!fileExtension.equals("xml")){
-			throw new IOException("Invalid file (Load xml)."); 
+			throw new IOException("Invalid file (Load xml).");
 		}
 	}
 
-	public void parseFile(Document doc) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
-		simType = doc.getElementsByTagName("simulation").item(0).getAttributes().getNamedItem("type").getTextContent();
+	public void noSimulationNameError() throws IOException{
+		throw new IOException("Invalid file (No simulation name).");
+	}
+
+	public void parseFile(Document doc) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException, IOException{
+		NodeList simName = doc.getElementsByTagName("simulation");
+		if(simName == null)
+			noSimulationNameError();
+		simType = simName.item(0).getAttributes().getNamedItem("type").getTextContent();
 		NodeList states = doc.getElementsByTagName("state");
 		createStatesMap(states);
 		NodeList dimensions = doc.getElementsByTagName("dimen");
@@ -63,7 +73,7 @@ public class XMLParser {
 		NodeList cells = doc.getElementsByTagName("cells");
 		createCellsMap(cells);
 		NodeList params = doc.getElementsByTagName("param");
-		createParamsList(params);
+		createParamsList(params, simType);
 	}
 
 	public void createStatesMap(NodeList states) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
@@ -80,13 +90,38 @@ public class XMLParser {
 		}
 	}
 
-	public void createParamsList(NodeList params){
+	public void createParamsList(NodeList params, String simType){
+		ArrayList<Double> paramValues = paramsErrorCheck(params, simType);
+		for(int x=0; x<paramValues.size(); x++){
+			paramsList.add(paramValues.get(x));
+		}
+	}
+
+	public ArrayList<Double> paramsErrorCheck(NodeList params, String simType){
+		ArrayList<Double> paramValues = new ArrayList<Double>();
+		ArrayList<String> paramNames = simTypes.get(simType).getParameters();
+		int numParams = 0;
+		if(paramNames != null)
+			numParams = paramNames.size();
+		fillWithDefault(paramValues, numParams);
 		for(int x=0; x<params.getLength(); x++){
 			Node node = params.item(x);
 			NamedNodeMap map = node.getAttributes();
-			for(int y=0; y<map.getLength(); y++){
-				paramsList.add(Double.parseDouble(map.item(y).getTextContent()));
+			for(int y=0; y<paramNames.size(); y++){
+				Node value = map.getNamedItem(paramNames.get(y));
+				if(value != null){
+					paramValues.set(paramNames.indexOf(paramNames.get(y)), Double.parseDouble(value.getTextContent()));
+					break;
+				}
 			}
+		}
+		return paramValues;
+	}
+
+	public void fillWithDefault(ArrayList<Double> paramValues, int numParams){
+		double DEFAULT_VALUE = -1/999;
+		for(int x=0; x<numParams; x++){
+			paramValues.add(DEFAULT_VALUE);
 		}
 	}
 
@@ -104,7 +139,7 @@ public class XMLParser {
 			}
 		}
 	}
-	
+
 	public Grid makeCellsGrid(HashMap<Integer[], Integer> map, int xLen, int yLen){
 		Grid grid = new Grid(xLen, yLen);
 		Iterator<Entry<Integer[], Integer>> it = map.entrySet().iterator();
@@ -125,7 +160,7 @@ public class XMLParser {
 		xLen = Integer.parseInt(xDimen.getNamedItem("xLen").getTextContent());
 		yLen = Integer.parseInt(yDimen.getNamedItem("yLen").getTextContent());
 	}
-	
+
 	public HashMap<Integer[], Integer> getCellsMap(){
 		return cellsMap;
 	}
@@ -145,11 +180,11 @@ public class XMLParser {
 	public int getYLen(){
 		return yLen;
 	}
-	
+
 	public String getSimType(){
 		return simType;
 	}
-	
+
 	public ArrayList<Integer> getStatesList(){
 		return statesList;
 	}

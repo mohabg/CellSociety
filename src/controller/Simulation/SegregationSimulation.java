@@ -17,6 +17,9 @@ public class SegregationSimulation extends Simulation {
 	public SegregationSimulation(Grid grid) {
 		super(grid);
 	}
+	public SegregationSimulation() {
+		
+	}
 	public void setSatisfiedPercentage(double percentage){
 		satisfiedPercentage = percentage;
 	}
@@ -76,6 +79,14 @@ public class SegregationSimulation extends Simulation {
 		}
 		//Satisfied Agent
 		return cell;
+	}
+	@Override
+	public ArrayList<String> getParameters() {
+		return null;
+	}
+	@Override
+	public void setParameters(ArrayList<Double> paramsList){
+		
 	}
 
 }

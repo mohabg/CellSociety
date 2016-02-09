@@ -1,4 +1,5 @@
 package src.controller.Simulation;
+import java.util.ArrayList;
 import java.util.Random;
 
 import src.Model.Cell;
@@ -13,8 +14,8 @@ public class FireSimulation extends Simulation{
 	public FireSimulation(Grid grid) {
 		super(grid);
 	}
-	public void setProbCatch(double prob){
-		probCatch = prob;
+	public FireSimulation() {
+		
 	}
 	public void setEmptyParameter(int emptyCell){
 		empty = emptyCell;
@@ -50,6 +51,20 @@ public class FireSimulation extends Simulation{
 			}
 		}
 		return cell;
+	}
+	
+	public ArrayList<String> getParameters(){
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("probCatch");
+		return list;
+	}
+	@Override
+	public void setParameters(ArrayList<Double> paramsList) {
+		double DEFAULT_VALUE = -1/999;
+		double PROB_CATCH_DEFAULT = 0.5;
+		probCatch = paramsList.get(0);
+		if(paramsList.get(0) == DEFAULT_VALUE)
+			probCatch = PROB_CATCH_DEFAULT;
 	}
 
 }

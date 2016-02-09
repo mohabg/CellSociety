@@ -1,5 +1,7 @@
 package src.controller.Simulation;
 
+import java.util.ArrayList;
+
 import src.Model.Cell;
 import src.View.Grid;
 
@@ -9,6 +11,9 @@ public class GameOfLifeSimulation extends Simulation{
 	
 	public GameOfLifeSimulation(Grid grid) {
 		super(grid);
+	}
+	public GameOfLifeSimulation() {
+		
 	}
 	public void setLiveStateParameter(int liveCell){
 		liveState = liveCell;
@@ -38,5 +43,13 @@ public class GameOfLifeSimulation extends Simulation{
 			}
 		}
 		return cell;
+	}
+	@Override
+	public ArrayList<String> getParameters() {
+		return null;
+	}
+	@Override
+	public void setParameters(ArrayList<Double> paramsList) {
+		
 	}
 }

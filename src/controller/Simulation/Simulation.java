@@ -6,16 +6,20 @@ import src.View.Grid;
 import src.controller.CellIterator;
 
 public abstract class Simulation {
-	
+
 	private Grid newGrid;
 	private Grid myGrid;
 	private boolean isPaused;
-	
+
 	public Simulation(Grid grid){
 		isPaused = false;
 		this.myGrid = grid;
 	}
 	
+	public Simulation(){
+		
+	}
+
 	public Grid getGrid(){
 		return myGrid;
 	}
@@ -27,7 +31,7 @@ public abstract class Simulation {
 			cell.setState(cellStates.get(statesListIndex++));
 		}
 	}
-	
+
 	public void run(){
 		while(!isPaused){
 			step();
@@ -36,7 +40,7 @@ public abstract class Simulation {
 	public void pause(){
 		isPaused = true;
 	}
-	
+
 	public Grid step(){
 		newGrid = myGrid.getGridClone();
 		CellIterator cellIt = myGrid.getCellIterator();
@@ -50,6 +54,10 @@ public abstract class Simulation {
 	public String returnTitle() {
 		return "";
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	public abstract ArrayList<String> getParameters();
+	public abstract void setParameters(ArrayList<Double> paramsList);
+
 }
