@@ -125,7 +125,7 @@ public class XMLParser {
 		}
 	}
 
-	public void createCellsMap(NodeList cells){
+	public void createCellsMap(NodeList cells) throws IOException{
 		for(int x=0; x<cells.getLength(); x++){
 			Node node = cells.item(x);
 			NamedNodeMap map = node.getAttributes();
@@ -134,6 +134,10 @@ public class XMLParser {
 			Integer[] intArr = new Integer[stringArr.length];
 			for(int y=0; y<intArr.length; y++){
 				int state = Integer.parseInt(stringArr[y]);
+				boolean valid = statesMap.get(state) != null;
+				if(!valid){
+					throw new IOException("Invalid cell state provided.");
+				}
 				Integer[] dimens = {x, y};
 				cellsMap.put(dimens, state);
 			}
