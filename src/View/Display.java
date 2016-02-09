@@ -125,36 +125,6 @@ public class Display {
         menuBar.getMenus().add(cellMenu);
     }
     
-    public void addFileOpener(Stage stage){
-        
-    }
-    
-    //    public void drawGrid(Canvas toUseCanvas, Grid toUseGrid){
-    //        double width = toUseCanvas.getWidth();
-    //        double height = toUseCanvas.getHeight();
-    //        int gridWidth = toUseGrid.getGridWidth();
-    //        int gridHeight = toUseGrid.getGridHeight();
-    //        double myStrokeWidth = 0.05;
-    //        Color myStrokeColor = Color.DARKGRAY;
-    //
-    //
-    //        double cellWidth = width / (gridWidth + myStrokeWidth * (gridWidth - 1));
-    //        double cellHeight = height / (gridHeight + myStrokeWidth * (gridHeight - 1));
-    //
-    //        double x, y;
-    //        GraphicsContext gc = toUseCanvas.getGraphicsContext2D();
-    //        for (Cell cell : toUseGrid.getCellIterator()) {
-    //            gc.setFill(Color.LIGHTBLUE);
-    //            x = cellWidth * myStrokeWidth + cellWidth * cell.getX() + (cell.getX() - 1) * cellWidth * myStrokeWidth;
-    //            y = cellWidth * myStrokeWidth + cellHeight * cell.getY() + (cell.getY() - 1) * cellHeight * myStrokeWidth;
-    //            gc.fillRect(x, y, cellWidth, cellHeight);
-    //        }
-    //
-    //        gc.setStroke(myStrokeColor);
-    //        gc.setLineWidth(myStrokeWidth * cellWidth * 2.0);
-    //        gc.strokeRect(0.0, 0.0, width, height);
-    //
-    //    }
     
     public void drawGraph() {
         
