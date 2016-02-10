@@ -1,6 +1,1 @@
-Test. This is David making a contribution.
-<<<<<<< HEAD
-Test. This is David making a contribution in the branch.
-=======
-Test. This is Adam making a contribution.
->>>>>>> master
+Add new items tomorrow
