@@ -1,7 +1,9 @@
 package src.View;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -13,11 +15,16 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -30,7 +37,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import src.controller.EventListener;
 import src.controller.XMLParser;
-
+import src.Model.Cell;
+import java.util.*;
 /**
  * Created by davidyan on 2/1/16.
  */
@@ -41,10 +49,12 @@ public class Display {
     private Canvas myCanvas;
     private Grid grid;
     private MenuItem newProgram, newOpen, newExit;
-    private LineChart<Number, Number> myGraph;
     private Scene myScene;
     private File myFile;
     private Stage myStage;
+	private HashMap<Series<Number, Number>, Integer> myGraphSeries;
+	private BarChart<String,Number> myGraph;
+
     
     public Display(Scene scene, Group root, Stage stage) {
         myScene = scene;
@@ -80,7 +90,7 @@ public class Display {
         myGrid.add(myStep, 2, 6);
         myGrid.add(myReplay, 3, 6);
         myGrid.add(mySlider, 4, 6, 5, 1);
-        drawGraph();
+        //drawGraph();
         root.getChildren().add(myGrid);
     }
     
@@ -126,18 +136,38 @@ public class Display {
     }
     
     
-    public void drawGraph() {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void drawGraph() {
+        final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        myGraph = 
+            new BarChart<String,Number>(xAxis,yAxis);
+        myGraph.setTitle("Cell Society");
+        xAxis.setLabel("Cells");       
+        yAxis.setLabel("Amount");
         
-        NumberAxis xAxis = new NumberAxis(0,100,10);
-        NumberAxis yAxis = new NumberAxis(0.0, 1.0, .10);
-        
-        myGraph = new LineChart<Number, Number>(xAxis,yAxis);
-        
-        myGraph.setCreateSymbols(false);
-        myGraph.setLegendVisible(false);
-        
+		String label;
+		Color color;
+		XYChart.Series<Number, Number> series;
+		
+        XYChart.Series<String, Number> series1 = new XYChart.Series();
+        series1.setName("Cell Society");       
+        series1.getData().add(new XYChart.Data("Cell1", 1));
+        series1.getData().add(new XYChart.Data("Cell2", 2));
+        myGraph.getData().add(series1);
+
         myGrid.add(myGraph, 10, 2, 2, 1);
     }
+    
+    public void updateGraph(){
+    	myGraph.getData().get(0).getData().get(0).setYValue(500);
+    	myGraph.getData().get(0).getData().get(1).setYValue(200);
+    }
+    
+    public void removeGraph(){
+    	myGrid.getChildren().remove(myGraph);
+    }
+    
     
     public void setGraphTitle(String s){
         myGraph.setTitle(s);

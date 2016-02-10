@@ -33,9 +33,10 @@ public class MainDriver implements EventListener {
     private Stage myStage;
     private Scene myScene;
     private Grid myGrid;
-    Duration length;
-    HashMap<Integer, Color> statesMap = new HashMap<Integer, Color>();
-    Simulation mySim;
+    private Duration length;
+    private HashMap<Integer, Color> statesMap = new HashMap<Integer, Color>();
+    private Simulation mySim;
+    private int numSteps = 0;
     
     public MainDriver(Stage stage) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException {
         myStage = stage;
@@ -119,11 +120,20 @@ public class MainDriver implements EventListener {
         myStage.setTitle(mySim.returnTitle());
         myDisplay.setGraphTitle(mySim.returnTitle());
         myDisplay.draw(myGrid, statesMap);
+
     }
     
     private void step() {
-        if(statesMap.size() > 0)
+    	if(statesMap.size() > 0){
             myDisplay.draw(mySim.step(), statesMap);
+    	}
+    	if(numSteps<=0){
+    		myDisplay.drawGraph();
+    		numSteps++;
+    	}else{
+    		myDisplay.updateGraph();
+    	}
     }
+    
     
 }
