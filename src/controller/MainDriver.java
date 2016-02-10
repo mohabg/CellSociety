@@ -37,7 +37,7 @@ public class MainDriver implements EventListener {
     private HashMap<Integer, Color> statesMap = new HashMap<Integer, Color>();
     private Simulation mySim;
     private int numSteps = 0;
-    
+    private HashMap<Integer, Integer> myCellMap;
     public MainDriver(Stage stage) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException {
         myStage = stage;
         setSimulationFPS(myFPS);
@@ -124,14 +124,17 @@ public class MainDriver implements EventListener {
     }
     
     private void step() {
+    	Grid tempGrid = mySim.step();
     	if(statesMap.size() > 0){
-            myDisplay.draw(mySim.step(), statesMap);
+            myDisplay.draw(tempGrid, statesMap);
     	}
     	if(numSteps<=0){
-    		myDisplay.drawGraph();
+    		myCellMap = myGrid.createMap();
+    		myDisplay.drawGraph(myCellMap);
     		numSteps++;
     	}else{
-    		myDisplay.updateGraph();
+    		myCellMap = tempGrid.createMap();
+    		myDisplay.updateGraph(myCellMap);
     	}
     }
     

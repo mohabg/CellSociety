@@ -137,7 +137,7 @@ public class Display {
     
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void drawGraph() {
+	public void drawGraph(HashMap<Integer,Integer> myMap) {
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         myGraph = 
@@ -151,17 +151,20 @@ public class Display {
 		XYChart.Series<Number, Number> series;
 		
         XYChart.Series<String, Number> series1 = new XYChart.Series();
-        series1.setName("Cell Society");       
-        series1.getData().add(new XYChart.Data("Cell1", 1));
-        series1.getData().add(new XYChart.Data("Cell2", 2));
+        series1.setName("Cell Society");
+        for(Integer anInt: myMap.keySet()){
+        	series1.getData().add(new XYChart.Data("Cell" + anInt, myMap.get(anInt)));
+        }
         myGraph.getData().add(series1);
 
         myGrid.add(myGraph, 10, 2, 2, 1);
     }
     
-    public void updateGraph(){
-    	myGraph.getData().get(0).getData().get(0).setYValue(500);
-    	myGraph.getData().get(0).getData().get(1).setYValue(200);
+    public void updateGraph(HashMap<Integer, Integer> myMap){
+    	Integer toUseLength = myMap.keySet().size();
+    	for(int i=0; i<toUseLength; i++){
+    		myGraph.getData().get(0).getData().get(i).setYValue(myMap.get(i));
+    	}
     }
     
     public void removeGraph(){

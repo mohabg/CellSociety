@@ -134,5 +134,20 @@ public class Grid {
     	}
     	return str;
     }
+    
+    public HashMap<Integer, Integer> createMap(){
+    	HashMap<Integer, Integer> toRet = new HashMap<Integer, Integer>();
+    	for(Cell acell: this.getCellIterator()){
+    		Integer id = acell.getState();
+    		if(!toRet.containsKey(id)){
+    			toRet.put(id, 1);
+    		}else{
+    			Integer toUpdate = toRet.get(id);
+    			toUpdate++;
+    			toRet.put(id,toUpdate);
+    		}
+    	}
+    	return toRet;
+    }
 
 }
