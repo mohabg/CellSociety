@@ -98,6 +98,7 @@ public class Display {
         myPlay.setOnAction(event -> listener.playAnimation());
         myPause.setOnAction(event ->listener.pauseAnimation());
         myStep.setOnAction(event ->listener.stepAnimation());
+        newExit.setOnAction(event ->listener.onExitClicked());
         mySlider.valueProperty().addListener(event -> {
             listener.onSliderMove((int)mySlider.getValue());
         });

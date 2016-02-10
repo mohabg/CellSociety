@@ -1,5 +1,5 @@
 package src.controller.Simulation;
-import java.util.Random;
+import java.util.*;
 
 import src.Model.Cell;
 import src.View.Grid;

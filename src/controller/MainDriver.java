@@ -106,6 +106,10 @@ public class MainDriver implements EventListener {
         }
     }
     
+    public void onExitClicked(){
+    	myStage.close();
+    }
+    
     public void onFileSelection(File myFile) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException, ParserConfigurationException, SAXException, IOException{
         File file = myDisplay.getFile();
         XMLParser parser = new XMLParser(myFile);
