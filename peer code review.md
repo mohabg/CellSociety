@@ -8,3 +8,5 @@ dwy3, zap3 Code Review
 > - Within Simulation.java and WaTorSimulation.java. Both of these classes have similar methods, even though WaTor extends Simulation. Thus, I should just remove duplicated methods in WaTor and just use a reference to the method defined in the abstract class.
 
 #Long Methods Section
+####My suggested changes for Zdravko:
+> - He could make it much easier on himself in terms of debugging his front end code by separating the lines of code that returned the proper simulation by making it a separate method that returns a simulation. That way, he can limit the amount of code in one method
