@@ -9,4 +9,4 @@ dwy3, zap3 Code Review
 
 #Long Methods Section
 ####My suggested changes for Zdravko:
-> - He could make it much easier on himself in terms of debugging his front end code by separating the lines of code that returned the proper simulation by making it a separate method that returns a simulation. That way, he can limit the amount of code in one method
+> - He could make it much easier on himself in terms of debugging his front end code by separating the lines of code that returned the proper simulation by making it a separate method that returns a simulation. That way, he can limit the amount of code in one method and be able to have shorter display method in setNewSimulation method.
