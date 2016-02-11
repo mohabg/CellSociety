@@ -49,32 +49,17 @@ public class Display {
     public Display(Scene scene, Group root, Stage stage) {
         myScene = scene;
         makeToolbar(root, stage);
-        myGrid = new GridPane();
-        myGrid.setAlignment(Pos.CENTER);
-        myGrid.setHgap(10);
-        myGrid.setVgap(10);
-        myGrid.setPadding(new Insets(25, 0, 0, -75));
-
+        makeGridPane();
         myCanvas = new Canvas(550,550);
         GraphicsContext gc = myCanvas.getGraphicsContext2D();
-
         gc.setFill(Color.DARKGRAY);
         gc.fillRect(0, 0, 550, 550);
         myGrid.add(myCanvas, 0, 0, 8, 5);
-
-        mySlider = new Slider(0, 20, 2);
-        mySlider.setShowTickMarks(true);
-        mySlider.setShowTickLabels(true);
-        mySlider.setMajorTickUnit(1);
-        mySlider.setBlockIncrement(10.0);
-
-        mySlider.setMinWidth(225);
-
+        makeSlider();
         myPlay = new Button("Play");
         myPause = new Button("Pause");
         myStep = new Button("Step");
         myReplay = new Button("\u21BA");
-
         myGrid.add(myPlay, 0, 6);
         myGrid.add(myPause, 1, 6);
         myGrid.add(myStep, 2, 6);
@@ -82,6 +67,23 @@ public class Display {
         myGrid.add(mySlider, 4, 6, 5, 1);
         drawGraph();
         root.getChildren().add(myGrid);
+    }
+    
+    public void makeGridPane(){
+        myGrid = new GridPane();
+        myGrid.setAlignment(Pos.CENTER);
+        myGrid.setHgap(10);
+        myGrid.setVgap(10);
+        myGrid.setPadding(new Insets(25, 0, 0, -75));
+
+    }
+    public void makeSlider(){
+        mySlider = new Slider(0, 20, 2);
+        mySlider.setShowTickMarks(true);
+        mySlider.setShowTickLabels(true);
+        mySlider.setMajorTickUnit(1);
+        mySlider.setBlockIncrement(10.0);
+        mySlider.setMinWidth(225);
     }
 
     public void addEventListener(EventListener listener) {
