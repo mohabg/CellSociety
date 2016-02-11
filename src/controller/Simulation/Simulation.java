@@ -7,12 +7,13 @@ import src.controller.CellIterator;
 
 public abstract class Simulation {
 	
-	private Grid newGrid;
 	private Grid myGrid;
 	private boolean isPaused;
+	private boolean useGridClone;
 	
 	public Simulation(Grid grid){
 		isPaused = false;
+		useGridClone = false;
 		this.myGrid = grid;
 	}
 	
@@ -36,9 +37,20 @@ public abstract class Simulation {
 	public void pause(){
 		isPaused = true;
 	}
-	
+	public void shouldUseGridClone(){
+		useGridClone = true;
+	}
+	public void shouldNotUseGridClone(){
+		useGridClone = false;
+	}
 	public Grid step(){
+		Grid newGrid;
+		if(useGridClone){
 		newGrid = myGrid.getGridClone();
+		}
+		else{
+			newGrid = myGrid;
+		}
 		CellIterator cellIt = myGrid.getCellIterator();
 		for(Cell cell: cellIt){
 			newGrid.setCell(updateCellState(cell));

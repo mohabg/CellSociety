@@ -21,12 +21,6 @@ public class Grid {
         neighbors = new ArrayList<Cell>();
         gridWidth = width;
         gridHeight = height;
-//        for(int i=0;i<gridWidth;i++){
-//            for(int j=0;j<gridHeight;j++){
-//                myGrid[i][j].setX(i);
-//                myGrid[i][j].setY(j);
-//            }
-//        }
     }
     
 	public ArrayList<Cell> getAllNeighbors(Cell cell) {
