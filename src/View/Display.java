@@ -146,11 +146,7 @@ public class Display {
         myGraph.setTitle("Cell Society");
         xAxis.setLabel("Cells");       
         yAxis.setLabel("Amount");
-        
-		String label;
-		Color color;
-		XYChart.Series<Number, Number> series;
-		
+        		
         XYChart.Series<String, Number> series1 = new XYChart.Series();
         series1.setName("Cell Society");
         for(Integer anInt: myMap.keySet()){

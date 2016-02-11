@@ -1,4 +1,5 @@
 package src.Model;
+
 public class Cell {
     
     private int myX, myY;
@@ -58,4 +59,5 @@ public class Cell {
     public int getState(){
         return currState;
     }
+
 }

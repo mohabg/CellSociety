@@ -117,6 +117,7 @@ public class Grid {
             x = cellWidth * myStrokeWidth + cellWidth * cell.getX() + (cell.getX() - 1) * cellWidth * myStrokeWidth;
             y = cellWidth * myStrokeWidth + cellHeight * cell.getY() + (cell.getY() - 1) * cellHeight * myStrokeWidth;
             gc.fillRect(x, y, cellWidth, cellHeight);
+            
         }
         gc.setStroke(Color.DARKGRAY);
         gc.setLineWidth(myStrokeWidth * cellWidth * 2.0);
