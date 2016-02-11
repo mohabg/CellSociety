@@ -1,0 +1,12 @@
+At first, I overrode the step function from the Simulation class in my WaTorSimulation class because this simulation was the 
+only one that did not use a copy of the grid when updating the cell states. As a result, most of the code was duplicated. In
+order to overcome this, I added a boolean called useGridClone and two methods named shouldUseGridClone and shouldNotUseGridClone
+In the WaTorSimulation class, I used the shouldUseGridClone method that sets useGridClone to true. In the step function,
+I added an if else statement depending on this boolean value. A new grid pointer is created, and if this boolean is true it
+is set to point at a clone of the current grid, else it is set to point to the current grid.
+
+Also, I decided to shorten my updateCellState method in my WaTorSimulation class. This method was by far the longest one, with 
+57 lines. In order to shorten it, I extracted some methods that serve one clear purpose and can be accurately described with
+just the method name. For example, I extracted 10 lines of code that reproduced a fish or shark and named it reproduceAndReset.
+After doing this a few times, I managed to shorten this method to about 25 lines of code. In addition, it is much easier and 
+quicker to read.
