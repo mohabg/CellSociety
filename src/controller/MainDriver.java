@@ -38,6 +38,8 @@ public class MainDriver implements EventListener {
     private Simulation mySim;
     private int numSteps = 0;
     private HashMap<Integer, Integer> myCellMap;
+    private String mySimType;
+    
     public MainDriver(Stage stage) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException {
         myStage = stage;
         setSimulationFPS(myFPS);
@@ -120,7 +122,8 @@ public class MainDriver implements EventListener {
         statesMap = parser.getStatesMap();
         ArrayList<Double> paramsList = parser.getParamsList();
         ArrayList<Integer> statesList = parser.getStatesList();
-        mySim = setSim(parser.getSimType(), paramsList, statesList);
+        mySimType = parser.getSimType();
+        mySim = setSim(mySimType, paramsList, statesList);
         myStage.setTitle(mySim.returnTitle());
         myDisplay.setGraphTitle(mySim.returnTitle());
         myDisplay.draw(myGrid, statesMap);
