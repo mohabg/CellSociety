@@ -1,9 +1,6 @@
 package src.View;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -34,6 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import src.controller.EventListener;
@@ -55,6 +53,7 @@ public class Display {
     private Stage myStage;
 	private HashMap<Series<Number, Number>, Integer> myGraphSeries;
 	private BarChart<String,Number> myGraph;
+
 
     
     public Display(Scene scene, Group root, Stage stage) {
@@ -162,8 +161,8 @@ public class Display {
         		
         for(Integer anInt: myMap.keySet()){
             XYChart.Series<String, Number> series1 = new XYChart.Series();
-            series1.setName("Cell Society");
-        	series1.getData().add(new XYChart.Data("Cell" + anInt, myMap.get(anInt)));
+            series1.setName("");
+        	series1.getData().add(new XYChart.Data("", myMap.get(anInt)));
             myGraph.getData().add(series1);
         }
 
@@ -186,6 +185,7 @@ public class Display {
         myGraph.setTitle(s);
     }
     
+
     public void draw(Grid grid, HashMap<Integer, Color> statesMap) {
         myCanvas.getGraphicsContext2D().setFill(Color.DARKGRAY);
         myCanvas.getGraphicsContext2D().fillRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
