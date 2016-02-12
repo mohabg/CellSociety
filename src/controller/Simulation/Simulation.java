@@ -52,4 +52,8 @@ public abstract class Simulation {
         // TODO Auto-generated method stub
         
     }
+    public ArrayList<String> paramsList(){
+    	ArrayList<String> blanky = new ArrayList<String>();
+    	return blanky;
+    }
 }

@@ -77,5 +77,11 @@ public class SegregationSimulation extends Simulation {
         //Satisfied Agent
         return cell;
     }
+    public ArrayList<String> paramsList(){
+    	ArrayList<String> toRet = new ArrayList<String>();
+    	toRet.add("satisfiedPercentage");
+    	return toRet;
+    }
+
     
 }

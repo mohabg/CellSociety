@@ -11,6 +11,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -127,7 +130,7 @@ public class MainDriver implements EventListener {
         myStage.setTitle(mySim.returnTitle());
         myDisplay.setGraphTitle(mySim.returnTitle());
         myDisplay.draw(myGrid, statesMap);
-
+        
     }
     
     private void step() {
@@ -139,6 +142,7 @@ public class MainDriver implements EventListener {
     		myCellMap = myGrid.createMap();
     		myDisplay.drawGraph(myCellMap);
     		numSteps++;
+    		myDisplay.makeParamSliders(mySim.paramsList());
     	}else{
     		myCellMap = tempGrid.createMap();
     		myDisplay.updateGraph(myCellMap);

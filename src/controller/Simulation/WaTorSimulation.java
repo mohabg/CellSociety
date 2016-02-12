@@ -223,4 +223,12 @@ public class WaTorSimulation extends Simulation{
         }
         newLocation.setActor(actor);
     }
+    
+    public ArrayList<String> paramsList(){
+    	ArrayList<String> toRet = new ArrayList<String>();
+    	toRet.add("probCatch");
+        toRet.add("fishReproductionTime");
+        toRet.add("sharkReproductionTime");
+    	return toRet;
+    }
 }

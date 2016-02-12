@@ -32,6 +32,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyCombination.Modifier;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -136,6 +137,18 @@ public class Display {
         menuBar.getMenus().add(cellMenu);
     }
     
+    public void makeParamSliders(List<String> listParams){
+    	int idx = 3;
+    	for(String aString: listParams){
+            Slider aSlider = new Slider(0, 1, 0.5);
+            aSlider.setShowTickMarks(true);
+            aSlider.setShowTickLabels(true);
+            aSlider.setMajorTickUnit(0.1);
+            aSlider.setBlockIncrement(10.0);
+    		myGrid.add(aSlider, 10, idx, 2, 1 );
+    		idx++;
+    	}
+    }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void drawGraph(HashMap<Integer,Integer> myMap) {
@@ -147,12 +160,12 @@ public class Display {
         xAxis.setLabel("Cells");       
         yAxis.setLabel("Amount");
         		
-        XYChart.Series<String, Number> series1 = new XYChart.Series();
-        series1.setName("Cell Society");
         for(Integer anInt: myMap.keySet()){
+            XYChart.Series<String, Number> series1 = new XYChart.Series();
+            series1.setName("Cell Society");
         	series1.getData().add(new XYChart.Data("Cell" + anInt, myMap.get(anInt)));
+            myGraph.getData().add(series1);
         }
-        myGraph.getData().add(series1);
 
         myGrid.add(myGraph, 10, 2, 2, 1);
     }
@@ -160,7 +173,7 @@ public class Display {
     public void updateGraph(HashMap<Integer, Integer> myMap){
     	Integer toUseLength = myMap.keySet().size();
     	for(int i=0; i<toUseLength; i++){
-    		myGraph.getData().get(0).getData().get(i).setYValue(myMap.get(i));
+    		myGraph.getData().get(i).getData().get(0).setYValue(myMap.get(i));
     	}
     }
     
@@ -178,7 +191,7 @@ public class Display {
         myCanvas.getGraphicsContext2D().fillRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
         grid.draw(myCanvas, statesMap);
     }
-    
+        
     public File getFile(){
         return myFile;
     }

@@ -52,4 +52,10 @@ public class FireSimulation extends Simulation{
         return cell;
     }
     
+    public ArrayList<String> paramsList(){
+    	ArrayList<String> toRet = new ArrayList<String>();
+    	toRet.add("probCatch");
+    	return toRet;
+    }
+    
 }
