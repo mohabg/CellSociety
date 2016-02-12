@@ -82,6 +82,12 @@ public class SegregationSimulation extends Simulation {
     	toRet.add("satisfiedPercentage");
     	return toRet;
     }
+    public double getParameter(){
+    	return satisfiedPercentage;
+    }
+    public void setParameter(double aval){
+    	satisfiedPercentage = aval;
+    }
 
     
 }
