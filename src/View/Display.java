@@ -177,7 +177,11 @@ public class Display {
     public void updateGraph(HashMap<Integer, Integer> myMap){
     	Integer toUseLength = myMap.keySet().size();
     	for(int i=0; i<toUseLength; i++){
+    		if(!myMap.containsKey(i)){
+    			myMap.put(i, 0);
+    		}else{
     		myGraph.getData().get(i).getData().get(0).setYValue(myMap.get(i));
+    		}
     	}
     }
     
