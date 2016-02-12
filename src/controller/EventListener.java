@@ -17,4 +17,6 @@ public interface EventListener {
     void stepAnimation();
     void onSliderMove(int toUseValue);
     void onFileSelection(File file) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException, ParserConfigurationException, SAXException, IOException;
+    void onExitClicked();
+    void changeParameter(double toUse);
 }

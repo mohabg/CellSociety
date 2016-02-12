@@ -117,6 +117,7 @@ public class Grid {
             x = cellWidth * myStrokeWidth + cellWidth * cell.getX() + (cell.getX() - 1) * cellWidth * myStrokeWidth;
             y = cellWidth * myStrokeWidth + cellHeight * cell.getY() + (cell.getY() - 1) * cellHeight * myStrokeWidth;
             gc.fillRect(x, y, cellWidth, cellHeight);
+            
         }
         gc.setStroke(Color.DARKGRAY);
         gc.setLineWidth(myStrokeWidth * cellWidth * 2.0);
@@ -133,6 +134,21 @@ public class Grid {
     		str+="\n";
     	}
     	return str;
+    }
+    
+    public HashMap<Integer, Integer> createMap(){
+    	HashMap<Integer, Integer> toRet = new HashMap<Integer, Integer>();
+    	for(Cell acell: this.getCellIterator()){
+    		Integer id = acell.getState();
+    		if(!toRet.containsKey(id)){
+    			toRet.put(id, 1);
+    		}else{
+    			Integer toUpdate = toRet.get(id);
+    			toUpdate++;
+    			toRet.put(id,toUpdate);
+    		}
+    	}
+    	return toRet;
     }
 
 }
