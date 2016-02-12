@@ -58,4 +58,11 @@ public class FireSimulation extends Simulation{
     	return toRet;
     }
     
+    public double getParameter(){
+    	return probCatch;
+    }
+    public void setParameter(double aval){
+    	probCatch = aval;
+    }
+    
 }

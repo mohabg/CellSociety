@@ -12,6 +12,7 @@ import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -42,6 +43,7 @@ public class MainDriver implements EventListener {
     private int numSteps = 0;
     private HashMap<Integer, Integer> myCellMap;
     private String mySimType;
+    EventListener e;
     
     public MainDriver(Stage stage) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException {
         myStage = stage;
@@ -92,6 +94,11 @@ public class MainDriver implements EventListener {
         isRunning = true;
     }
     
+    public void changeParameter(double toUseDouble){
+        myAnimation.pause();
+    	mySim.setParameter(toUseDouble);
+    }
+    
     public void pauseAnimation() {
         myAnimation.pause();
         isRunning = false;
@@ -129,10 +136,9 @@ public class MainDriver implements EventListener {
         mySim = setSim(mySimType, paramsList, statesList);
         myStage.setTitle(mySim.returnTitle());
         myDisplay.setGraphTitle(mySim.returnTitle());
-        myDisplay.draw(myGrid, statesMap);
-        
+        myDisplay.draw(myGrid, statesMap);  
     }
-    
+        
     private void step() {
     	Grid tempGrid = mySim.step();
     	if(statesMap.size() > 0){
@@ -142,7 +148,7 @@ public class MainDriver implements EventListener {
     		myCellMap = myGrid.createMap();
     		myDisplay.drawGraph(myCellMap);
     		numSteps++;
-    		myDisplay.makeParamSliders(mySim.paramsList());
+    		myDisplay.makeParamSliders(mySim.paramsList(),this);
     	}else{
     		myCellMap = tempGrid.createMap();
     		myDisplay.updateGraph(myCellMap);

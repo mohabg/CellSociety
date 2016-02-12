@@ -56,4 +56,11 @@ public abstract class Simulation {
     	ArrayList<String> blanky = new ArrayList<String>();
     	return blanky;
     }
+    
+    public double getParameter(){
+    	return 0.0;
+    }
+    public void setParameter(double aValue){
+    	
+    }
 }

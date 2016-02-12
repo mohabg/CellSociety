@@ -136,14 +136,19 @@ public class Display {
         menuBar.getMenus().add(cellMenu);
     }
     
-    public void makeParamSliders(List<String> listParams){
+    public void makeParamSliders(List<String> listParams, EventListener listener){
     	int idx = 3;
     	for(String aString: listParams){
             Slider aSlider = new Slider(0, 1, 0.5);
             aSlider.setShowTickMarks(true);
             aSlider.setShowTickLabels(true);
             aSlider.setMajorTickUnit(0.1);
-            aSlider.setBlockIncrement(10.0);
+            aSlider.setBlockIncrement(0.1);
+            
+            aSlider.valueProperty().addListener(event -> {
+                listener.changeParameter((double)aSlider.getValue());
+            });
+            
     		myGrid.add(aSlider, 10, idx, 2, 1 );
     		idx++;
     	}
