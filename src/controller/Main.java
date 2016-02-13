@@ -14,7 +14,6 @@ public class Main extends Application {
     public static void main(String[] args){
         launch(args);
     }
-
     public void start(Stage primaryStage) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException {
         primaryStage.setTitle("Cell Society");
         MainDriver driver = new MainDriver(primaryStage);

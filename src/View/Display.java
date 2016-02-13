@@ -158,8 +158,7 @@ public class Display {
 	public void drawGraph(HashMap<Integer,Integer> myMap) {
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
-        myGraph = 
-            new BarChart<String,Number>(xAxis,yAxis);
+        myGraph = new BarChart<String,Number>(xAxis,yAxis);
         myGraph.setTitle("Cell Society");
         xAxis.setLabel("Cells");       
         yAxis.setLabel("Amount");

@@ -20,6 +20,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 import src.Model.Cell;
 import src.View.Grid;
@@ -50,7 +52,12 @@ public class XMLParser {
             fileExtension = fileExtension.substring(pos+1);
         }
         if(!fileExtension.equals("xml")){
-            throw new IOException("Invalid file (Load xml).");
+        	Alert alert = new Alert(AlertType.INFORMATION);
+        	alert.setTitle("Error Alert");
+        	alert.setHeaderText("You have registered an error:");
+        	alert.setContentText("Invalid file (Load xml).");
+        	alert.showAndWait();
+            //throw new IOException();
         }
     }
     
