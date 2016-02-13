@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -43,14 +44,24 @@ public class MainDriver implements EventListener {
     private int numSteps = 0;
     private HashMap<Integer, Integer> myCellMap;
     private String mySimType;
-    EventListener e;
+    private EventListener e;
+	private PropertiesReader myReader;
+
     
     public MainDriver(Stage stage) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException {
         myStage = stage;
+        
+        myReader = new PropertiesReader();
+		try {
+			myReader.load("english");
+		} catch (IOException e) {
+			System.exit(1);
+		}
+
         setSimulationFPS(myFPS);
         myRoot = new Group();
         myScene = new Scene(myRoot, 1100, 700);
-        myDisplay = new Display(myScene, myRoot, stage);
+        myDisplay = new Display(myScene, myRoot, stage, myReader);
         myDisplay.addEventListener(this);
         
         myStage.setScene(myScene);

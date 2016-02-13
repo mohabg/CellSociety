@@ -1,12 +1,12 @@
 package src.View;
 import java.io.File;
+import src.controller.*;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.DOMException;
 import org.xml.sax.SAXException;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -42,22 +42,23 @@ import java.util.*;
  * Created by davidyan on 2/1/16.
  */
 public class Display {
+	
     private Button myPlay, myPause, myStep, myReplay;
     private Slider mySlider;
     private GridPane myGrid;
     private Canvas myCanvas;
     private Grid grid;
-    private MenuItem newProgram, newOpen, newExit;
+    private MenuItem newOpen, newExit;
     private Scene myScene;
     private File myFile;
     private Stage myStage;
 	private HashMap<Series<Number, Number>, Integer> myGraphSeries;
 	private BarChart<String,Number> myGraph;
-
-
+	private PropertiesReader myReader;
     
-    public Display(Scene scene, Group root, Stage stage) {
+    public Display(Scene scene, Group root, Stage stage, PropertiesReader propReader) {
         myScene = scene;
+        myReader = propReader;
         makeToolbar(root, stage);
         myGrid = new GridPane();
         myGrid.setAlignment(Pos.CENTER);
@@ -80,10 +81,10 @@ public class Display {
         
         mySlider.setMinWidth(225);
         
-        myPlay = new Button("Play");
-        myPause = new Button("Pause");
-        myStep = new Button("Step");
-        myReplay = new Button("\u21BA");
+        myPlay = new Button(myReader.getString("PlayButton"));
+        myPause = new Button(myReader.getString("PauseButton"));
+        myStep = new Button(myReader.getString("StepButton"));
+        myReplay = new Button(myReader.getString("ReplayButton"));
         
         myGrid.add(myPlay, 0, 6);
         myGrid.add(myPause, 1, 6);
@@ -118,16 +119,14 @@ public class Display {
     
     public void makeToolbar(Group root, Stage stage){
         Stage myStage = stage;
-        Menu cellMenu = new Menu("CellSociety Menu");
-        newProgram = new MenuItem("New");
-        newOpen = new MenuItem("Open");
-        newExit = new MenuItem("Exit");
+        Menu cellMenu = new Menu(myReader.getString("MakeMenu"));
+        newOpen = new MenuItem(myReader.getString("MakeOpen"));
+        newExit = new MenuItem(myReader.getString("MakeExit"));
         Modifier myModifier;
         myModifier = KeyCombination.META_DOWN;
-        newProgram.setAccelerator(new KeyCodeCombination(KeyCode.N, myModifier));
         newOpen.setAccelerator(new KeyCodeCombination(KeyCode.O, myModifier));
         newExit.setAccelerator(new KeyCodeCombination(KeyCode.W, myModifier));
-        cellMenu.getItems().addAll(newProgram, newOpen, newExit);
+        cellMenu.getItems().addAll(newOpen, newExit);
         MenuBar menuBar = new MenuBar();
         menuBar.useSystemMenuBarProperty().set(true);
         BorderPane borderPane = new BorderPane();
