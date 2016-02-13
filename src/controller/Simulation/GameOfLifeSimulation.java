@@ -1,7 +1,9 @@
 package src.controller.Simulation;
 
+import java.util.ArrayList;
+
 import src.Model.Cell;
-import src.View.Grid;
+import src.Model.Grid;
 
 public class GameOfLifeSimulation extends Simulation{
     private int liveState = 1;
@@ -10,7 +12,10 @@ public class GameOfLifeSimulation extends Simulation{
     public GameOfLifeSimulation(Grid grid) {
         super(grid);
     }
-    public void setLiveStateParameter(int liveCell){
+    public GameOfLifeSimulation() {
+		// TODO Auto-generated constructor stub
+	}
+	public void setLiveStateParameter(int liveCell){
         liveState = liveCell;
     }
     public void setDeadStateParameter(int deadCell){
@@ -22,7 +27,8 @@ public class GameOfLifeSimulation extends Simulation{
     @Override
     public Cell updateCellState(Cell cell) {
         int liveNeighbors = 0;
-        for(Cell neighborCell: getGrid().getAllNeighbors(cell)){
+        ArrayList<Cell> neighbors = cell.getAllNeighbors();
+        for(Cell neighborCell: neighbors){
             if(neighborCell.isState(liveState)){
                 liveNeighbors++;
             }
@@ -39,4 +45,12 @@ public class GameOfLifeSimulation extends Simulation{
         }
         return cell;
     }
+    
+    public ArrayList<String> getParameters() {
+		return null;
+	}
+	@Override
+	public void setParameters(ArrayList<Double> paramsList) {
+		
+	}
 }

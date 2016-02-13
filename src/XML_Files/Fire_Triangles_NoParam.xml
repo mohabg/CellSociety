@@ -3,7 +3,6 @@
 <sim type = "Fire"> </sim>
 
 <params>
-<param probCatch = "0.5"></param>
 </params>
 
 <states> <state value = "0" color = "YELLOW"></state> <state value = "1" color = "GREEN"></state> <state value = "2" color = "RED"></state>
@@ -11,7 +10,7 @@
 
 <grid>
 <cells sideLength = "30"></cells>
-<cells shape = "Square"></cells>
+<cells shape = "Triangle"></cells>
 <cells edge = "Finite"></cells>
 <cells list = "0 1 0 2 0 1 1 0 0 1 0 2 1 0 0 0 2 1 1 0 1 1 1 1 2 2 0 0 0 1 1 1 1 2 2 1 1 2 2 1 1 2 2 1 0 2 0 1 1 1 0 1 1 1 1 2 1 2 2 2 2 0 2 1 1 0 0 1 2 1 1 1 2 0 0 0 1 0 1 1 2 1 1 0 1 0 0 2 1 1 2 1 1 2 2 1 0 2 1 1 1 1 2 1 1 2 1 1 0 1 1 2 1 2 1 1 0 2 1 1 2 2 1 1 1 2 1 1 1 0 1 2 1 1 1 1 1 2 0 0 1 2 2 2 2 1 0 1 1 2 1 1 0 1 1 1 1 0 1 1 1 0 1 2 1 0 0 0 2 1 0 1 0 2 1 0 0 0 1 0 1 1 1 1 1 0 2 0 2 2 2 0 1 1 1 1 0 2 0 1 1 1 1 1 0 0 1 1 2 2 1 2 1 1 0 0 1 1 2 1 1 1 1 0 1 2 1 1 2 2 0 2 1 0 0 1 1 1 2 1 2 0 0 1 2 1 1 1 2 1 1 1 0 1 2 1 1 0 1 0 0 0 1 1 0 0 2 1 2 1 0 2 2 0 2 1 0 1 1 2 1 0 1 2 1 0 1 1 0 2 2 2 2 1 2 1 2 1 0 0 2 1 1 1 0 0 0 0 1 2 1 2 0"> </cells>
 <lines transparent = "False"></lines>

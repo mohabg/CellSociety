@@ -2,21 +2,32 @@
 <simulation type = "TYPE">
 
 <params>
+<!-- PARAM CONFIGURATIONS -->
 </params>
 
 <states>
+<!-- STATE CONFIGURATIONS --> 
 <state value = "0" color = "COLOR1"></state>
 <state value = "1" color = "COLOR2"></state>
 <state value = "2" color = "COLOR3"></state>
 </states>
 
-<dimensions>
-<dimen xLen = "XLEN"></dimen>
-<dimen yLen = "YLEN"></dimen>
-</dimensions>
-
 <grid>
-<cells row = "INITIAL STATES SEPARATED BY SPACES"> </cells>
+<!-- CELL CONFIGURATIONS -->
+<cells sideLength = "SIDE_VALUE"></cells>
+<cells shape ="SHAPE_TYPE"></cells>
+<!-- Shapes: Hexagon, Triangle, Square -->
+<cells edge = "EDGE_TYPE"></cells>
+<!-- Edges: Finite, Toroidal, Infinite -->
+
+<!-- CELL CONFIGURATION 1 --> 
+<cells list = "LIST OF INITIAL STATES SEPARATED BY SPACES"> </cells>
+
+<!-- CELL CONFIGURATION 2: Randomize certain number of cells --> 
+<cells totalCells = "NUM CELLS"></cells>
+
+<lines transparent = "TRUE"></lines>
+
 </grid>
 
 </simulation>

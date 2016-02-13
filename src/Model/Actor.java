@@ -1,13 +1,13 @@
 package src.Model;
 public class Actor {
-	private int xLocation;
-	private int yLocation;
+	private double xLocation;
+	private double yLocation;
 	private double energy;
 	private double initialEnergy;
 	private double energyDepletionRate;
 	private double timeSinceReproduced = 0;
 	
-	public Actor(int x, int y, double actorEnergy, double depletionRate){
+	public Actor(double x, double y, double actorEnergy, double depletionRate){
 		xLocation = x;
 		yLocation = y;
 		energy = actorEnergy;
@@ -26,21 +26,21 @@ public class Actor {
 	public void updateTimeSinceReproduced(double time){
 		timeSinceReproduced += time;
 	}
-	public void move(int x, int y){
+	public void move(double x, double y){
 		xLocation = x;
 		yLocation = y;
 	}
-	public int getX(){
-		return xLocation;
-	}
-	public void setX(int x){
+	public void setCenterX(double x){
 		xLocation = x;
 	}
-	public int getY(){
+	public void setCenterY(double y){
+		yLocation = y;
+	}
+	public double getCenterY(){
 		return yLocation;
 	}
-	public void setY(int y){
-		yLocation = y;
+	public double getCenterX(){
+		return xLocation;
 	}
 	public void depleteEnergy(){
 		energy -= energyDepletionRate;

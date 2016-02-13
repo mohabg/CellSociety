@@ -1,8 +1,7 @@
 package src.controller.Simulation;
 import java.util.*;
-
 import src.Model.Cell;
-import src.View.Grid;
+import src.Model.Grid;
 
 public class FireSimulation extends Simulation{
     private int empty = 0;
@@ -10,10 +9,13 @@ public class FireSimulation extends Simulation{
     private int burning = 2;
     private double probCatch;
     
-    public FireSimulation(Grid grid) {
-        super(grid);
+    public FireSimulation(Grid myGrid) {
+        super(myGrid);
     }
-    public void setProbCatch(double prob){
+    public FireSimulation() {
+		
+	}
+	public void setProbCatch(double prob){
         probCatch = prob;
     }
     public void setEmptyParameter(int emptyCell){
@@ -38,8 +40,7 @@ public class FireSimulation extends Simulation{
             cell.setState(empty);
         }
         if(cell.isState(tree)){
-            
-            for(Cell neighborCell : getGrid().getNonDiagonalNeighbors(cell)){
+            for(Cell neighborCell : cell.getNonDiagonalNeighbors()){
                 if(neighborCell.isState(burning)){
                     Random rand = new Random();
                     double randomProbability = rand.nextDouble();
@@ -64,5 +65,20 @@ public class FireSimulation extends Simulation{
     public void setParameter(double aval){
     	probCatch = aval;
     }
+    
+    public ArrayList<String> getParameters(){
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("probCatch");
+		return list;
+	}
+	@Override
+	public void setParameters(ArrayList<Double> paramsList) {
+		double DEFAULT_VALUE = -1/999;
+		double PROB_CATCH_DEFAULT = 0.5;
+		probCatch = paramsList.get(0);
+		if(paramsList.get(0) == DEFAULT_VALUE){
+			probCatch = PROB_CATCH_DEFAULT;
+		}
+	}
     
 }

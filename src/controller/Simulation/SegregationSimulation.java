@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import src.Model.Cell;
-import src.View.Grid;
-import src.controller.CellIterator;
+import src.Model.Grid;
 
 public class SegregationSimulation extends Simulation {
     private int noAgent = 0;
@@ -17,7 +16,10 @@ public class SegregationSimulation extends Simulation {
     public SegregationSimulation(Grid grid) {
         super(grid);
     }
-    public void setSatisfiedPercentage(double percentage){
+    public SegregationSimulation() {
+		// TODO Auto-generated constructor stub
+	}
+	public void setSatisfiedPercentage(double percentage){
         satisfiedPercentage = percentage;
     }
     public double getSatisfiedPercentage(){
@@ -43,7 +45,7 @@ public class SegregationSimulation extends Simulation {
         }
         int similarAgents = 0;
         int differentAgents = 0;
-        for(Cell neighborCell : getGrid().getAllNeighbors(cell)){
+        for(Cell neighborCell : cell.getAllNeighbors()){
             int neighborState = neighborCell.getState();
             if(neighborState == noAgent){
                 continue;
@@ -61,11 +63,11 @@ public class SegregationSimulation extends Simulation {
         }
         if(similarPercentage <= satisfiedPercentage){
             //Dissatisfied Agent
-            CellIterator cellIt = getGrid().getCellIterator();
             ArrayList<Cell> emptyCells = new ArrayList<Cell>();
-            for(Cell emptyCell: cellIt){
-                if(emptyCell.isState(noAgent)){
-                    emptyCells.add(emptyCell);
+            for(int x=0; x<getGrid().getCells().size(); x++){
+            	Cell curr = getGrid().getCells().get(x);
+                if(curr.isState(noAgent)){
+                    emptyCells.add(curr);
                 }
             }
             Random rand = new Random();
@@ -89,5 +91,12 @@ public class SegregationSimulation extends Simulation {
     	satisfiedPercentage = aval;
     }
 
-    
+    @Override
+	public ArrayList<String> getParameters() {
+		return null;
+	}
+	@Override
+	public void setParameters(ArrayList<Double> paramsList){
+		
+	}
 }

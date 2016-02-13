@@ -1,9 +1,7 @@
 package src.controller.Simulation;
 import java.util.*;
-
 import src.Model.Cell;
-import src.View.Grid;
-import src.controller.CellIterator;
+import src.Model.Grid;
 
 public abstract class Simulation {
     
@@ -16,18 +14,13 @@ public abstract class Simulation {
         this.myGrid = grid;
     }
     
+    public Simulation(){
+    	
+    }
+    
     public Grid getGrid(){
         return myGrid;
     }
-    //Initializes cells row by row
-    public void initialize(ArrayList<Integer> cellStates){
-        int statesListIndex = 0;
-        CellIterator cellIt = myGrid.getCellIterator();
-        for(Cell cell : cellIt){
-            cell.setState(cellStates.get(statesListIndex++));
-        }
-    }
-    
     public void run(){
         while(!isPaused){
             step();
@@ -39,19 +32,14 @@ public abstract class Simulation {
     
     public Grid step(){
         newGrid = myGrid.getGridClone();
-        CellIterator cellIt = myGrid.getCellIterator();
-        for(Cell cell: cellIt){
-            newGrid.setCell(updateCellState(cell));
+        for(int x=0; x<myGrid.getCells().size(); x++){
+        	Cell newCell = updateCellState(newGrid.getCells().get(x));
+        	newGrid.replaceCell(newCell);
         }
         return newGrid;
     }
     public abstract Cell updateCellState(Cell cell);
-    
-    public String returnTitle() {
-        return "";
-        // TODO Auto-generated method stub
-        
-    }
+    public abstract String returnTitle();
     public ArrayList<String> paramsList(){
     	ArrayList<String> blanky = new ArrayList<String>();
     	return blanky;
@@ -63,4 +51,7 @@ public abstract class Simulation {
     public void setParameter(double aValue){
     	
     }
+    
+    public abstract ArrayList<String> getParameters();
+    public abstract void setParameters(ArrayList<Double> paramsList);
 }
