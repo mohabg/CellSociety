@@ -73,7 +73,7 @@ public class MainDriver implements EventListener {
 		mySim = simTypes.get(simType);
 		mySim.setParameters(paramsList);
 		if(simType.equals("Wator")){
-			((WaTorSimulation) mySim).initialize(statesList);
+			((WaTorSimulation) mySim).initialize();
 		}
 		return mySim;
 	}
@@ -158,7 +158,7 @@ public class MainDriver implements EventListener {
 			myCellMap = myGrid.createMap();
 			myDisplay.drawGraph(myCellMap);
 			numSteps++;
-			myDisplay.makeParamSliders(mySim.getParameters(),this);
+			myDisplay.makeParamSliders(mySim.paramsList(),this);
 		}else{
 			myCellMap = tempGrid.createMap();
 			myDisplay.updateGraph(myCellMap);
