@@ -22,8 +22,6 @@ public class WaTorSimulation extends Simulation{
 			super(x, y, actorEnergy, depletionRate);
 		}
 	}
-	//Maps X Location -> Y Location -> Actor
-	//private HashMap<Integer, HashMap<Integer, Actor>> cellToActorMap;
 	private double chronon;
 	private double fishReproductionTime;
 	private double sharkReproductionTime;
