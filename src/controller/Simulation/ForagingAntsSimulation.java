@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import src.Model.*;
-import src.View.Grid;
+import src.Model.Grid;
 
 public class ForagingAntsSimulation extends Simulation{
 	

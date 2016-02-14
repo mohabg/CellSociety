@@ -1,6 +1,6 @@
 package src.Model;
 import java.util.*;
-import src.View.Grid;
+import src.Model.Grid;
 
 public class Actor {
 	private double xLocation;

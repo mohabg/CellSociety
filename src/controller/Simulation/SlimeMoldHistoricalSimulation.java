@@ -4,7 +4,7 @@ import src.Model.Cell;
 
 import java.util.*;
 import src.Model.*;
-import src.View.Grid;
+import src.Model.Grid;
 
 public class SlimeMoldHistoricalSimulation extends Simulation{
 	

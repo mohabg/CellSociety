@@ -7,11 +7,8 @@ public abstract class Simulation {
     
     private Grid newGrid;
     private Grid myGrid;
-	private boolean useGridClone;
 	
 	public Simulation(Grid grid){
-		isPaused = false;
-		useGridClone = false;
 		this.myGrid = grid;
 	}
 	
@@ -25,21 +22,9 @@ public abstract class Simulation {
 			cell.setState(cellStates.get(statesListIndex++));
 		}
 	}
-	public void shouldUseGridClone(){
-		useGridClone = true;
-	}
-	public void shouldNotUseGridClone(){
-		useGridClone = false;
-	}
 	public Grid step(){
 		createOrRemovePerStep();
-		Grid newGrid;
-		if(useGridClone){
 		newGrid = myGrid.getGridClone();
-		}
-		else{
-			newGrid = myGrid;
-		}
 		 for(int x=0; x<myGrid.getCells().size(); x++){
         	Cell newCell = updateCellState(newGrid.getCells().get(x));
         	newGrid.replaceCell(newCell);
@@ -51,6 +36,10 @@ public abstract class Simulation {
 		//Not abstract because not every subclass needs this method
 	}
 	  public ArrayList<String> getParameters(){
+		  return null;
+	  }
+	  public Simulation(){
+		  
 	  }
 	  public void setParameter(double aValue){
       }
