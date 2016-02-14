@@ -35,6 +35,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import src.controller.EventListener;
+import src.controller.PropertiesReader;
 import src.controller.XMLParser;
 import src.Model.Cell;
 import src.Model.Grid;
@@ -55,9 +56,11 @@ public class Display {
 	private Stage myStage;
 	private HashMap<Series<Number, Number>, Integer> myGraphSeries;
 	private BarChart<String,Number> myGraph;
+	private PropertiesReader myUseReader;
 
-	public Display(Scene scene, Group root, Stage stage) {
+	public Display(Scene scene, Group root, Stage stage, PropertiesReader myReader) {
 		myScene = scene;
+		myUseReader = myReader;
 		makeToolbar(root, stage);
 		myGrid = new GridPane();
 		myGrid.setAlignment(Pos.CENTER);
@@ -80,10 +83,10 @@ public class Display {
 
 		mySlider.setMinWidth(225);
 
-		myPlay = new Button("Play");
-		myPause = new Button("Pause");
-		myStep = new Button("Step");
-		myReplay = new Button("\u21BA");
+		myPlay = new Button(myUseReader.getString("PlayButton"));
+		myPause = new Button(myUseReader.getString("PauseButton"));
+		myStep = new Button(myUseReader.getString("StepButton"));
+		myReplay = new Button(myUseReader.getString("ReplayButton"));
 
 		myGrid.add(myPlay, 0, 6);
 		myGrid.add(myPause, 1, 6);
@@ -105,7 +108,7 @@ public class Display {
 		newOpen.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent event) {
 				FileChooser fileChooser = new FileChooser();
-				fileChooser.setTitle("Choose XML File");
+				fileChooser.setTitle(myUseReader.getString("ChooseFile"));
 				myFile = fileChooser.showOpenDialog(myStage);
 				try {
 					listener.onFileSelection(myFile);
@@ -118,16 +121,14 @@ public class Display {
 
 	public void makeToolbar(Group root, Stage stage){
 		Stage myStage = stage;
-		Menu cellMenu = new Menu("CellSociety Menu");
-		newProgram = new MenuItem("New");
-		newOpen = new MenuItem("Open");
-		newExit = new MenuItem("Exit");
+		Menu cellMenu = new Menu(myUseReader.getString("MakeMenu"));
+		newOpen = new MenuItem(myUseReader.getString("MakeOpen"));
+		newExit = new MenuItem(myUseReader.getString("MakeExit"));
 		Modifier myModifier;
 		myModifier = KeyCombination.META_DOWN;
-		newProgram.setAccelerator(new KeyCodeCombination(KeyCode.N, myModifier));
 		newOpen.setAccelerator(new KeyCodeCombination(KeyCode.O, myModifier));
 		newExit.setAccelerator(new KeyCodeCombination(KeyCode.W, myModifier));
-		cellMenu.getItems().addAll(newProgram, newOpen, newExit);
+		cellMenu.getItems().addAll(newOpen, newExit);
 		MenuBar menuBar = new MenuBar();
 		menuBar.useSystemMenuBarProperty().set(true);
 		BorderPane borderPane = new BorderPane();
@@ -159,9 +160,9 @@ public class Display {
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		myGraph = new BarChart<String,Number>(xAxis,yAxis);
-		myGraph.setTitle("Cell Society");
-		xAxis.setLabel("Cells");       
-		yAxis.setLabel("Amount");
+		myGraph.setTitle(myUseReader.getString("Title"));
+		xAxis.setLabel(myUseReader.getString("xAxis"));       
+		yAxis.setLabel(myUseReader.getString("yAxis"));
 
 		for(Integer anInt: myMap.keySet()){
 			XYChart.Series<String, Number> series1 = new XYChart.Series();
