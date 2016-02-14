@@ -20,8 +20,8 @@ public abstract class Simulation {
 	public Grid getGrid(){
 		return myGrid;
 	}
-	//Initializes cells row by row
-	public void initialize(ArrayList<Integer> cellStates){
+
+	public void initialize(List<Integer> cellStates){
 		int statesListIndex = 0;
 		CellIterator cellIt = myGrid.getCellIterator();
 		for(Cell cell : cellIt){
@@ -44,6 +44,7 @@ public abstract class Simulation {
 		useGridClone = false;
 	}
 	public Grid step(){
+		createOrRemovePerStep();
 		Grid newGrid;
 		if(useGridClone){
 		newGrid = myGrid.getGridClone();
@@ -58,10 +59,12 @@ public abstract class Simulation {
 		return newGrid;
 	}
 	public abstract Cell updateCellState(Cell cell);
-
+	public void createOrRemovePerStep(){
+		//Not abstract because not every subclass needs this method
+	}
+	
 	public String returnTitle() {
 		return "";
-		// TODO Auto-generated method stub
 		
 	}
 }

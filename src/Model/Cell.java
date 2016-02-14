@@ -1,28 +1,65 @@
 package src.Model;
-public class Cell {
 
+import java.util.*;
+
+import src.View.Grid;
+
+public class Cell {
+	private int index;
     private int myX, myY;
     private int currState;
-    private Actor myActor;
+    private Cell[] neighbors;
+    private Grid myGrid;
+    private PatchOfGround patch;
+    private Map<Cell, List<Actor>> cellToActorMap;
     
     public Cell(int state){
         currState = state;
+        patch = new PatchOfGround();
+        neighbors = new Cell[8];
+        cellToActorMap = new HashMap<Cell, List<Actor>>();
+    }
+    public void setIndex(int indexToSet){
+    	index = indexToSet;
+    }
+    public int getIndex(){
+    	return index;
+    }
+    public PatchOfGround getGround(){
+    	return patch;
     }
 
     public Cell(int x, int y, int state){
         myX = x;
         myY = y;
+        neighbors = new Cell[8];
         currState = state;
     }
-    public Actor getActor(){
-    	return myActor;
+    public List<Actor> getActors(){
+    	return cellToActorMap.get(this);
     }
     public void setActor(Actor actorToSet){
-    	myActor = actorToSet;
+    	actorToSet.setCell(this);
+    	if(cellToActorMap.containsKey(this)){
+    		List<Actor> actors = cellToActorMap.get(this);
+    		actors.add(actorToSet);
+        	cellToActorMap.put(this, actors);
+    	}
+    	else{
+    		List<Actor> actors = new ArrayList<Actor>();
+    		actors.add(actorToSet);
+    		cellToActorMap.put(this, actors);
+    	}
     }
-    public void removeActor(){
-    	myActor = null;
+    public void removeActor(Actor actorToRemove){
+    	if(cellToActorMap.containsKey(this)){
+    	actorToRemove.setCell(null);
+    	List<Actor> actors = cellToActorMap.get(this);
+		actors.remove(actorToRemove);
+    	cellToActorMap.put(this, actors);
+    	}
     }
+    
     public Cell(Cell toUse){
         myX = toUse.getX();
         myY = toUse.getY();
