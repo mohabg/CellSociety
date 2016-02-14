@@ -1,58 +1,57 @@
 package src.View;
-import src.Model.Cell;
-import src.controller.CellIterator;
-
 import java.util.*;
-
+import src.Model.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.scene.transform.Rotate;
 /**
  * Created by davidyan on 1/31/16.
+ * Modified by adamtache on 2/12/16
  */
 public class Grid {
-	
-    private Cell[][] myGrid;
-    private int gridWidth,gridHeight;
-    private ArrayList<Cell> neighbors;
-    
-    public Grid(int width, int height){
-        myGrid = new Cell[width][height];
-        neighbors = new ArrayList<Cell>();
-        gridWidth = width;
-        gridHeight = height;
-    }
-    
-	public ArrayList<Cell> getAllNeighbors(Cell cell) {
-		if (this.neighbors.size() != 0) {
-			return this.neighbors;
-		}
-		ArrayList<Cell> cellNeighbors = new ArrayList<Cell>();
-		int[] directions = { -1, 0, 1 };
-		
-		for (int i = 0; i < directions.length; i++) {
-			for (int j = 0; j < directions.length; j++) {
-				int xOffset = directions[i];
-				int yOffset = directions[j];
-				int neighborX = cell.getX() + xOffset;
-				int neighborY = cell.getY() + yOffset;
 
-				if (xOffset == 0 && yOffset == 0) {
-					// Same cell
-					continue;
-				}
-				if (neighborX < 0 || neighborY < 0 || neighborX >= gridWidth || neighborY >= gridHeight) {
-					// Out of Bounds
-					continue;
-				}
-				cellNeighbors.add(this.getCell(neighborX, neighborY));
+	private ArrayList<Cell> myCells;
+	private boolean outlined;
+	double width;
+	double height;
+
+	public Grid(double width, double height){
+		myCells = new ArrayList<Cell>();
+		this.width = width;
+		this.height = height;
+	}
+
+	public ArrayList<Cell> getCells(){
+		return myCells;
+	}
+
+	public void addCell(Cell cell){
+		myCells.add(cell);
+	}
+
+	public void replaceCell(Cell cell){
+		for(int x=0; x<myCells.size(); x++){
+			Cell curr = myCells.get(x);
+			if(curr.getCenterX() == cell.getCenterX() && curr.getCenterY() == cell.getCenterY()){
+				myCells.set(x, cell);
 			}
 		}
-		return cellNeighbors;
 	}
-	
+
+	public Cell getCell(double x, double y){
+		for(int i=0; i<myCells.size(); i++){
+			Cell curr = myCells.get(i);
+			if(curr.getCenterX() == x && curr.getCenterY() == y){
+				return curr;
+			}
+		}
+		return null;
+	}
+
 	public ArrayList<Cell> getNonDiagonalNeighbors(Cell cell){
-		ArrayList<Cell> neighbors = getAllNeighbors(cell);
+		ArrayList<Cell> neighbors = cell.getAllNeighbors();
 		Iterator<Cell> neighborIterator = neighbors.iterator();
 		while(neighborIterator.hasNext()){
 			Cell neighborcell = neighborIterator.next();
@@ -62,71 +61,107 @@ public class Grid {
 		}
 		return neighbors;
 	}
-	
+
 	public Grid getGridClone(){
-		Grid copyGrid = new Grid(gridWidth, gridHeight);
-		Cell[][] copy = copyGrid.myGrid;
-		for(int i=0;i<gridWidth;i++){
-            for(int j=0;j<gridHeight;j++){
-                copy[i][j] = new Cell(0, 0, 0);
-                copy[i][j].setX(i);
-                copy[i][j].setY(j);
-            }
-        }
+		Grid copyGrid = new Grid(width, height);
+		for(int x=0; x<getCells().size(); x++){
+			copyGrid.addCell(getCells().get(x));
+		}
 		return copyGrid;
 	}
-	
-    public int getGridWidth() {
-        return gridWidth;
-    }
 
-    public int getGridHeight() {
-        return gridHeight;
-    }
-    
-    public void setCell(Cell cell){
-    	myGrid[cell.getX()][cell.getY()] = cell;
-    }
-    public Cell getCell(int x, int y) {
-        return myGrid[x][y];
-    }
+	public void setOutline(boolean val){
+		outlined = val;
+	}
 
-    public CellIterator getCellIterator() {
-        return new CellIterator(this);
-    }
-    
-    public void draw(Canvas canvas, HashMap<Integer, Color> myColorMap) {
+	public boolean isOutlined(){
+		return outlined;
+	}
 
-        double myStrokeWidth = 0.05;
-        double width = canvas.getWidth();
-        double height = canvas.getHeight();
+	public HashMap<Integer, Integer> createMap(){
+		HashMap<Integer, Integer> toRet = new HashMap<Integer, Integer>();
+		for(int x=0; x<myCells.size(); x++){
+			Integer id = myCells.get(x).getState();
+			if(!toRet.containsKey(id)){
+				toRet.put(id, 1);
+			}else{
+				Integer toUpdate = toRet.get(id);
+				toUpdate++;
+				toRet.put(id,toUpdate);
+			}
+		}
+		return toRet;
+	}
 
-        double cellWidth = width / (gridWidth + myStrokeWidth * (gridWidth - 1));
-        double cellHeight = height / (gridHeight + myStrokeWidth * (gridHeight - 1));
+	public double getWidth(){
+		return width;
+	}
 
-        double x, y;
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        for (Cell cell : getCellIterator()) {
-            gc.setFill(myColorMap.get(cell.getState()));
-            x = cellWidth * myStrokeWidth + cellWidth * cell.getX() + (cell.getX() - 1) * cellWidth * myStrokeWidth;
-            y = cellWidth * myStrokeWidth + cellHeight * cell.getY() + (cell.getY() - 1) * cellHeight * myStrokeWidth;
-            gc.fillRect(x, y, cellWidth, cellHeight);
-        }
-        gc.setStroke(Color.DARKGRAY);
-        gc.setLineWidth(myStrokeWidth * cellWidth * 2.0);
-        gc.strokeRect(0.0, 0.0, width, height);
+	public double getHeight(){
+		return height;
+	}
 
-    }
-    
-    public String toString(){
-    	String str = "";
-    	for(int x=0; x<gridWidth; x++){
-    		for(int y=0; y<gridHeight; y++){
-    			System.out.println("("+x+", "+y+") State: "+getCell(x,y).getState());
-    		}
-    		str+="\n";
-    	}
-    	return str;
-    }
+	public void draw(Canvas canvas, HashMap<Integer, Color> myColorMap){
+		double myStrokeWidth = 0.2;
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		for(int i=0; i<myCells.size(); i++){
+			Cell cell = myCells.get(i);
+			gc.setFill(myColorMap.get(cell.getState()));
+			gc.setLineWidth(myStrokeWidth);
+			double[] xPoints = cell.getXPoints();
+			double[] yPoints = cell.getYPoints();
+			gc.fillPolygon(cell.getXPoints(), cell.getYPoints(), cell.getNumSides());
+		}
+		if(outlined)
+			gc.setStroke(Color.DARKGRAY);
+		else
+			gc.setStroke(Color.TRANSPARENT);
+	}
+
+	public void createGrid(ArrayList<Integer> cellList, String shapeType, double sideLen){
+		if(shapeType.equals("Square")){
+			double centerX = sideLen/2;
+			double centerY = sideLen/2;
+			for(int x=0; x<cellList.size(); x++){
+				int state = cellList.get(x);
+				Cell newCell = new SquareCell(centerX, centerY, state, sideLen, this);
+				addCell(newCell);
+				centerX += sideLen;
+				if(centerX >= (getWidth() - sideLen)){
+					centerX = sideLen/2;
+					centerY += sideLen;
+				}
+			}
+		}
+		else if(shapeType.equals("Triangle")){
+			double height = new TriangleCell(sideLen).getHeight();
+			double centroidX = 1/2*sideLen;
+			double centroidY = (1/3)*(height + height);// centroid formula
+			double centerX = sideLen/2 + centroidX; 
+			double centerY = sideLen/2 + centroidY;
+			int row = 0;
+			for(int x=0; x<cellList.size(); x++){
+				int state = cellList.get(x);
+				int type = x%2; // type 0 = vertical, type 1 = flipped vertically
+				if(row % 2 == 1){
+					if(type == 0)
+						type = 1;
+					else if(type == 1)
+						type = 0;
+				}
+				Cell newCell = new TriangleCell(centerX, centerY, state, sideLen, this, type);
+				addCell(newCell);
+				centerX += sideLen/2;
+				if(centerX >= (getWidth() - sideLen)){
+					centerX = sideLen/2 + centroidX;
+					centerY += height;
+					row++;
+				}
+			}
+		}
+		else if(shapeType.equals("Hexagon")){
+
+		}
+	}
 
 }

@@ -1,24 +1,34 @@
 package src.Model;
 
 import java.util.*;
-
+import javafx.scene.shape.Polygon;
 import src.View.Grid;
 
-public class Cell {
-	private int index;
-    private int myX, myY;
-    private int currState;
-    private Cell[] neighbors;
-    private Grid myGrid;
+public abstract class Cell {
+    private int index;
+	protected double myCenterX, myCenterY;
+	protected int currState;
+	private double sideLength;
+	private int numSides;
     private PatchOfGround patch;
     private Map<Cell, List<Actor>> cellToActorMap;
     
     public Cell(int state){
-        currState = state;
+		currState = state;
         patch = new PatchOfGround();
-        neighbors = new Cell[8];
         cellToActorMap = new HashMap<Cell, List<Actor>>();
-    }
+	}
+
+	public Cell(double centerX, double centerY, int state, double sideLength, int numSides){
+		myCenterX = centerX;
+		myCenterY = centerY;
+		currState = state;
+		this.sideLength = sideLength;
+		this.numSides = numSides;
+        patch = new PatchOfGround();
+        cellToActorMap = new HashMap<Cell, List<Actor>>();
+	}
+	
     public void setIndex(int indexToSet){
     	index = indexToSet;
     }
@@ -29,12 +39,6 @@ public class Cell {
     	return patch;
     }
 
-    public Cell(int x, int y, int state){
-        myX = x;
-        myY = y;
-        neighbors = new Cell[8];
-        currState = state;
-    }
     public List<Actor> getActors(){
     	return cellToActorMap.get(this);
     }
@@ -59,40 +63,73 @@ public class Cell {
     	cellToActorMap.put(this, actors);
     	}
     }
-    
-    public Cell(Cell toUse){
-        myX = toUse.getX();
-        myY = toUse.getY();
-        currState = toUse.getState();
-    }
-    public Boolean isState(int state){
-    	return currState == state;
-    }
-    public Boolean isDiagonalNeighborWith(Cell otherCell){
-    	//X locations and Y locations both differ by 1
-    	return (Math.abs(myX - otherCell.getX()) == 1) && (Math.abs(myY - otherCell.getY()) == 1);
-    }
-    
-    public Cell clone(){
-        return new Cell(myX,myY,currState);
-    }
 
-    public void setX(int x){
-        myX = x;
-    }
-    public void setY(int y){
-        myY = y;
-    }
-    public void setState(int state){
-        currState = state;
-    }
-    public int getX(){
-        return myX;
-    }
-    public int getY(){
-        return myY;
-    }
-    public int getState(){
-        return currState;
-    }
+    public Boolean isState(int state){
+		return currState == state;
+	}
+	public void setState(int state){
+		currState = state;
+	}
+	public double getCenterX(){
+		return myCenterX;
+	}
+	public double getCenterY(){
+		return myCenterY;
+	}
+	public int getState(){
+		return currState;
+	}
+	public double getSideLength(){
+		return sideLength;
+	}
+	public int getNumSides(){
+		return numSides;
+	}
+
+	public abstract Cell getLeftNeighbor();
+	public abstract Cell getTopLeftNeighbor();
+	public abstract Cell getTopNeighbor();
+	public abstract Cell getTopRightNeighbor();
+	public abstract Cell getRightNeighbor();
+	public abstract Cell getBottomRightNeighbor();
+	public abstract Cell getBottomNeighbor();
+	public abstract Cell getBottomLeftNeighbor();
+	public abstract boolean isDiagonalNeighborWith(Cell otherCell);
+	public abstract double[] getXPoints();
+	public abstract double[] getYPoints();
+	public abstract Polygon getPoly();
+
+	public ArrayList<Cell> getAllNeighbors(){
+		ArrayList<Cell> neighbors = new ArrayList<Cell>();
+		Cell left = getLeftNeighbor(); 
+		if(left!=null) neighbors.add(left);
+		Cell topLeft = getTopLeftNeighbor(); 
+		if(topLeft!=null) neighbors.add(topLeft);
+		Cell topRight = getTopRightNeighbor(); 
+		if(topRight!=null) neighbors.add(topRight);
+		Cell right = getRightNeighbor(); 
+		if(right!=null) neighbors.add(right);
+		Cell botLeft = getBottomLeftNeighbor(); 
+		if(botLeft!=null) neighbors.add(botLeft);
+		Cell botRight = getBottomRightNeighbor(); 
+		if(botRight!=null) neighbors.add(botRight);
+		Cell bottom = getBottomNeighbor(); 
+		if(bottom!=null) neighbors.add(bottom);
+		Cell top = getTopNeighbor(); 
+		if(top!=null) neighbors.add(top);
+		return neighbors;
+	}
+	
+	public ArrayList<Cell> getNonDiagonalNeighbors(){
+		ArrayList<Cell> nonDiag = new ArrayList<Cell>();
+		if(getLeftNeighbor() != null)
+			nonDiag.add(getLeftNeighbor());
+		if(getRightNeighbor() != null)
+			nonDiag.add(getRightNeighbor());
+		if(getTopNeighbor() != null)
+			nonDiag.add(getTopNeighbor());
+		if(getBottomNeighbor() != null)
+			nonDiag.add(getBottomNeighbor());
+		return nonDiag;
+	}
 }
