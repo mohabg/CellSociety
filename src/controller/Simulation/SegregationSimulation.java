@@ -95,4 +95,8 @@ public class SegregationSimulation extends Simulation {
 	public ArrayList<String> getParameters() {
 		return null;
 	}
+	@Override
+	public void setParameters(ArrayList<Double> paramsList){
+		
+	}
 }
