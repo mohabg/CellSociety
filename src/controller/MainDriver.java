@@ -11,6 +11,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.DOMException;
 import org.xml.sax.SAXException;
+
 
 public class MainDriver implements EventListener {
 
@@ -38,14 +40,23 @@ public class MainDriver implements EventListener {
 	private int numSteps = 0;
 	private HashMap<Integer, Integer> myCellMap;
 	private String mySimType;
-	EventListener e;
-	HashMap<String, Simulation> defaultSimTypes = new HashMap<String, Simulation>();
+	private EventListener e;
+	private HashMap<String, Simulation> defaultSimTypes = new HashMap<String, Simulation>();
+	private PropertiesReader myReader;
 
 	public MainDriver(Stage stage) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException {
 		myStage = stage;
+		myReader = new PropertiesReader();
+		try {
+			myReader.load("english");
+		} catch (IOException e) {
+			System.out.println("Wrong file");
+			System.exit(1);
+		}
+		
 		myRoot = new Group();
 		myScene = new Scene(myRoot, 1100, 700);
-		myDisplay = new Display(myScene, myRoot, stage);
+		myDisplay = new Display(myScene, myRoot, stage, myReader);
 		myDisplay.addEventListener(this);
 		myStage.setScene(myScene);
 		setupSims();
