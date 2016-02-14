@@ -46,6 +46,7 @@ public class MainDriver implements EventListener {
 
 	public MainDriver(Stage stage) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException {
 		myStage = stage;
+		
 		myReader = new PropertiesReader();
 		try {
 			myReader.load("english");
