@@ -1,21 +1,20 @@
 package src.Model;
 
-import java.util.*;
+import java.util.ArrayList;
+
 import javafx.scene.shape.Polygon;
 
 public abstract class Cell {
-    private int index;
+
+	private int index;
 	protected double myCenterX, myCenterY;
 	protected int currState;
+	private Actor myActor;
 	private double sideLength;
 	private int numSides;
-    private PatchOfGround patch;
-    private Map<Cell, List<Actor>> cellToActorMap;
-    
-    public Cell(int state){
+
+	public Cell(int state){
 		currState = state;
-        patch = new PatchOfGround();
-        cellToActorMap = new HashMap<Cell, List<Actor>>();
 	}
 
 	public Cell(double centerX, double centerY, int state, double sideLength, int numSides){
@@ -24,65 +23,6 @@ public abstract class Cell {
 		currState = state;
 		this.sideLength = sideLength;
 		this.numSides = numSides;
-        patch = new PatchOfGround();
-        cellToActorMap = new HashMap<Cell, List<Actor>>();
-	}
-	
-    public void setIndex(int indexToSet){
-    	index = indexToSet;
-    }
-    public int getIndex(){
-    	return index;
-    }
-    public PatchOfGround getGround(){
-    	return patch;
-    }
-
-    public List<Actor> getActors(){
-    	return cellToActorMap.get(this);
-    }
-    public void setActor(Actor actorToSet){
-    	actorToSet.setCell(this);
-    	if(cellToActorMap.containsKey(this)){
-    		List<Actor> actors = cellToActorMap.get(this);
-    		actors.add(actorToSet);
-        	cellToActorMap.put(this, actors);
-    	}
-    	else{
-    		List<Actor> actors = new ArrayList<Actor>();
-    		actors.add(actorToSet);
-    		cellToActorMap.put(this, actors);
-    	}
-    }
-    public void removeActor(Actor actorToRemove){
-    	if(cellToActorMap.containsKey(this)){
-    	actorToRemove.setCell(null);
-    	List<Actor> actors = cellToActorMap.get(this);
-		actors.remove(actorToRemove);
-    	cellToActorMap.put(this, actors);
-    	}
-    }
-
-    public Boolean isState(int state){
-		return currState == state;
-	}
-	public void setState(int state){
-		currState = state;
-	}
-	public double getCenterX(){
-		return myCenterX;
-	}
-	public double getCenterY(){
-		return myCenterY;
-	}
-	public int getState(){
-		return currState;
-	}
-	public double getSideLength(){
-		return sideLength;
-	}
-	public int getNumSides(){
-		return numSides;
 	}
 
 	public abstract Cell getLeftNeighbor();
@@ -130,5 +70,36 @@ public abstract class Cell {
 		if(getBottomNeighbor() != null)
 			nonDiag.add(getBottomNeighbor());
 		return nonDiag;
+	}
+	
+	public Actor getActor(){
+		return myActor;
+	}
+	public void setActor(Actor actorToSet){
+		myActor = actorToSet;
+	}
+	public void removeActor(){
+		myActor = null;
+	}
+	public Boolean isState(int state){
+		return currState == state;
+	}
+	public void setState(int state){
+		currState = state;
+	}
+	public double getCenterX(){
+		return myCenterX;
+	}
+	public double getCenterY(){
+		return myCenterY;
+	}
+	public int getState(){
+		return currState;
+	}
+	public double getSideLength(){
+		return sideLength;
+	}
+	public int getNumSides(){
+		return numSides;
 	}
 }
