@@ -7,45 +7,51 @@ public abstract class Simulation {
     
     private Grid newGrid;
     private Grid myGrid;
-	
-	public Simulation(Grid grid){
-		this.myGrid = grid;
-	}
-	
-	public Grid getGrid(){
-		return myGrid;
-	}
-
-	public void initialize(List<Integer> cellStates){
-		int statesListIndex = 0;
-		for(Cell cell : myGrid.getCells()){
-			cell.setState(cellStates.get(statesListIndex++));
-		}
-	}
-	public Grid step(){
-		createOrRemovePerStep();
-		newGrid = myGrid.getGridClone();
-		 for(int x=0; x<myGrid.getCells().size(); x++){
+    private boolean isPaused;
+    
+    public Simulation(Grid grid){
+        isPaused = false;
+        this.myGrid = grid;
+    }
+    
+    public Simulation(){
+    	
+    }
+    
+    public Grid getGrid(){
+        return myGrid;
+    }
+    public void run(){
+        while(!isPaused){
+            step();
+        }
+    }
+    public void pause(){
+        isPaused = true;
+    }
+    
+    public Grid step(){
+        newGrid = myGrid.getGridClone();
+        for(int x=0; x<myGrid.getCells().size(); x++){
         	Cell newCell = updateCellState(newGrid.getCells().get(x));
         	newGrid.replaceCell(newCell);
         }
-		return newGrid;
-	}
-	public abstract Cell updateCellState(Cell cell);
-	public void createOrRemovePerStep(){
-		//Not abstract because not every subclass needs this method
-	}
-	  public ArrayList<String> getParameters(){
-		  return null;
-	  }
-	  public Simulation(){
-		  
-	  }
-	  public void setParameter(double aValue){
-      }
-       public void setParameters(ArrayList<Double> paramsList){
-     }
-	  public String returnTitle() {
-		return "";	
-	}
+        return newGrid;
+    }
+    public abstract Cell updateCellState(Cell cell);
+    public abstract String returnTitle();
+    public ArrayList<String> paramsList(){
+    	ArrayList<String> blanky = new ArrayList<String>();
+    	return blanky;
+    }
+    
+    public double getParameter(){
+    	return 0.0;
+    }
+    public void setParameter(double aValue){
+    	
+    }
+    
+    public abstract ArrayList<String> getParameters();
+    public abstract void setParameters(ArrayList<Double> paramsList);
 }
