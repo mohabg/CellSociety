@@ -45,7 +45,7 @@ import java.util.*;
  * Created by davidyan on 2/1/16.
  */
 public class Display {
-	private Button myPlay, myPause, myStep, myReplay;
+	private Button myPlay, myPause, myStep;
 	private Slider mySlider;
 	private GridPane myGrid;
 	private Canvas myCanvas;
@@ -86,12 +86,10 @@ public class Display {
 		myPlay = new Button(myUseReader.getString("PlayButton"));
 		myPause = new Button(myUseReader.getString("PauseButton"));
 		myStep = new Button(myUseReader.getString("StepButton"));
-		myReplay = new Button(myUseReader.getString("ReplayButton"));
 
 		myGrid.add(myPlay, 0, 6);
 		myGrid.add(myPause, 1, 6);
 		myGrid.add(myStep, 2, 6);
-		myGrid.add(myReplay, 3, 6);
 		myGrid.add(mySlider, 4, 6, 5, 1);
 		//drawGraph();
 		root.getChildren().add(myGrid);
