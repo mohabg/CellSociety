@@ -4,7 +4,6 @@ import java.util.*;
 import src.Model.Actor;
 import src.Model.Cell;
 import src.View.Grid;
-import src.controller.CellIterator;
 
 public class WaTorSimulation extends Simulation{
 	public String returnTitle(){
@@ -12,8 +11,8 @@ public class WaTorSimulation extends Simulation{
 	}
 	public class Fish extends Actor{
 		
-		public Fish(double x, double y, double actorEnergy, double depletionRate){
-			super(x, y, actorEnergy, depletionRate);
+		public Fish(double x, double y){
+			super(x, y);
 		}
 	}
 	public class Shark extends Actor{
@@ -65,7 +64,7 @@ public class WaTorSimulation extends Simulation{
 		super(grid);
 		actors = new ArrayList<Actor>();
 		this.shouldNotUseGridClone();
-		for(Cell cell : grid.getCellArray()){
+		for(Cell cell : grid.getCells()){
 			if(cell.isState(fishCell)){
 				Fish fish = new Fish(cell.getCenterX(), cell.getCenterY());
 				actors.add(fish);
@@ -94,7 +93,7 @@ public class WaTorSimulation extends Simulation{
 				if(actor instanceof Fish){
 					Fish fish = (Fish) actor;
 					reproduceIfAllowed(fish, true);
-					for(Cell neighborCell : getGrid().getNonDiagonalNeighbors()){
+					for(Cell neighborCell : cell.getNonDiagonalNeighbors()){
 						Actor neighborActor = neighborCell.getActors().get(0);
 						if(neighborActor == null){
 							emptyCells.add(neighborCell);
@@ -119,7 +118,7 @@ public class WaTorSimulation extends Simulation{
 	}
 
 	public void sharkMovementRules(Cell cell, Shark shark, List<Cell> emptyCells, List<Fish> neighborFish) {
-		for(Cell neighborCell : getGrid().getNonDiagonalNeighbors(cell)){
+		for(Cell neighborCell : cell.getNonDiagonalNeighbors()){
 			Actor neighborActor = neighborCell.getActors().get(0);
 			if(neighborActor != null){
 				if(neighborActor instanceof Fish){
@@ -171,7 +170,7 @@ public class WaTorSimulation extends Simulation{
 		Actor newActor;
 		actor.resetTimeSinceReproduced();
 		if(useFishReproductionTime){
-			newActor = new Fish(actor.getX(), actor.getY(), actor.getEnergy(), actor.getDepletionRate());
+			newActor = new Fish(actor.getX(), actor.getY());
 		}
 		else{
 			newActor = new Shark(actor.getX(), actor.getY(), actor.getEnergy(), actor.getDepletionRate());

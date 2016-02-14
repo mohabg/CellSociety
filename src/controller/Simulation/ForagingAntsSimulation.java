@@ -7,7 +7,6 @@ import java.util.Random;
 
 import src.Model.*;
 import src.View.Grid;
-import src.controller.CellIterator;
 
 public class ForagingAntsSimulation extends Simulation{
 	
@@ -34,15 +33,12 @@ public class ForagingAntsSimulation extends Simulation{
 	private int emptyCell = 0;
 	private int antCell = 1;
 	private int obstacleCell = 2;
-	private int nestCell = 3;
-	private int foodSourceCell = 4;
 	private int homePheromoneIndex = 0;
 	private int foodPheromoneIndex = 1;
 	private int numberOfPheromones = 2;
 	private int maximumAntsPerLocation = 10;
 	private int maximumAntsInSimulation = 1000;
 	private int antsBornePerTimeStep = 2;
-	private int numberOfInitialAnts = 2;
 	private double antLifeTime = 50;
 	private double minNumberOfPheromones = 0.0;
 	private double maxNumberOfPheromones = 100.0;
@@ -69,12 +65,12 @@ public class ForagingAntsSimulation extends Simulation{
 		myGrid = grid;
 		ants = new ArrayList<Actor>();
 		foodSources = new ArrayList<Cell>();
-		for(Cell cell: grid.getCellIterator()){
+		for(Cell cell: grid.getCells()){
 			for(int i = 0; i < numberOfPheromones; i++){
 			cell.getGround().addPheromone(minNumberOfPheromones);
 			}
 			if(cell.isState(antCell)){
-				Ant ant = new Ant(cell.getX(), cell.getY(), antLifeTime, 1);
+				Ant ant = new Ant(cell.getCenterX(), cell.getCenterY(), antLifeTime, 1);
 				ants.add(ant);
 				cell.setActor(ant);
 			}
@@ -190,10 +186,15 @@ public class ForagingAntsSimulation extends Simulation{
 	
 	public void returnToNest(Ant ant){
 		List<Cell> forwardLocations = findForwardLocations(ant);
-		if(ant.getCell().isState(foodSourceCell)){
-			List<Cell> allNeighbors = ant.getCell().getAllNeighbors();
-			Cell maxHomePheromoneCell = findCellWithMaxPheromones(allNeighbors, homePheromoneIndex);
-			ant.setOrientation(maxHomePheromoneCell);
+		for(Cell foodSource : foodSources){
+			double foodSourceX = foodSource.getCenterX();
+			double foodSourceY = foodSource.getCenterY();
+			
+			if(ant.isAtLocation(foodSourceX, foodSourceY)){
+				List<Cell> allNeighbors = ant.getCell().getAllNeighbors();
+				Cell maxHomePheromoneCell = findCellWithMaxPheromones(allNeighbors, homePheromoneIndex);
+				ant.setOrientation(maxHomePheromoneCell);
+		}
 		}
 		Cell maxPheromoneCell = findCellWithMaxPheromones(forwardLocations, homePheromoneIndex);
 		if(maxPheromoneCell == null){
@@ -212,6 +213,7 @@ public class ForagingAntsSimulation extends Simulation{
 		}
 	}
 	
+	
 	public void findFoodSource(Ant ant){
 		List<Cell> forwardLocations = findForwardLocations(ant);
 		if(ant.isAtLocation(nestX, nestY)){
@@ -219,13 +221,14 @@ public class ForagingAntsSimulation extends Simulation{
 			Cell maxFoodPheromoneCell = findCellWithMaxPheromones(allNeighbors, foodPheromoneIndex);
 			ant.setOrientation(maxFoodPheromoneCell);
 		}
+		
 		Cell cellToMoveTo = selectLocation(forwardLocations);
 		if(cellToMoveTo == null){
 			List<Cell> backwardLocations = findBackwardLocations(forwardLocations, ant);
 			cellToMoveTo = selectLocation(backwardLocations);
 		}
+		
 		if(cellToMoveTo != null){
-			PatchOfGround currentGround = ant.getCell().getGround();
 			boolean isAtSource = false;
 			for(Cell foodSource : foodSources){
 				isAtSource = isAtSource(ant, foodSource.getCenterX(), foodSource.getCenterY(), foodPheromoneIndex);
@@ -244,7 +247,7 @@ public class ForagingAntsSimulation extends Simulation{
 		for(Cell foodSource : foodSources){
 			double foodSourceX = foodSource.getCenterX();
 			double foodSourceY = foodSource.getCenterY();
-		if(antCell.getCenterX() == foodSourceX && antCell.getCenterY() == foodSourceY){
+		if(ant.isAtLocation(foodSourceX, foodSourceY)){
 			ant.pickUpFoodItem();
 			return;
 		}

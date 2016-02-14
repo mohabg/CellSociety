@@ -2,7 +2,6 @@ package src.Model;
 
 import java.util.*;
 import javafx.scene.shape.Polygon;
-import src.View.Grid;
 
 public abstract class Cell {
     private int index;

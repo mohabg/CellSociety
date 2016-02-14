@@ -39,7 +39,7 @@ public class FireSimulation extends Simulation{
 		}
 		if(cell.isState(tree)){
 			
-			for(Cell neighborCell : getGrid().getNonDiagonalNeighbors(cell)){
+			for(Cell neighborCell : cell.getNonDiagonalNeighbors()){
 				if(neighborCell.isState(burning)){
 					Random rand = new Random();
 					double randomProbability = rand.nextDouble();

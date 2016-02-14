@@ -1,8 +1,6 @@
 package src.Model;
 import java.util.*;
 import src.View.Grid;
-import src.controller.Simulation.WaTorSimulation.Fish;
-import src.controller.Simulation.WaTorSimulation.Shark;
 
 public class Actor {
 	private double xLocation;
@@ -55,26 +53,21 @@ public class Actor {
 	}
 	
 	public void move(Cell cellToMoveTo){
-		xLocation = cellToMoveTo.getX();
-		yLocation = cellToMoveTo.getY();
+		xLocation = cellToMoveTo.getCenterX();
+		yLocation = cellToMoveTo.getCenterY();
 		cell.removeActor(this);
 		cellToMoveTo.setActor(this);
 		lastCell = cell;
-		double xDistance = cellToMoveTo.getX() - cell.getX(); 
-		double yDistance = cell.getY() - cellToMoveTo.getY();
-		nextCellX = cellToMoveTo.getX() + xDistance;
-		nextCellY = cellToMoveTo.getY() + yDistance;
+		double xDistance = cellToMoveTo.getCenterX() - cell.getCenterX(); 
+		double yDistance = cell.getCenterY() - cellToMoveTo.getCenterY();
+		nextCellX = cellToMoveTo.getCenterX() + xDistance;
+		nextCellY = cellToMoveTo.getCenterY() + yDistance;
 	}
 	public Cell findCellGivenAngle(double angle, boolean isMovingUp, Grid myGrid){
 		Cell cell = getCell();
 		Cell cellInActorsPath = myGrid.getCell(getNextCellX(), getNextCellY());
 		if(cellInActorsPath == null){
-			if(getCellMovedFrom() != null){
 			cellInActorsPath = getCellMovedFrom();
-			}
-			else{
-				cellInActorsPath = cell.g
-			}
 		}
 		double xDistance, yDistance;
 		if(isMovingUp){
@@ -91,8 +84,8 @@ public class Actor {
 	}
 	
 	public void setOrientation(Cell nextCellInPath){
-		nextCellX = nextCellInPath.getX();
-		nextCellY = nextCellInPath.getY();
+		nextCellX = nextCellInPath.getCenterX();
+		nextCellY = nextCellInPath.getCenterY();
 	}
 	public void setNextCellX(double newX){
 		nextCellX = newX;

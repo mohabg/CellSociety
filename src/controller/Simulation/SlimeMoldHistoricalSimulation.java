@@ -5,7 +5,6 @@ import src.Model.Cell;
 import java.util.*;
 import src.Model.*;
 import src.View.Grid;
-import src.controller.CellIterator;
 
 public class SlimeMoldHistoricalSimulation extends Simulation{
 	
@@ -40,12 +39,11 @@ public class SlimeMoldHistoricalSimulation extends Simulation{
 	}
 	public void initialize(List<Integer> cellStates){
 		int statesListIndex = 0;
-		CellIterator cellIt = myGrid.getCellIterator();
-		for(Cell cell : cellIt){
+		for(Cell cell : myGrid.getCells()){
 			int state = cellStates.get(statesListIndex++);
 			cell.setState(state);
 			if(state == amoebaCell){
-				Actor amoeba = new Actor(cell.getX(), cell.getY());
+				Actor amoeba = new Actor(cell.getCenterX(), cell.getCenterY());
 				actors.add(amoeba);
 				cell.setActor(amoeba);
 				amoeba.setCell(cell);
@@ -63,7 +61,7 @@ public class SlimeMoldHistoricalSimulation extends Simulation{
 			for(Actor amoeba : cell.getActors()){
 				double maxConcentration = Integer.MIN_VALUE;
 				Cell maxConcentrationCell = null;
-				lookForNeighbors(sniffNeighbors, wiggleNeighbors, amoeba);
+				lookForNeighbors(sniffNeighbors, wiggleNeighbors, emptyCells, amoeba);
 			
 					for(Cell neighborCell : sniffNeighbors){
 						double neighborConcentration = neighborCell.getGround().getPheromones().get(0);
@@ -89,12 +87,12 @@ public class SlimeMoldHistoricalSimulation extends Simulation{
 		PatchOfGround ground = cell.getGround();
 		if(ground.numberOfPheromones() > 0){
 			ground.increasePheromone(evaporationRate, 0);
-			ground.diffusePheromones(myGrid.getAllNeighbors(cell), diffusionRate);
+			ground.diffusePheromones(cell.getAllNeighbors(), diffusionRate);
 		}
 	}
 	public List<Cell> findEmptyCells(Cell cell) {
 		List<Cell> emptyCells = new ArrayList<Cell>();
-		for(Cell neighborCell: myGrid.getAllNeighbors(cell)){
+		for(Cell neighborCell: cell.getAllNeighbors()){
 			if(neighborCell.isState(emptyCell)){
 			emptyCells.add(neighborCell);
 		}
@@ -135,20 +133,22 @@ public class SlimeMoldHistoricalSimulation extends Simulation{
 		}
 	}
 	
-	public void lookForNeighbors(List<Cell> sniffNeighbors, List<Cell> wiggleNeighbors, Actor amoeba) {
-		lookForNeighborsUsingAngle(sniffAngle, sniffNeighbors, amoeba);
-		lookForNeighborsUsingAngle(wiggleAngle, wiggleNeighbors, amoeba);
+	public void lookForNeighbors(List<Cell> sniffNeighbors, List<Cell> wiggleNeighbors, List<Cell> emptyCells, Actor amoeba) {
+		lookForNeighborsUsingAngle(sniffAngle, sniffNeighbors, emptyCells, amoeba);
+		lookForNeighborsUsingAngle(wiggleAngle, wiggleNeighbors, emptyCells, amoeba);
 	}
 	
-	public void lookForNeighborsUsingAngle(double angle, List<Cell> neighbors, Actor amoeba){
+	public void lookForNeighborsUsingAngle(double angle, List<Cell> neighbors, List<Cell> emptyCells, Actor amoeba){
 		double angleDecrement = angle / 4;
 		double anglesToUse = angle;
-		double yDifference = amoeba.getCellMovedFrom().getY() - amoeba.getCell().getY();
+		double yDifference = amoeba.getCellMovedFrom().getCenterY() - amoeba.getCell().getCenterY();
 		boolean isMovingUp = (yDifference > 0);
 		while(anglesToUse * -1 != angle){
 			Cell nextCell = amoeba.findCellGivenAngle(anglesToUse, isMovingUp, myGrid);
-			if(!neighbors.contains(nextCell)){
-			neighbors.add(nextCell);
+			if(!emptyCells.contains(nextCell)){
+				if(!neighbors.contains(nextCell)){
+					neighbors.add(nextCell);
+			}
 			}
 			anglesToUse -= angleDecrement;
 		}

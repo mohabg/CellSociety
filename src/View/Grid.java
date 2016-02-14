@@ -30,7 +30,6 @@ public class Grid {
 	public void addCell(Cell cell){
 		myCells.add(cell);
 	}
-
 	public void replaceCell(Cell cell){
 		for(int x=0; x<myCells.size(); x++){
 			Cell curr = myCells.get(x);
@@ -48,18 +47,6 @@ public class Grid {
 			}
 		}
 		return null;
-	}
-
-	public ArrayList<Cell> getNonDiagonalNeighbors(Cell cell){
-		ArrayList<Cell> neighbors = cell.getAllNeighbors();
-		Iterator<Cell> neighborIterator = neighbors.iterator();
-		while(neighborIterator.hasNext()){
-			Cell neighborcell = neighborIterator.next();
-			if(cell.isDiagonalNeighborWith(neighborcell)){
-				neighborIterator.remove();
-			}
-		}
-		return neighbors;
 	}
 
 	public Grid getGridClone(){

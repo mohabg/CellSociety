@@ -3,7 +3,6 @@ import java.util.*;
 
 import src.Model.Cell;
 import src.View.Grid;
-import src.controller.CellIterator;
 
 public abstract class Simulation {
 	
@@ -23,8 +22,7 @@ public abstract class Simulation {
 
 	public void initialize(List<Integer> cellStates){
 		int statesListIndex = 0;
-		CellIterator cellIt = myGrid.getCellIterator();
-		for(Cell cell : cellIt){
+		for(Cell cell : myGrid.getCells()){
 			cell.setState(cellStates.get(statesListIndex++));
 		}
 	}
@@ -52,9 +50,8 @@ public abstract class Simulation {
 		else{
 			newGrid = myGrid;
 		}
-		CellIterator cellIt = myGrid.getCellIterator();
-		for(Cell cell: cellIt){
-			newGrid.setCell(updateCellState(cell));
+		for(Cell cell: myGrid.getCells()){
+			newGrid.replaceCell(updateCellState(cell));
 		}
 		return newGrid;
 	}

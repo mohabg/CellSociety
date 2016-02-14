@@ -5,7 +5,6 @@ import java.util.Random;
 
 import src.Model.Cell;
 import src.View.Grid;
-import src.controller.CellIterator;
 
 public class SegregationSimulation extends Simulation {
 	private int noAgent = 0;
@@ -43,7 +42,7 @@ public class SegregationSimulation extends Simulation {
 		}
 		int similarAgents = 0;
 		int differentAgents = 0;
-		for(Cell neighborCell : getGrid().getAllNeighbors(cell)){
+		for(Cell neighborCell : cell.getAllNeighbors()){
 			int neighborState = neighborCell.getState();
 			if(neighborState == noAgent){
 				continue;
@@ -61,9 +60,8 @@ public class SegregationSimulation extends Simulation {
 		}
 		if(similarPercentage <= satisfiedPercentage){
 			//Dissatisfied Agent
-			CellIterator cellIt = getGrid().getCellIterator();
 			ArrayList<Cell> emptyCells = new ArrayList<Cell>();
-			for(Cell emptyCell: cellIt){
+			for(Cell emptyCell: getGrid().getCells()){
 				if(emptyCell.isState(noAgent)){
 					emptyCells.add(emptyCell);
 				}

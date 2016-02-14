@@ -22,7 +22,7 @@ public class GameOfLifeSimulation extends Simulation{
 	@Override
 	public Cell updateCellState(Cell cell) {
 		int liveNeighbors = 0;
-		for(Cell neighborCell: getGrid().getAllNeighbors(cell)){
+		for(Cell neighborCell: cell.getAllNeighbors()){
 			if(neighborCell.isState(liveState)){
 				liveNeighbors++;
 			}
