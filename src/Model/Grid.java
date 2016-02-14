@@ -134,7 +134,7 @@ public class Grid {
 			}
 		}
 		else if(shapeType.equals("Triangle")){
-			double height = new TriangleCell(sideLen).getHeight();
+			double height = new TriangleCell(sideLen, this).getHeight();
 			double centroidX = 1/2*sideLen;
 			double centroidY = (1/3)*(height + height);// centroid formula
 			double centerX = sideLen/2 + centroidX; 

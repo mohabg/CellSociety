@@ -6,37 +6,57 @@ import javafx.scene.shape.Polygon;
 
 public abstract class Cell {
 
-	private int index;
 	protected double myCenterX, myCenterY;
 	protected int currState;
 	private Actor myActor;
 	private double sideLength;
 	private int numSides;
+	private Grid myGrid;
 
 	public Cell(int state){
 		currState = state;
 	}
 
-	public Cell(double centerX, double centerY, int state, double sideLength, int numSides){
+	public Cell(double centerX, double centerY, int state, double sideLength, int numSides, Grid myGrid){
 		myCenterX = centerX;
 		myCenterY = centerY;
 		currState = state;
 		this.sideLength = sideLength;
 		this.numSides = numSides;
+		this.myGrid = myGrid;
 	}
-
-	public abstract Cell getLeftNeighbor();
-	public abstract Cell getTopLeftNeighbor();
-	public abstract Cell getTopNeighbor();
-	public abstract Cell getTopRightNeighbor();
-	public abstract Cell getRightNeighbor();
-	public abstract Cell getBottomRightNeighbor();
-	public abstract Cell getBottomNeighbor();
-	public abstract Cell getBottomLeftNeighbor();
-	public abstract boolean isDiagonalNeighborWith(Cell otherCell);
 	public abstract double[] getXPoints();
 	public abstract double[] getYPoints();
-	public abstract Polygon getPoly();
+	
+	public Cell getLeftNeighbor(){
+		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY());
+	}
+	public Cell getTopLeftNeighbor(){
+		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY() - getSideLength());
+	}
+	public Cell getTopNeighbor(){
+		return myGrid.getCell(getCenterX(), getCenterY() - getSideLength());
+	}
+	public Cell getTopRightNeighbor(){
+		return myGrid.getCell(getCenterX() + getSideLength(), getCenterY() - getSideLength());
+	}
+	public Cell getRightNeighbor(){
+		return myGrid.getCell(getCenterX() + getSideLength(), getCenterY());
+	}
+	public Cell getBottomRightNeighbor(){
+		return myGrid.getCell(getCenterX() + getSideLength(), getCenterY() + getSideLength());
+	}
+	public Cell getBottomNeighbor(){
+		return myGrid.getCell(getCenterX(), getCenterY() + getSideLength());
+	}
+	public Cell getBottomLeftNeighbor(){
+		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY() - getSideLength());
+	}
+	public boolean isDiagonalNeighborWith(Cell otherCell){
+		//X locations and Y locations both differ by 1
+		// to implement
+		return (Math.abs(myCenterX - otherCell.getCenterX()) == getSideLength()) && (Math.abs(myCenterY - otherCell.getCenterY()) == getSideLength());
+	}
 
 	public ArrayList<Cell> getAllNeighbors(){
 		ArrayList<Cell> neighbors = new ArrayList<Cell>();
