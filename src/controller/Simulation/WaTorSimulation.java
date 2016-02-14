@@ -107,14 +107,9 @@ public class WaTorSimulation extends Simulation{
 	}
 
 	public void initialize(){
-		System.out.println("C");
 		ArrayList<Cell> cellList = getGrid().getCells();
-		System.out.println("D "+cellList.size());
 		for(int x=0; x<cellList.size(); x++){
-			System.out.println("F");
-			System.out.println(cellList);
 			int cellState = cellList.get(x).getState();
-			System.out.println("E");
 			Cell nextCell = cellList.get(x);
 			nextCell.setState(cellState);
 			if(cellState == fishCell){
