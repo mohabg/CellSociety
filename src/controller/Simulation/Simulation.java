@@ -7,51 +7,56 @@ public abstract class Simulation {
     
     private Grid newGrid;
     private Grid myGrid;
-    private boolean isPaused;
-    
-    public Simulation(Grid grid){
-        isPaused = false;
-        this.myGrid = grid;
-    }
-    
-    public Simulation(){
-    	
-    }
-    
-    public Grid getGrid(){
-        return myGrid;
-    }
-    public void run(){
-        while(!isPaused){
-            step();
-        }
-    }
-    public void pause(){
-        isPaused = true;
-    }
-    
-    public Grid step(){
-        newGrid = myGrid.getGridClone();
-        for(int x=0; x<myGrid.getCells().size(); x++){
+	private boolean useGridClone;
+	
+	public Simulation(Grid grid){
+		isPaused = false;
+		useGridClone = false;
+		this.myGrid = grid;
+	}
+	
+	public Grid getGrid(){
+		return myGrid;
+	}
+
+	public void initialize(List<Integer> cellStates){
+		int statesListIndex = 0;
+		for(Cell cell : myGrid.getCells()){
+			cell.setState(cellStates.get(statesListIndex++));
+		}
+	}
+	public void shouldUseGridClone(){
+		useGridClone = true;
+	}
+	public void shouldNotUseGridClone(){
+		useGridClone = false;
+	}
+	public Grid step(){
+		createOrRemovePerStep();
+		Grid newGrid;
+		if(useGridClone){
+		newGrid = myGrid.getGridClone();
+		}
+		else{
+			newGrid = myGrid;
+		}
+		 for(int x=0; x<myGrid.getCells().size(); x++){
         	Cell newCell = updateCellState(newGrid.getCells().get(x));
         	newGrid.replaceCell(newCell);
         }
-        return newGrid;
-    }
-    public abstract Cell updateCellState(Cell cell);
-    public abstract String returnTitle();
-    public ArrayList<String> paramsList(){
-    	ArrayList<String> blanky = new ArrayList<String>();
-    	return blanky;
-    }
-    
-    public double getParameter(){
-    	return 0.0;
-    }
-    public void setParameter(double aValue){
-    	
-    }
-    
-    public abstract ArrayList<String> getParameters();
-    public abstract void setParameters(ArrayList<Double> paramsList);
+		return newGrid;
+	}
+	public abstract Cell updateCellState(Cell cell);
+	public void createOrRemovePerStep(){
+		//Not abstract because not every subclass needs this method
+	}
+	  public ArrayList<String> getParameters(){
+	  }
+	  public void setParameter(double aValue){
+      }
+       public void setParameters(ArrayList<Double> paramsList){
+     }
+	  public String returnTitle() {
+		return "";	
+	}
 }

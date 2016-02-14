@@ -1,19 +1,18 @@
 package src.controller.Simulation;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 import src.Model.Actor;
 import src.Model.Cell;
-import src.Model.Grid;
+import src.View.Grid;
 
 public class WaTorSimulation extends Simulation{
 	public String returnTitle(){
 		return "WaTor Simulation";
 	}
 	public class Fish extends Actor{
-
-		public Fish(double x, double y, double actorEnergy, double depletionRate){
-			super(x, y, actorEnergy, depletionRate);
+		
+		public Fish(double x, double y){
+			super(x, y);
 		}
 	}
 	public class Shark extends Actor{
@@ -22,6 +21,7 @@ public class WaTorSimulation extends Simulation{
 			super(x, y, actorEnergy, depletionRate);
 		}
 	}
+	private List<Actor> actors;
 	private double chronon;
 	private double fishReproductionTime;
 	private double sharkReproductionTime;
@@ -31,7 +31,53 @@ public class WaTorSimulation extends Simulation{
 	private int emptyCell = 0;
 	private int fishCell = 1;
 	private int sharkCell = 2;
-
+	
+	public void setChrononParameter(double time){
+		chronon = time;
+	}
+	public void setFishReproductionTimeParameter(double time){
+		fishReproductionTime = time;
+	}
+	public void setSharkReproductionTimeParameter(double time){
+		sharkReproductionTime = time;
+	}
+	public void setSharkDepletionRateParameter(double rate){
+		sharkDepletionRate = rate;
+	}
+	public void setEatFishRegenerationRateParameter(double rate){
+		eatFishRegenerationRate = rate;
+	}
+	public void setSharkEnergyParamter(double energy){
+		sharkEnergy = energy;
+	}
+	public void setEmptyCellParameter(int empty){
+		emptyCell = empty;
+	}
+	public void setFishCellParameter(int fish){
+		fishCell = fish;
+	}
+	public void setSharkCellParameter(int shark){
+		sharkCell = shark;
+	}
+	
+	public WaTorSimulation(Grid grid) {
+		super(grid);
+		actors = new ArrayList<Actor>();
+		this.shouldNotUseGridClone();
+		for(Cell cell : grid.getCells()){
+			if(cell.isState(fishCell)){
+				Fish fish = new Fish(cell.getCenterX(), cell.getCenterY());
+				actors.add(fish);
+				cell.setActor(fish);
+			}
+			if(cell.isState(sharkCell)){
+				Shark shark = new Shark(cell.getCenterX(), cell.getCenterY(), sharkEnergy, sharkDepletionRate);
+				actors.add(shark);
+				cell.setActor(shark);
+			}
+		}
+	}
+	
 	public void setParameters(ArrayList<Double> params){
 		double CHRONON_DEFAULT = 1000/60;
 		double FISH_REPRO_DEFAULT = 10*1000/60;
@@ -60,171 +106,6 @@ public class WaTorSimulation extends Simulation{
 			sharkEnergy = SHARK_ENERGY_DEFAULT;
 	}
 
-	public void setChrononParameter(double time){
-		chronon = time;
-	}
-	public void setFishReproductionTimeParameter(double time){
-		fishReproductionTime = time;
-	}
-	public void setSharkReproductionTimeParameter(double time){
-		sharkReproductionTime = time;
-	}
-	public void setSharkDepletionRateParameter(double rate){
-		sharkDepletionRate = rate;
-	}
-	public void setEatFishRegenerationRateParameter(double rate){
-		eatFishRegenerationRate = rate;
-	}
-	public void setSharkEnergyParamter(double energy){
-		sharkEnergy = energy;
-	}
-	public void setEmptyCellParameter(int empty){
-		emptyCell = empty;
-	}
-	public void setFishCellParameter(int fish){
-		fishCell = fish;
-	}
-	public void setSharkCellParameter(int shark){
-		sharkCell = shark;
-	}
-
-	public WaTorSimulation(Grid grid) {
-		super(grid);
-	}
-	public WaTorSimulation() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public Grid step(){
-		Grid myGrid = getGrid();
-		ArrayList<Cell> cellList = getGrid().getCells();
-		for(int x=0; x<cellList.size(); x++){
-			myGrid.replaceCell(updateCellState(cellList.get(x)));
-		}
-		return myGrid;
-	}
-
-	public void initialize(){
-		ArrayList<Cell> cellList = getGrid().getCells();
-		for(int x=0; x<cellList.size(); x++){
-			int cellState = cellList.get(x).getState();
-			Cell nextCell = cellList.get(x);
-			nextCell.setState(cellState);
-			if(cellState == fishCell){
-				nextCell.setActor(new Fish(nextCell.getCenterX(), nextCell.getCenterY(), 0, 0));
-			}
-			if(cellState == sharkCell){
-				nextCell.setActor(new Shark(nextCell.getCenterX(), nextCell.getCenterY(), sharkEnergy, sharkDepletionRate));
-			}
-		}
-	}
-
-	public Cell updateCellState(Cell cell) {
-		Actor cellActor = cell.getActor();
-
-		if(cellActor == null){
-			return cell;
-		}
-		if(cellActor instanceof Shark){
-			Shark shark = (Shark) cellActor;
-			shark.depleteEnergy();
-			if(shark.isDead()){
-				cell.removeActor();
-				cell.setState(emptyCell);
-				return cell;
-			}
-			reproduceIfAllowed(shark, false);
-			ArrayList<Cell> emptyCells = new ArrayList<Cell>();
-			ArrayList<Fish> neighborFish = new ArrayList<Fish>();
-
-			for(Cell neighborCell : cell.getNonDiagonalNeighbors()){
-				Actor neighborActor = neighborCell.getActor();
-				if(neighborActor != null){
-					if(neighborActor instanceof Fish){
-						neighborFish.add((Fish) neighborActor);
-					}
-				}
-				else if(!(neighborActor instanceof Shark)){
-					emptyCells.add(neighborCell);
-				}
-			}
-			if(neighborFish.size() == 0 && emptyCells.size() > 0){
-				moveAtRandom(shark, emptyCells);
-			}
-			else if(neighborFish.size() > 0){
-				//Eat Fish at random
-				Random rand = new Random();
-				int randomFishIndex = rand.nextInt(neighborFish.size());
-				Fish randomFish = neighborFish.get(randomFishIndex);
-				Cell randomFishCell = getGrid().getCell(randomFish.getCenterX(), randomFish.getCenterY());
-				randomFishCell.removeActor();
-				shark.setEnergy(shark.getEnergy() + eatFishRegenerationRate);
-				shark.move(randomFish.getCenterX(), randomFish.getCenterY());
-				cell.removeActor();
-				cell.setState(emptyCell);
-				Cell newSharkCell = getGrid().getCell(shark.getCenterX(), shark.getCenterY());
-				newSharkCell.setState(sharkCell);
-				newSharkCell.setActor(shark);
-			}
-		}
-		if(cellActor instanceof Fish){
-			Fish fish = (Fish) cellActor;
-			reproduceIfAllowed(fish, true);
-			ArrayList<Cell> emptyCells = new ArrayList<Cell>();
-			for(Cell neighborCell : cell.getNonDiagonalNeighbors()){
-				Actor neighborActor = neighborCell.getActor();
-				if(neighborActor == null){
-					emptyCells.add(neighborCell);
-				}
-			}
-			moveAtRandom(fish, emptyCells);
-		}
-
-		return cell;
-	}
-	public void reproduceIfAllowed(Actor actor, boolean useFishReproductionTime){
-		Actor newActor;
-		double reproductionTime = sharkReproductionTime;
-		if(useFishReproductionTime){
-			reproductionTime = fishReproductionTime;
-		}
-		if(actor.getTimeSinceReproduced() >= reproductionTime){
-			if(useFishReproductionTime){
-				actor.resetTimeSinceReproduced();
-				newActor = new Fish(actor.getCenterX(), actor.getCenterY(), actor.getEnergy(), actor.getDepletionRate());
-			}
-			else{
-				actor.resetTimeSinceReproduced();
-				newActor = new Shark(actor.getCenterX(), actor.getCenterY(), actor.getEnergy(), actor.getDepletionRate());
-			}
-			Cell newActorCell = getGrid().getCell(newActor.getCenterX(), newActor.getCenterY());
-			newActorCell.setActor(newActor);
-		}
-		else{
-			actor.updateTimeSinceReproduced(chronon);
-		}
-	}
-	public void moveAtRandom(Actor actor, ArrayList<Cell> emptyCells){
-		Random rand = new Random();
-		if(emptyCells.size() == 0){
-			return;
-		}
-		Cell actorCell = getGrid().getCell(actor.getCenterX(), actor.getCenterY());
-		actorCell.setState(emptyCell);
-		actorCell.removeActor();
-
-		int randomCell = rand.nextInt(emptyCells.size());
-		Cell newLocation = emptyCells.get(randomCell);
-		actor.move(newLocation.getCenterX(), newLocation.getCenterY());
-		if(actor instanceof Shark){
-			newLocation.setState(sharkCell);
-		}
-		if(actor instanceof Fish){
-			newLocation.setState(fishCell);
-		}
-		newLocation.setActor(actor);
-	}
-
 	public ArrayList<String> paramsList(){
 		ArrayList<String> toRet = new ArrayList<String>();
 		toRet.add("fishReproductionTime");
@@ -247,5 +128,107 @@ public class WaTorSimulation extends Simulation{
 		params.add("eatFishRegenerationRate");
 		params.add("sharkEnergy");
 		return params;
+	}
+}
+
+	public Cell updateCellState(Cell cell) {
+		List<Cell> emptyCells = new ArrayList<Cell>();
+		List<Fish> neighborFish = new ArrayList<Fish>();
+		for(Actor actor: cell.getActors()){
+				if(actor instanceof Shark){
+					Shark shark = (Shark) actor;
+					if(sharkDidDie(cell, shark)){
+						return cell;
+					}
+					reproduceIfAllowed(shark, false);
+					sharkMovementRules(cell, shark, emptyCells, neighborFish);
+				}
+				if(actor instanceof Fish){
+					Fish fish = (Fish) actor;
+					reproduceIfAllowed(fish, true);
+					for(Cell neighborCell : cell.getNonDiagonalNeighbors()){
+						Actor neighborActor = neighborCell.getActors().get(0);
+						if(neighborActor == null){
+							emptyCells.add(neighborCell);
+						}
+					}
+					fish.getCell().setState(emptyCell);
+					fish.moveAtRandom(emptyCells);
+					fish.getCell().setState(fishCell);
+				}
+		}
+		return cell;
+	}
+
+	public boolean sharkDidDie(Cell cell, Shark shark) {
+		shark.depleteEnergy();
+		if(shark.isDead()){
+			cell.removeActor(shark);
+			cell.setState(emptyCell);
+			return true;
+		}
+		return false;
+	}
+
+	public void sharkMovementRules(Cell cell, Shark shark, List<Cell> emptyCells, List<Fish> neighborFish) {
+		for(Cell neighborCell : cell.getNonDiagonalNeighbors()){
+			Actor neighborActor = neighborCell.getActors().get(0);
+			if(neighborActor != null){
+				if(neighborActor instanceof Fish){
+					neighborFish.add((Fish) neighborActor);
+				}
+			}
+			else if(!(neighborActor instanceof Shark)){
+				emptyCells.add(neighborCell);
+			}
+		}
+		if(neighborFish.size() == 0 && emptyCells.size() > 0){
+			shark.getCell().setState(emptyCell);
+			shark.moveAtRandom(emptyCells);
+			shark.getCell().setState(sharkCell);
+		}
+		else if(neighborFish.size() > 0){
+			eatFishAtRandom(cell, shark, neighborFish);
+		}
+	}
+
+	public void eatFishAtRandom(Cell cell, Shark shark, List<Fish> neighborFish) {
+		Random rand = new Random();
+		int randomFishIndex = rand.nextInt(neighborFish.size());
+		Fish randomFish = neighborFish.get(randomFishIndex);
+		Cell randomFishCell = getGrid().getCell(randomFish.getX(), randomFish.getY());
+		randomFishCell.removeActor(randomFish);
+		shark.setEnergy(shark.getEnergy() + eatFishRegenerationRate);
+		shark.move(randomFishCell);
+		cell.removeActor(shark);
+		cell.setState(emptyCell);
+		Cell newSharkCell = getGrid().getCell(shark.getX(), shark.getY());
+		newSharkCell.setState(sharkCell);
+		newSharkCell.setActor(shark);
+	}
+	public void reproduceIfAllowed(Actor actor, boolean useFishReproductionTime){
+		double reproductionTime = sharkReproductionTime;
+		if(useFishReproductionTime){
+			reproductionTime = fishReproductionTime;
+		}
+		if(actor.getTimeSinceReproduced() >= reproductionTime){
+			reproduceAndReset(actor, useFishReproductionTime);
+		}
+		else{
+			actor.updateTimeSinceReproduced(chronon);
+		}
+	}
+
+	public void reproduceAndReset(Actor actor, boolean useFishReproductionTime) {
+		Actor newActor;
+		actor.resetTimeSinceReproduced();
+		if(useFishReproductionTime){
+			newActor = new Fish(actor.getX(), actor.getY());
+		}
+		else{
+			newActor = new Shark(actor.getX(), actor.getY(), actor.getEnergy(), actor.getDepletionRate());
+		}
+		Cell newActorCell = getGrid().getCell(newActor.getX(), newActor.getY());
+		newActorCell.setActor(newActor);
 	}
 }
