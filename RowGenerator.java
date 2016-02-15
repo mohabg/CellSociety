@@ -1,7 +1,7 @@
 public class RowGenerator {
 	public static void main(String[] args){
 		String str = "";
-		int numCells = 625;
+		int numCells = 1200;
 		int NUM_STATES = 3;
 		str+="<cells list = \"";
 		for(int x=0; x<numCells; x++){

@@ -342,6 +342,7 @@ public class XMLParser {
 		Grid grid = new Grid(625, 625);
 		grid.setOutline(gridOutlined);
 		grid.createGrid(cellList, shapeType, sideLen);
+		System.out.println("GRID "+grid.getGridMap().get(0).get(0).getXPoints()[1]);
 		return grid;
 	}
 }

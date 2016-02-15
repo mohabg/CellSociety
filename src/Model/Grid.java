@@ -14,8 +14,11 @@ public class Grid {
 
 	private ArrayList<Cell> myCells;
 	private boolean outlined;
-	double width;
-	double height;
+	private double width;
+	private double height;
+	private HashMap<Integer, ArrayList<Cell>> gridMap = new HashMap<Integer, ArrayList<Cell>>();
+	private int numCellsPerRow;
+	private int intNumRows;
 
 	public Grid(double width, double height){
 		myCells = new ArrayList<Cell>();
@@ -110,7 +113,7 @@ public class Grid {
 			gc.setLineWidth(myStrokeWidth);
 			double[] xPoints = cell.getXPoints();
 			double[] yPoints = cell.getYPoints();
-			gc.fillPolygon(cell.getXPoints(), cell.getYPoints(), cell.getNumSides());
+			gc.fillPolygon(xPoints, yPoints, cell.getNumSides());
 		}
 		if(outlined)
 			gc.setStroke(Color.DARKGRAY);
@@ -134,34 +137,51 @@ public class Grid {
 			}
 		}
 		else if(shapeType.equals("Triangle")){
-			double height = new TriangleCell(sideLen, this).getHeight();
-			double centroidX = 1/2*sideLen;
-			double centroidY = (1/3)*(height + height);// centroid formula
-			double centerX = sideLen/2 + centroidX; 
-			double centerY = sideLen/2 + centroidY;
-			int row = 0;
+			System.out.println("Making triangle grid.");
+			int nextRow = 0;
+			int nextCol = 0;
+			TriangleCell tri = new TriangleCell(sideLen, this);
+			gridMap.put(0, new ArrayList<Cell>());
 			for(int x=0; x<cellList.size(); x++){
 				int state = cellList.get(x);
-				int type = x%2; // type 0 = vertical, type 1 = flipped vertically
-				if(row % 2 == 1){
-					if(type == 0)
-						type = 1;
-					else if(type == 1)
-						type = 0;
+				double centerX = 0;
+				double centerY = 0;
+				System.out.println("At cell # "+x);
+				if(nextCol == 0){
+					centerX = tri.XaddToNewRow(nextRow, nextCol);
+					centerY = tri.YaddToNewRow(nextRow, nextCol);
 				}
-				Cell newCell = new TriangleCell(centerX, centerY, state, sideLen, this, type);
+				else{
+					centerX = tri.XaddToExistingRow(nextRow, nextCol);
+					centerY = tri.YaddToExistingRow(nextRow, nextCol);
+				}
+				System.out.println("("+centerX+", "+centerY+")");
+				Cell newCell = new TriangleCell(centerX, centerY, state, sideLen, this);
+				newCell.setXPoints(tri.getXPoints());
+				newCell.setYPoints(tri.getYPoints());
 				addCell(newCell);
-				centerX += sideLen/2;
-				if(centerX >= (getWidth() - sideLen)){
-					centerX = sideLen/2 + centroidX;
-					centerY += height;
-					row++;
+				ArrayList<Cell> gridRow = gridMap.get(nextRow);
+				gridRow.add(newCell);
+				System.out.println("GRID3 "+newCell.getXPoints()[1]+" "+getGridMap().get(0).get(0).getXPoints()[1]);
+				gridMap.put(nextRow, gridRow);
+				if(( centerX + sideLen) >= width){
+					nextCol = 0;
+					nextRow++;
+					ArrayList<Cell> nextGridRow = new ArrayList<Cell>();
+					gridMap.put(nextRow, nextGridRow);
 				}
+				else
+					nextCol++;
 			}
 		}
 		else if(shapeType.equals("Hexagon")){
 
 		}
+		System.out.println("GRID2 "+getGridMap().get(0).get(0).getXPoints()[1]);
+	}
+
+	public HashMap<Integer, ArrayList<Cell>> getGridMap(){
+		return gridMap;
 	}
 
 }

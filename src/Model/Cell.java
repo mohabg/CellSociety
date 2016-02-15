@@ -1,8 +1,5 @@
 package src.Model;
-
 import java.util.ArrayList;
-
-import javafx.scene.shape.Polygon;
 
 public abstract class Cell {
 
@@ -12,6 +9,8 @@ public abstract class Cell {
 	private double sideLength;
 	private int numSides;
 	private Grid myGrid;
+	private double[] xPoints;
+	private double[] yPoints;
 
 	public Cell(int state){
 		currState = state;
@@ -21,12 +20,12 @@ public abstract class Cell {
 		myCenterX = centerX;
 		myCenterY = centerY;
 		currState = state;
+		xPoints = new double[numSides];
+		yPoints = new double[numSides];
 		this.sideLength = sideLength;
 		this.numSides = numSides;
 		this.myGrid = myGrid;
 	}
-	public abstract double[] getXPoints();
-	public abstract double[] getYPoints();
 	
 	public Cell getLeftNeighbor(){
 		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY());
@@ -90,6 +89,27 @@ public abstract class Cell {
 		if(getBottomNeighbor() != null)
 			nonDiag.add(getBottomNeighbor());
 		return nonDiag;
+	}
+	
+	public double[] getXPoints(){
+		return xPoints;
+	}
+	public double[] getYPoints(){
+		return yPoints;
+	}
+	public void setXPoints(double[] newXPoints){
+		for(int x=0; x<newXPoints.length; x++){
+			xPoints[0] = newXPoints[0];
+			xPoints[1] = newXPoints[1];
+			xPoints[2] = newXPoints[2];
+		}
+	}
+	public void setYPoints(double[] newYPoints){
+		for(int x=0; x<newYPoints.length; x++){
+			yPoints[0] = newYPoints[0];
+			yPoints[1] = newYPoints[1];
+			yPoints[2] = newYPoints[2];
+		}
 	}
 	
 	public Actor getActor(){
