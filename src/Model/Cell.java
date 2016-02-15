@@ -49,7 +49,7 @@ public abstract class Cell {
 		return myGrid.getCell(getCenterX(), getCenterY() + getSideLength());
 	}
 	public Cell getBottomLeftNeighbor(){
-		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY() - getSideLength());
+		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY() + getSideLength());
 	}
 	public boolean isDiagonalNeighborWith(Cell otherCell){
 		//X locations and Y locations both differ by 1

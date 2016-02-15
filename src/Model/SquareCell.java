@@ -1,7 +1,5 @@
 package src.Model;
 
-import javafx.scene.shape.Polygon;
-
 public class SquareCell extends Cell{
 
 	public SquareCell(double x, double y, int state, double sideLen, Grid myGrid){

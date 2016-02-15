@@ -43,7 +43,6 @@ public class TriangleCell extends Cell{
 			x2 = getSideLength();
 			newXPoints[2] = x2;
 		}
-		System.out.println("(x0, x1, x2): ("+x0+", "+x1+", "+x2+")");
 		setXPoints(newXPoints);
 		return (x0+x1+x2)/3;
 	}
@@ -69,7 +68,6 @@ public class TriangleCell extends Cell{
 			y2 = row*getHeight();
 			newYPoints[2] = y2;
 		}
-		System.out.println("(y0, y1, y2): ("+y0+", "+y1+", "+y2+")");
 		setYPoints(newYPoints);
 		return (y0+y1+y2)/3;
 	}

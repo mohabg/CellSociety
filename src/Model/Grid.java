@@ -137,7 +137,6 @@ public class Grid {
 			}
 		}
 		else if(shapeType.equals("Triangle")){
-			System.out.println("Making triangle grid.");
 			int nextRow = 0;
 			int nextCol = 0;
 			TriangleCell tri = new TriangleCell(sideLen, this);
@@ -146,7 +145,6 @@ public class Grid {
 				int state = cellList.get(x);
 				double centerX = 0;
 				double centerY = 0;
-				System.out.println("At cell # "+x);
 				if(nextCol == 0){
 					centerX = tri.XaddToNewRow(nextRow, nextCol);
 					centerY = tri.YaddToNewRow(nextRow, nextCol);
@@ -155,14 +153,12 @@ public class Grid {
 					centerX = tri.XaddToExistingRow(nextRow, nextCol);
 					centerY = tri.YaddToExistingRow(nextRow, nextCol);
 				}
-				System.out.println("("+centerX+", "+centerY+")");
 				Cell newCell = new TriangleCell(centerX, centerY, state, sideLen, this);
 				newCell.setXPoints(tri.getXPoints());
 				newCell.setYPoints(tri.getYPoints());
 				addCell(newCell);
 				ArrayList<Cell> gridRow = gridMap.get(nextRow);
 				gridRow.add(newCell);
-				System.out.println("GRID3 "+newCell.getXPoints()[1]+" "+getGridMap().get(0).get(0).getXPoints()[1]);
 				gridMap.put(nextRow, gridRow);
 				if(( centerX + sideLen) >= width){
 					nextCol = 0;
@@ -175,9 +171,8 @@ public class Grid {
 			}
 		}
 		else if(shapeType.equals("Hexagon")){
-
+			
 		}
-		System.out.println("GRID2 "+getGridMap().get(0).get(0).getXPoints()[1]);
 	}
 
 	public HashMap<Integer, ArrayList<Cell>> getGridMap(){

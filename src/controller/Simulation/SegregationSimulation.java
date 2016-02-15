@@ -11,7 +11,7 @@ public class SegregationSimulation extends Simulation {
     private int firstAgent = 1;
     private int secondAgent = 2;
     //satisfiedPercentage range: 0.0 - 1.0
-    private double satisfiedPercentage = 0.3;
+    private double satisfiedPercentage = 1;
     
     public SegregationSimulation(Grid grid) {
         super(grid);
