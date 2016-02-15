@@ -40,8 +40,16 @@ public class XMLParser {
 	private String[] edgeNames = {"Finite", "Toroidal", "Infinite"};
 	private HashMap<String, Simulation> simTypes = new HashMap<String, Simulation>();
 	private boolean gridOutlined = true;
+	PropertiesReader myReader;
 
 	public XMLParser(File myFile, HashMap<String, Simulation> simTypes) throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
+		myReader = new PropertiesReader();
+		try {
+			myReader.load("english");
+		} catch (IOException e) {
+			System.out.println("Wrong file");
+			System.exit(1);
+		}
 		this.simTypes = simTypes;
 		fileCheck(myFile);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -58,22 +66,22 @@ public class XMLParser {
 			fileExtension = fileExtension.substring(pos+1);
 		}
 		if(!fileExtension.equals("xml")){
-			String invalidFileMessage = "Invalid file (Load xml).";
+			String invalidFileMessage = myReader.getString("InvalidFile");
 			popupErrorMessage(invalidFileMessage);
 		}
 	}
 
 	public void popupErrorMessage(String message){
 		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Error Alert");
-		alert.setHeaderText("You have registered an error:");
+		alert.setTitle(myReader.getString("ErrorAlert"));
+		alert.setHeaderText(myReader.getString("RegisterError"));
 		alert.setContentText(message);
 		alert.showAndWait();
 	}
 
 	public Optional<String> textboxErrorMessage(String message){
 		TextInputDialog dialog = new TextInputDialog("");
-		dialog.setTitle("You have registered an error:");
+		dialog.setTitle(myReader.getString("RegisterError"));
 		dialog.setHeaderText(message);
 		dialog.setContentText("Desired value:");
 		Optional<String> result = dialog.showAndWait();
@@ -91,20 +99,20 @@ public class XMLParser {
 	public String setSimType(NodeList simNode){
 		if(simNode.getLength() == 0 || !checkValid(simNode.item(0).getAttributes().getNamedItem("type").getTextContent(), simNames)){
 			while(!checkValid(simType, simNames)){
-				Optional<String> input = textboxErrorMessage("Please enter simulation type. Ex: \"Fire\"");
+				Optional<String> input = textboxErrorMessage(myReader.getString("ValidSim"));
 				if(input.isPresent()){
 					simType = input.get();
 				}
 			}
 		}
 		else
-			simType = simNode.item(0).getAttributes().getNamedItem("type").getTextContent();
+			simType = simNode.item(0).getAttributes().getNamedItem(myReader.getString("Type")).getTextContent();
 		return simType;
 	}
 
 	public boolean setOutline(NodeList lineNode){
 		if(lineNode.getLength() != 0){
-			Node transparent = lineNode.item(0).getAttributes().getNamedItem("transparent");
+			Node transparent = lineNode.item(0).getAttributes().getNamedItem(myReader.getString("Transparent"));
 			String content = transparent.getTextContent();
 			if(content.toLowerCase().equals("false")){
 				return false;
@@ -114,16 +122,16 @@ public class XMLParser {
 	}
 
 	public void parseFile(Document doc) throws NoSuchFieldException, SecurityException, ClassNotFoundException, DOMException, IllegalArgumentException, IllegalAccessException{
-		NodeList simNode = doc.getElementsByTagName("sim");
+		NodeList simNode = doc.getElementsByTagName(myReader.getString("Sim"));
 		simType = setSimType(simNode);
-		NodeList lineNode = doc.getElementsByTagName("lines");
+		NodeList lineNode = doc.getElementsByTagName(myReader.getString("Lines"));
 		gridOutlined = setOutline(lineNode);
-		NodeList states = doc.getElementsByTagName("state");
+		NodeList states = doc.getElementsByTagName(myReader.getString("State"));
 		createStatesMap(states);
-		NodeList cells = doc.getElementsByTagName("cells");
+		NodeList cells = doc.getElementsByTagName(myReader.getString("Cells"));
 		int NUM_STATES = states.getLength();
 		createCellsProperties(cells, NUM_STATES);
-		NodeList params = doc.getElementsByTagName("param");
+		NodeList params = doc.getElementsByTagName(myReader.getString("Param"));
 		createParamsList(params, simType);
 	}
 
@@ -134,7 +142,7 @@ public class XMLParser {
 		for(int y=0; y<statesArr.length; y++){
 			int state = Integer.parseInt(splitStates[y]);
 			if(!statesMap.containsKey(state)){
-				popupErrorMessage("Invalid cell state provided.");
+				popupErrorMessage(myReader.getString(myReader.getString("InvalidState")));
 				break;
 			}
 			cellsList.add(state);
@@ -153,7 +161,7 @@ public class XMLParser {
 				cellsStr = text;
 			}
 			catch(NumberFormatException e){
-				Optional<String> input = textboxErrorMessage("Please enter a valid number of cells (an integer)");
+				Optional<String> input = textboxErrorMessage(myReader.getString("EnterValidCells"));
 				if(input.isPresent()){
 					text = input.get();
 				}
@@ -167,7 +175,7 @@ public class XMLParser {
 
 	public boolean configureList(NamedNodeMap map, int numStates){
 		Node listOfInitialStates = map.getNamedItem("list");
-		Node numTotalCells = map.getNamedItem("totalCells");
+		Node numTotalCells = map.getNamedItem(myReader.getString("TotalCells"));
 		if(listOfInitialStates != null){
 			createCellsList(listOfInitialStates);
 			return true;
@@ -197,9 +205,9 @@ public class XMLParser {
 			Node node = cells.item(x);
 			NamedNodeMap map = node.getAttributes();
 			configureList(map, numStates);
-			Node lenNode = map.getNamedItem("sideLength");
-			Node shapeNode = map.getNamedItem("shape");
-			Node edgeNode = map.getNamedItem("edge");
+			Node lenNode = map.getNamedItem(myReader.getString("SideLength"));
+			Node shapeNode = map.getNamedItem(myReader.getString("Shape"));
+			Node edgeNode = map.getNamedItem(myReader.getString("Edge"));
 			if(lenNode != null){
 				sideLength = lenNode.getTextContent();
 			}
@@ -225,19 +233,19 @@ public class XMLParser {
 
 	public void shapeCheck(){
 		if(shapeType.equals("") || !checkValid(shapeType, shapeNames))
-			shapeType = configureMissingParam("Please enter type of shape (\"Hexagon\", \"Triangle\", \"Square\")", shapeNames);
+			shapeType = configureMissingParam(myReader.getString("InvalidShape"), shapeNames);
 	}
 
 	public void edgeCheck(){
 		if(edgeType.equals("") || !checkValid(edgeType, edgeNames))
-			edgeType = configureMissingParam("Please enter type of edge (\"Finite\", Toroidal\", Infinite\")", edgeNames);
+			edgeType = configureMissingParam(myReader.getString("InvalidEdge"), edgeNames);
 	}
 
 	public void sideLenCheck(){
 		if(isNum(sideLength))
 			sideLen = Double.parseDouble(sideLength);
 		if(sideLength == "" || !isNum(sideLength))
-			sideLen = configureMissingLength("Please enter length of shape (Valid number)");
+			sideLen = configureMissingLength(myReader.getString("InvalidLength"));
 	}
 
 	public boolean isNum(String str){
@@ -265,8 +273,8 @@ public class XMLParser {
 		for(int x=0; x<states.getLength(); x++){
 			Node node = states.item(x);
 			NamedNodeMap map = node.getAttributes();
-			Node value = map.getNamedItem("value");
-			Node color = map.getNamedItem("color");
+			Node value = map.getNamedItem(myReader.getString("Value"));
+			Node color = map.getNamedItem(myReader.getString("Color"));
 			Color myColor;
 			Field field = Class.forName("javafx.scene.paint.Color").getField(color.getTextContent()); // toLowerCase because the color fields are RED or red, not Red
 			myColor = (Color)field.get(null);
@@ -343,7 +351,9 @@ public class XMLParser {
 	}
 
 	public Grid makeInitialGrid(ArrayList<Integer> cellList){
-		Grid grid = new Grid(625, 625);
+		String gridWidth = myReader.getString("GridWidth");
+		String gridHeight = myReader.getString("GridHeight");
+		Grid grid = new Grid(Integer.parseInt(gridWidth), Integer.parseInt(gridHeight));
 		grid.setOutline(gridOutlined);
 		grid.createGrid(cellList, shapeType, sideLen, edgeType);
 		return grid;
