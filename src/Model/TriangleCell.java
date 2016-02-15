@@ -5,13 +5,13 @@ public class TriangleCell extends Cell{
 	private double height;
 	private Grid myGrid;
 
-	public TriangleCell(double x, double y, int state, double sideLen, Grid myGrid){
-		super(x, y, state, sideLen, 3, myGrid);
+	public TriangleCell(double x, double y, int state, double sideLen, Grid myGrid, String edgeType){
+		super(x, y, state, sideLen, 3, myGrid, edgeType);
 		setHeight(sideLen);
 		this.myGrid = myGrid;
 	}
-	public TriangleCell(double sideLen, Grid myGrid){
-		super(0,0,0,sideLen,3, myGrid);
+	public TriangleCell(double sideLen, Grid myGrid, String edgeType){
+		super(0,0,0,sideLen,3, myGrid, edgeType);
 		setHeight(sideLen);
 		this.myGrid = myGrid;
 	}

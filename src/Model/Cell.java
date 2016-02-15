@@ -11,12 +11,16 @@ public abstract class Cell {
 	private Grid myGrid;
 	private double[] xPoints;
 	private double[] yPoints;
+	private boolean isAtEdge = false;
+	private int myRow;
+	private int myCol;
+	private String edgeType;
 
 	public Cell(int state){
 		currState = state;
 	}
 
-	public Cell(double centerX, double centerY, int state, double sideLength, int numSides, Grid myGrid){
+	public Cell(double centerX, double centerY, int state, double sideLength, int numSides, Grid myGrid, String edgeType){
 		myCenterX = centerX;
 		myCenterY = centerY;
 		currState = state;
@@ -25,28 +29,41 @@ public abstract class Cell {
 		this.sideLength = sideLength;
 		this.numSides = numSides;
 		this.myGrid = myGrid;
+		this.edgeType = edgeType;
 	}
 
 	public Cell getLeftNeighbor(){
-		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY());
+		Cell cell = myGrid.getCell(getCenterX() - getSideLength(), getCenterY());
+		if(isAtEdge && edgeType.equals("Toroidal"))
+			cell = myGrid.getGridMap().get(myRow).get(myGrid.getLastCol());
+		return cell;
 	}
 	public Cell getTopLeftNeighbor(){
 		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY() - getSideLength());
 	}
 	public Cell getTopNeighbor(){
-		return myGrid.getCell(getCenterX(), getCenterY() - getSideLength());
+		Cell cell = myGrid.getCell(getCenterX(), getCenterY() - getSideLength());
+		if(isAtEdge && edgeType.equals("Toroidal"))
+			cell = myGrid.getGridMap().get(myGrid.getLastRow()).get(myCol);
+		return cell;
 	}
 	public Cell getTopRightNeighbor(){
 		return myGrid.getCell(getCenterX() + getSideLength(), getCenterY() - getSideLength());
 	}
 	public Cell getRightNeighbor(){
-		return myGrid.getCell(getCenterX() + getSideLength(), getCenterY());
+		Cell cell = myGrid.getCell(getCenterX() + getSideLength(), getCenterY());
+		if(isAtEdge && edgeType.equals("Toroidal"))
+			cell = myGrid.getGridMap().get(myRow).get(0);
+		return cell;
 	}
 	public Cell getBottomRightNeighbor(){
 		return myGrid.getCell(getCenterX() + getSideLength(), getCenterY() + getSideLength());
 	}
 	public Cell getBottomNeighbor(){
-		return myGrid.getCell(getCenterX(), getCenterY() + getSideLength());
+		Cell cell = myGrid.getCell(getCenterX(), getCenterY() + getSideLength());
+		if(isAtEdge && edgeType.equals("Toroidal"))
+			cell = myGrid.getGridMap().get(0).get(myCol);
+		return cell;
 	}
 	public Cell getBottomLeftNeighbor(){
 		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY() + getSideLength());
@@ -137,6 +154,18 @@ public abstract class Cell {
 	}
 	public int getNumSides(){
 		return numSides;
+	}
+
+	public void isAtEdge(boolean edge){
+		isAtEdge = edge;
+	}
+
+	public void setRow(int row){
+		myRow = row;
+	}
+
+	public void setCol(int col){
+		myCol = col;
 	}
 
 	public abstract double getHeight();

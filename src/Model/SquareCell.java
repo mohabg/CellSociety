@@ -5,14 +5,14 @@ public class SquareCell extends Cell{
 	private double sideLen;
 	private Grid myGrid;
 
-	public SquareCell(double x, double y, int state, double sideLen, Grid myGrid){
-		super(x, y, state, sideLen, 4, myGrid);
+	public SquareCell(double x, double y, int state, double sideLen, Grid myGrid, String edgeType){
+		super(x, y, state, sideLen, 4, myGrid, edgeType);
 		this.sideLen = sideLen;
 		this.myGrid = myGrid;
 	}
 	
-	public SquareCell(double sideLen, Grid myGrid){
-		super(0,0,0,sideLen,4,myGrid);
+	public SquareCell(double sideLen, Grid myGrid, String edgeType){
+		super(0,0,0,sideLen,4,myGrid, edgeType);
 		this.sideLen = sideLen;
 		this.myGrid = myGrid;
 	}

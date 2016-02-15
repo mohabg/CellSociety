@@ -16,6 +16,8 @@ public class Grid {
 	private boolean outlined;
 	private double width;
 	private double height;
+	private int numCols;
+	private int numRows;
 	private HashMap<Integer, ArrayList<Cell>> gridMap = new HashMap<Integer, ArrayList<Cell>>();
 
 	public Grid(double width, double height){
@@ -126,10 +128,10 @@ public class Grid {
 		int nextCol = 0;
 		Cell cell = null;
 		if(shapeType.equals("Triangle")){
-			cell = new TriangleCell(sideLen, this);
+			cell = new TriangleCell(sideLen, this, edgeType);
 		}
 		if(shapeType.equals("Square"))
-			cell = new SquareCell(sideLen, this);
+			cell = new SquareCell(sideLen, this, edgeType);
 		gridMap.put(0, new ArrayList<Cell>());
 		for(int x=0; x<cellList.size(); x++){
 			int state = cellList.get(x);
@@ -145,17 +147,22 @@ public class Grid {
 			}
 			Cell newCell = null;
 			if(shapeType.equals("Triangle")){
-				newCell = new TriangleCell(centerX, centerY, state, sideLen, this);
+				newCell = new TriangleCell(centerX, centerY, state, sideLen, this, edgeType);
 			}
 			if(shapeType.equals("Square"))
-				newCell = new SquareCell(centerX, centerY, state, sideLen, this);
+				newCell = new SquareCell(centerX, centerY, state, sideLen, this, edgeType);
 			newCell.setXPoints(cell.getXPoints());
 			newCell.setYPoints(cell.getYPoints());
+			newCell.setRow(nextRow);
+			newCell.setCol(nextCol);
 			addCell(newCell);
 			ArrayList<Cell> gridRow = gridMap.get(nextRow);
 			gridRow.add(newCell);
 			gridMap.put(nextRow, gridRow);
+			if(nextCol == 0 || nextRow == 0)
+				newCell.isAtEdge(true);
 			if(( centerX + sideLen) >= width){
+				newCell.isAtEdge(true);
 				nextCol = 0;
 				nextRow++;
 				ArrayList<Cell> nextGridRow = new ArrayList<Cell>();
@@ -164,6 +171,32 @@ public class Grid {
 			else
 				nextCol++;
 		}
+		setNumCols(nextCol);
+		setNumRows(nextRow);
+		ArrayList<Cell> lastCol = getGridMap().get(nextCol);
+		updateEdges(lastCol);
+	}
+	
+	public void updateEdges(ArrayList<Cell> cells){
+		for(int x=0; x<cells.size(); x++){
+			cells.get(x).isAtEdge(true);
+		}
+	}
+	
+	public void setNumCols(int numCols){
+		this.numCols = numCols;
+	}
+	
+	public void setNumRows(int numRows){
+		this.numRows = numRows;
+	}
+	
+	public int getLastRow(){
+		return numRows-1;
+	}
+	
+	public int getLastCol(){
+		return numCols-1;
 	}
 
 	public HashMap<Integer, ArrayList<Cell>> getGridMap(){
