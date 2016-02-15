@@ -345,7 +345,7 @@ public class XMLParser {
 	public Grid makeInitialGrid(ArrayList<Integer> cellList){
 		Grid grid = new Grid(625, 625);
 		grid.setOutline(gridOutlined);
-		grid.createGrid(cellList, shapeType, sideLen);
+		grid.createGrid(cellList, shapeType, sideLen, edgeType);
 		return grid;
 	}
 }

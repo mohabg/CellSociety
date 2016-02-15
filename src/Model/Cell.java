@@ -26,7 +26,7 @@ public abstract class Cell {
 		this.numSides = numSides;
 		this.myGrid = myGrid;
 	}
-	
+
 	public Cell getLeftNeighbor(){
 		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY());
 	}
@@ -77,7 +77,7 @@ public abstract class Cell {
 		if(top!=null) neighbors.add(top);
 		return neighbors;
 	}
-	
+
 	public ArrayList<Cell> getNonDiagonalNeighbors(){
 		ArrayList<Cell> nonDiag = new ArrayList<Cell>();
 		if(getLeftNeighbor() != null)
@@ -90,7 +90,7 @@ public abstract class Cell {
 			nonDiag.add(getBottomNeighbor());
 		return nonDiag;
 	}
-	
+
 	public double[] getXPoints(){
 		return xPoints;
 	}
@@ -99,19 +99,15 @@ public abstract class Cell {
 	}
 	public void setXPoints(double[] newXPoints){
 		for(int x=0; x<newXPoints.length; x++){
-			xPoints[0] = newXPoints[0];
-			xPoints[1] = newXPoints[1];
-			xPoints[2] = newXPoints[2];
+			xPoints[x] = newXPoints[x];
 		}
 	}
 	public void setYPoints(double[] newYPoints){
-		for(int x=0; x<newYPoints.length; x++){
-			yPoints[0] = newYPoints[0];
-			yPoints[1] = newYPoints[1];
-			yPoints[2] = newYPoints[2];
+		for(int y=0; y<newYPoints.length; y++){
+			yPoints[y] = newYPoints[y];
 		}
 	}
-	
+
 	public Actor getActor(){
 		return myActor;
 	}
@@ -142,4 +138,10 @@ public abstract class Cell {
 	public int getNumSides(){
 		return numSides;
 	}
+
+	public abstract double getHeight();
+	public abstract double XaddToNewRow(int row, int col);
+	public abstract double YaddToNewRow(int row, int col);
+	public abstract double XaddToExistingRow(int row, int col);
+	public abstract double YaddToExistingRow(int row, int col);
 }

@@ -17,8 +17,6 @@ public class Grid {
 	private double width;
 	private double height;
 	private HashMap<Integer, ArrayList<Cell>> gridMap = new HashMap<Integer, ArrayList<Cell>>();
-	private int numCellsPerRow;
-	private int intNumRows;
 
 	public Grid(double width, double height){
 		myCells = new ArrayList<Cell>();
@@ -105,73 +103,66 @@ public class Grid {
 	}
 
 	public void draw(Canvas canvas, HashMap<Integer, Color> myColorMap){
-		double myStrokeWidth = 0.2;
+		double myStrokeWidth = 10;
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		for(int i=0; i<myCells.size(); i++){
 			Cell cell = myCells.get(i);
 			gc.setFill(myColorMap.get(cell.getState()));
-			gc.setLineWidth(myStrokeWidth);
 			double[] xPoints = cell.getXPoints();
 			double[] yPoints = cell.getYPoints();
 			gc.fillPolygon(xPoints, yPoints, cell.getNumSides());
+			if(outlined){
+				gc.setStroke(Color.BLACK);
+				gc.setLineWidth(myStrokeWidth);
+				gc.stroke();
+			}
+			else
+				gc.setStroke(Color.TRANSPARENT);
 		}
-		if(outlined)
-			gc.setStroke(Color.DARKGRAY);
-		else
-			gc.setStroke(Color.TRANSPARENT);
 	}
 
-	public void createGrid(ArrayList<Integer> cellList, String shapeType, double sideLen){
-		if(shapeType.equals("Square")){
-			double centerX = sideLen/2;
-			double centerY = sideLen/2;
-			for(int x=0; x<cellList.size(); x++){
-				int state = cellList.get(x);
-				Cell newCell = new SquareCell(centerX, centerY, state, sideLen, this);
-				addCell(newCell);
-				centerX += sideLen;
-				if(centerX >= (getWidth() - sideLen)){
-					centerX = sideLen/2;
-					centerY += sideLen;
-				}
-			}
+	public void createGrid(ArrayList<Integer> cellList, String shapeType, double sideLen, String edgeType){
+		int nextRow = 0;
+		int nextCol = 0;
+		Cell cell = null;
+		if(shapeType.equals("Triangle")){
+			cell = new TriangleCell(sideLen, this);
 		}
-		else if(shapeType.equals("Triangle")){
-			int nextRow = 0;
-			int nextCol = 0;
-			TriangleCell tri = new TriangleCell(sideLen, this);
-			gridMap.put(0, new ArrayList<Cell>());
-			for(int x=0; x<cellList.size(); x++){
-				int state = cellList.get(x);
-				double centerX = 0;
-				double centerY = 0;
-				if(nextCol == 0){
-					centerX = tri.XaddToNewRow(nextRow, nextCol);
-					centerY = tri.YaddToNewRow(nextRow, nextCol);
-				}
-				else{
-					centerX = tri.XaddToExistingRow(nextRow, nextCol);
-					centerY = tri.YaddToExistingRow(nextRow, nextCol);
-				}
-				Cell newCell = new TriangleCell(centerX, centerY, state, sideLen, this);
-				newCell.setXPoints(tri.getXPoints());
-				newCell.setYPoints(tri.getYPoints());
-				addCell(newCell);
-				ArrayList<Cell> gridRow = gridMap.get(nextRow);
-				gridRow.add(newCell);
-				gridMap.put(nextRow, gridRow);
-				if(( centerX + sideLen) >= width){
-					nextCol = 0;
-					nextRow++;
-					ArrayList<Cell> nextGridRow = new ArrayList<Cell>();
-					gridMap.put(nextRow, nextGridRow);
-				}
-				else
-					nextCol++;
+		if(shapeType.equals("Square"))
+			cell = new SquareCell(sideLen, this);
+		gridMap.put(0, new ArrayList<Cell>());
+		for(int x=0; x<cellList.size(); x++){
+			int state = cellList.get(x);
+			double centerX = 0;
+			double centerY = 0;
+			if(nextCol == 0){
+				centerX = cell.XaddToNewRow(nextRow, nextCol);
+				centerY = cell.YaddToNewRow(nextRow, nextCol);
 			}
-		}
-		else if(shapeType.equals("Hexagon")){
-			
+			else{
+				centerX = cell.XaddToExistingRow(nextRow, nextCol);
+				centerY = cell.YaddToExistingRow(nextRow, nextCol);
+			}
+			Cell newCell = null;
+			if(shapeType.equals("Triangle")){
+				newCell = new TriangleCell(centerX, centerY, state, sideLen, this);
+			}
+			if(shapeType.equals("Square"))
+				newCell = new SquareCell(centerX, centerY, state, sideLen, this);
+			newCell.setXPoints(cell.getXPoints());
+			newCell.setYPoints(cell.getYPoints());
+			addCell(newCell);
+			ArrayList<Cell> gridRow = gridMap.get(nextRow);
+			gridRow.add(newCell);
+			gridMap.put(nextRow, gridRow);
+			if(( centerX + sideLen) >= width){
+				nextCol = 0;
+				nextRow++;
+				ArrayList<Cell> nextGridRow = new ArrayList<Cell>();
+				gridMap.put(nextRow, nextGridRow);
+			}
+			else
+				nextCol++;
 		}
 	}
 
