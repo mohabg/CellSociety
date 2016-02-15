@@ -24,103 +24,67 @@ public class TriangleCell extends Cell{
 	public double XaddToNewRow(int row, int col){
 		int mod = (row+col)%2;
 		double[] newXPoints = new double[3];
-		double x0 = 0;
-		double x1 = 0;
-		double x2 = 0;
 		if(mod == 0){
-			x0 = getSideLength()/2;
-			newXPoints[0] = x0;
-			x1 = 0;
-			newXPoints[1] = x1;
-			x2 = getSideLength();
-			newXPoints[2] = x2;
+			newXPoints[0] = getSideLength()/2;
+			newXPoints[1] = 0;
+			newXPoints[2] = getSideLength();
 		}
 		else if(mod == 1){
-			x0 = 0;
-			newXPoints[0] = x0;
-			x1 = getSideLength()/2;
-			newXPoints[1] = x1;
-			x2 = getSideLength();
-			newXPoints[2] = x2;
+			newXPoints[0] = 0;
+			newXPoints[1] = getSideLength()/2;
+			newXPoints[2] = getSideLength();
 		}
 		setXPoints(newXPoints);
-		return (x0+x1+x2)/3;
+		return (newXPoints[0] + newXPoints[1] + newXPoints[2])/3;
 	}
 	public double YaddToNewRow(int row, int col){
 		int mod = (row+col)%2;
 		double[] newYPoints = new double[3];
-		double y0 = 0;
-		double y1 = 0;
-		double y2 = 0;
 		if(mod == 0){
-			y0 = row*getHeight();
-			newYPoints[0] = y0;
-			y1 = (row+1)*getHeight();
-			newYPoints[1] = y1;
-			y2 = (row+1)*getHeight();
-			newYPoints[2] = y2;
+			newYPoints[0] = row*getHeight();
+			newYPoints[1] = (row+1)*getHeight();
+			newYPoints[2] = (row+1)*getHeight();
 		}
 		else if(mod == 1){
-			y0 = row*getHeight();
-			newYPoints[0] = y0;
-			y1 = (row+1)*getHeight();
-			newYPoints[1] = y1;
-			y2 = row*getHeight();
-			newYPoints[2] = y2;
+			newYPoints[0] = row*getHeight();
+			newYPoints[1] = (row+1)*getHeight();
+			newYPoints[2] = row*getHeight();
 		}
 		setYPoints(newYPoints);
-		return (y0+y1+y2)/3;
+		return (newYPoints[0] + newYPoints[1] + newYPoints[2])/3;
 	}
 	public double XaddToExistingRow(int row, int col){
 		int mod = (row+col)%2;
 		double[] newXPoints = new double[3];
-		double x0 = 0;
-		double x1 = 0;
-		double x2 = 0;
 		double[] prevPoints = myGrid.getGridMap().get(row).get(col-1).getXPoints();
 		if(mod == 0){
-			x0 = prevPoints[2];
-			newXPoints[0] = x0;
-			x1 = prevPoints[1];
-			newXPoints[1] = x1;
-			x2 = prevPoints[1] + getSideLength();
-			newXPoints[2] = x2;
+			newXPoints[0] = prevPoints[2];
+			newXPoints[1] = prevPoints[1];
+			newXPoints[2] = prevPoints[1] + getSideLength();
 		}
 		else if(mod == 1){
-			x0 = prevPoints[0];
-			newXPoints[0] = x0;
-			x1 = prevPoints[2];
-			newXPoints[1] = x1;
-			x2 = prevPoints[0] + getSideLength();
-			newXPoints[2] = x2;
+			newXPoints[0] = prevPoints[0];
+			newXPoints[1] = prevPoints[2];
+			newXPoints[2] = prevPoints[0] + getSideLength();
 		}
 		setXPoints(newXPoints);
-		return (x0+x1+x2)/3;
+		return (newXPoints[0] + newXPoints[1] + newXPoints[2])/3;
 	}
 	public double YaddToExistingRow(int row, int col){
 		int mod = (row+col)%2;
 		double[] newYPoints = new double[3];
-		double y0 = 0;
-		double y1 = 0;
-		double y2 = 0;
 		double[] prevPoints = myGrid.getGridMap().get(row).get(col-1).getYPoints();
 		if(mod == 0){
-			y0 = prevPoints[2];
-			newYPoints[0] = y0;
-			y1 = prevPoints[1];
-			newYPoints[1] = y1;
-			y2 = prevPoints[1];
-			newYPoints[2] = y2;
+			newYPoints[0] = prevPoints[2];
+			newYPoints[1] = prevPoints[1];
+			newYPoints[2] = prevPoints[1];
 		}
 		else if(mod == 1){
-			y0 = prevPoints[0];
-			newYPoints[0] = y0;
-			y1 = prevPoints[2];
-			newYPoints[1] = y1;
-			y2 = prevPoints[0];
-			newYPoints[2] = y2;
+			newYPoints[0] = prevPoints[0];
+			newYPoints[1] = prevPoints[2];
+			newYPoints[2] = prevPoints[0];
 		}
 		setYPoints(newYPoints);
-		return (y0+y1+y2)/3;
+		return (newYPoints[0] + newYPoints[1] + newYPoints[2])/3;
 	}
 }
