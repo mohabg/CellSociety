@@ -53,4 +53,9 @@ public class GameOfLifeSimulation extends Simulation{
 	public void setParameters(ArrayList<Double> paramsList) {
 		
 	}
+	@Override
+	public void createOrRemovePerStep() {
+		// TODO Auto-generated method stub
+		
+	}
 }

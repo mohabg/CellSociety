@@ -72,9 +72,6 @@ public class MainDriver implements EventListener {
 		simTypes.put("Wator", new WaTorSimulation(myGrid));
 		mySim = simTypes.get(simType);
 		mySim.setParameters(paramsList);
-		if(simType.equals("Wator")){
-			((WaTorSimulation) mySim).initialize();
-		}
 		return mySim;
 	}
 

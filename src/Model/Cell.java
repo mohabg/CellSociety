@@ -1,11 +1,12 @@
 package src.Model;
-import java.util.ArrayList;
+
+import java.util.*;
+import javafx.scene.shape.Polygon;
+import src.Model.Grid;
 
 public abstract class Cell {
-
 	protected double myCenterX, myCenterY;
 	protected int currState;
-	private Actor myActor;
 	private double sideLength;
 	private int numSides;
 	private Grid myGrid;
@@ -15,9 +16,13 @@ public abstract class Cell {
 	private int myRow;
 	private int myCol;
 	private String edgeType;
-
-	public Cell(int state){
+    private PatchOfGround patch;
+    private Map<Cell, List<Actor>> cellToActorMap;
+    
+    public Cell(int state){
 		currState = state;
+        patch = new PatchOfGround();
+        cellToActorMap = new HashMap<Cell, List<Actor>>();
 	}
 
 	public Cell(double centerX, double centerY, int state, double sideLength, int numSides, Grid myGrid, String edgeType){
@@ -30,7 +35,64 @@ public abstract class Cell {
 		this.numSides = numSides;
 		this.myGrid = myGrid;
 		this.edgeType = edgeType;
+        patch = new PatchOfGround();
+        cellToActorMap = new HashMap<Cell, List<Actor>>();
 	}
+	
+    public PatchOfGround getGround(){
+    	return patch;
+    }
+
+    public List<Actor> getActors(){
+    	if(cellToActorMap.containsKey(this)){
+    		 return cellToActorMap.get(this);
+    	}
+    	else return new ArrayList<Actor>();
+    }
+    public void setActor(Actor actorToSet){
+    	actorToSet.setCell(this);
+    	if(cellToActorMap.containsKey(this)){
+    		List<Actor> actors = cellToActorMap.get(this);
+    		actors.add(actorToSet);
+        	cellToActorMap.put(this, actors);
+    	}
+    	else{
+    		List<Actor> actors = new ArrayList<Actor>();
+    		actors.add(actorToSet);
+    		cellToActorMap.put(this, actors);
+    	}
+    }
+    public void removeActor(Actor actorToRemove){
+    	if(cellToActorMap.containsKey(this)){
+    	actorToRemove.setCell(null);
+    	List<Actor> actors = cellToActorMap.get(this);
+		actors.remove(actorToRemove);
+    	cellToActorMap.put(this, actors);
+    	}
+    }
+
+    public Boolean isState(int state){
+		return currState == state;
+	}
+	public void setState(int state){
+		currState = state;
+	}
+	public double getCenterX(){
+		return myCenterX;
+	}
+	public double getCenterY(){
+		return myCenterY;
+	}
+	public int getState(){
+		return currState;
+	}
+	public double getSideLength(){
+		return sideLength;
+	}
+	public int getNumSides(){
+		return numSides;
+	}
+
 
 	public Cell getLeftNeighbor(){
 		Cell cell = myGrid.getCell(getCenterX() - getSideLength(), getCenterY());
@@ -67,11 +129,6 @@ public abstract class Cell {
 	}
 	public Cell getBottomLeftNeighbor(){
 		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY() + getSideLength());
-	}
-	public boolean isDiagonalNeighborWith(Cell otherCell){
-		//X locations and Y locations both differ by 1
-		// to implement
-		return (Math.abs(myCenterX - otherCell.getCenterX()) == getSideLength()) && (Math.abs(myCenterY - otherCell.getCenterY()) == getSideLength());
 	}
 
 	public ArrayList<Cell> getAllNeighbors(){
@@ -125,36 +182,6 @@ public abstract class Cell {
 		}
 	}
 
-	public Actor getActor(){
-		return myActor;
-	}
-	public void setActor(Actor actorToSet){
-		myActor = actorToSet;
-	}
-	public void removeActor(){
-		myActor = null;
-	}
-	public Boolean isState(int state){
-		return currState == state;
-	}
-	public void setState(int state){
-		currState = state;
-	}
-	public double getCenterX(){
-		return myCenterX;
-	}
-	public double getCenterY(){
-		return myCenterY;
-	}
-	public int getState(){
-		return currState;
-	}
-	public double getSideLength(){
-		return sideLength;
-	}
-	public int getNumSides(){
-		return numSides;
-	}
 
 	public void isAtEdge(boolean edge){
 		isAtEdge = edge;

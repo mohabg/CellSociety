@@ -52,7 +52,7 @@ public class Grid {
 		}
 		return null;
 	}
-
+/*
 	public ArrayList<Cell> getNonDiagonalNeighbors(Cell cell){
 		ArrayList<Cell> neighbors = cell.getAllNeighbors();
 		Iterator<Cell> neighborIterator = neighbors.iterator();
@@ -63,7 +63,7 @@ public class Grid {
 			}
 		}
 		return neighbors;
-	}
+	}*/
 
 	public Grid getGridClone(){
 		Grid copyGrid = new Grid(width, height);

@@ -36,17 +36,11 @@ public class SlimeMoldHistoricalSimulation extends Simulation{
 		super(grid);
 		myGrid = grid;
 		actors = new ArrayList<Actor>();
-	}
-	public void initialize(List<Integer> cellStates){
-		int statesListIndex = 0;
 		for(Cell cell : myGrid.getCells()){
-			int state = cellStates.get(statesListIndex++);
-			cell.setState(state);
-			if(state == amoebaCell){
+			if(cell.getState() == amoebaCell){
 				Actor amoeba = new Actor(cell.getCenterX(), cell.getCenterY());
 				actors.add(amoeba);
 				cell.setActor(amoeba);
-				amoeba.setCell(cell);
 			}
 		}
 	}
@@ -152,5 +146,25 @@ public class SlimeMoldHistoricalSimulation extends Simulation{
 			}
 			anglesToUse -= angleDecrement;
 		}
+	}
+	@Override
+	public void createOrRemovePerStep() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public String returnTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ArrayList<String> getParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setParameters(ArrayList<Double> paramsList) {
+		// TODO Auto-generated method stub
+		
 	}
 }

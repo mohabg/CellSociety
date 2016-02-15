@@ -5,13 +5,12 @@ import src.Model.Grid;
 
 public abstract class Simulation {
     
-    private Grid newGrid;
     private Grid myGrid;
-    private boolean isPaused;
-    
+	private boolean useGridClone;
+	
     public Simulation(Grid grid){
-        isPaused = false;
         this.myGrid = grid;
+        useGridClone = false;
     }
     
     public Simulation(){
@@ -21,23 +20,29 @@ public abstract class Simulation {
     public Grid getGrid(){
         return myGrid;
     }
-    public void run(){
-        while(!isPaused){
-            step();
-        }
-    }
-    public void pause(){
-        isPaused = true;
-    }
-    
+
+	public void shouldUseGridClone(){
+		useGridClone = true;
+	}
+	public void shouldNotUseGridClone(){
+		useGridClone = false;
+	}
     public Grid step(){
-        newGrid = myGrid.getGridClone();
-        for(int x=0; x<myGrid.getCells().size(); x++){
-        	Cell newCell = updateCellState(newGrid.getCells().get(x));
-        	newGrid.replaceCell(newCell);
-        }
+    	createOrRemovePerStep();
+    	Grid newGrid;
+		if(useGridClone){
+		newGrid = myGrid.getGridClone();
+		}
+		else{
+			newGrid = myGrid;
+		}
+		for(Cell cell: myGrid.getCells()){
+			newGrid.replaceCell(updateCellState(cell));
+		}
         return newGrid;
     }
+
+	public abstract void createOrRemovePerStep();
     public abstract Cell updateCellState(Cell cell);
     public abstract String returnTitle();
     public ArrayList<String> paramsList(){

@@ -80,5 +80,10 @@ public class FireSimulation extends Simulation{
 			probCatch = PROB_CATCH_DEFAULT;
 		}
 	}
+	@Override
+	public void createOrRemovePerStep() {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

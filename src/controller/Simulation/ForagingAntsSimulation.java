@@ -115,8 +115,7 @@ public class ForagingAntsSimulation extends Simulation{
 	public void evaporateAndDiffusePheromones(Cell cell) {
 		List<Double> pheromones = cell.getGround().getPheromones();
 		for(double pheromone : pheromones){
-			List<Cell> neighbors = cell.getAllNeighbors();
-			cell.getGround().diffusePheromones(neighbors, diffusionRatio);
+			cell.getGround().diffusePheromones(cell.getAllNeighbors(), diffusionRatio);
 			pheromone = pheromone * evaporationRatio;
 		}
 	}
@@ -292,5 +291,20 @@ public class ForagingAntsSimulation extends Simulation{
 			}
 		}
 		return maxPheromoneCell;
+	}
+	@Override
+	public String returnTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ArrayList<String> getParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setParameters(ArrayList<Double> paramsList) {
+		// TODO Auto-generated method stub
+		
 	}
 }
