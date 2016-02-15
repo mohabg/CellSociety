@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+<sim type= "Wator"> </sim>
+
+<params>
+</params>
+
+<states>
+<state value = "0" color = "YELLOW" ></state>
+<state value = "1" color = "BLACK" ></state>
+<state value = "2" color = "RED" ></state>
+</states>
+
+<grid>
+
+</grid>
+
+</simulation>

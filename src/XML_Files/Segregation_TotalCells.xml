@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+<sim type= "Segregation"> </sim>
+
+<params>
+</params>
+
+<states>
+<state value = "0" color = "YELLOW" ></state>
+<state value = "1" color = "BLACK" ></state>
+<state value = "2" color = "RED" ></state>
+</states>
+
+<grid>
+
+<cells sideLength = "25"> </cells>
+<cells edge = "Finite"></cells>
+<cells totalCells = "1250.5"></cells>
+<cells shape ="Triangle"></cells>
+
+</grid>
+
+</simulation>

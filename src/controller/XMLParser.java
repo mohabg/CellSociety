@@ -142,12 +142,15 @@ public class XMLParser {
 	}
 
 	public void configFromNumTotalCells(Node numTotalCells, int numStates){
-		String text = numTotalCells.getTextContent();
+		String text = "";
+		if(numTotalCells != null)
+			text = numTotalCells.getTextContent();
 		int totalCells = 0;
 		String cellsStr = "";
 		while(cellsStr.equals("")){
 			try{
 				totalCells = Integer.parseInt(text);
+				cellsStr = text;
 			}
 			catch(NumberFormatException e){
 				Optional<String> input = textboxErrorMessage("Please enter a valid number of cells (an integer)");
@@ -207,15 +210,16 @@ public class XMLParser {
 				edgeType = edgeNode.getTextContent();
 			}
 		}
-		listCheck();
+		listCheck(numStates);
 		shapeCheck();
 		edgeCheck();
 		sideLenCheck();
 	}
 
-	public void listCheck(){
+	public void listCheck(int numStates){
 		if(cellsList.size() == 0){
-			popupErrorMessage("No cell configuration method provided.");
+			Node node = null;
+			configFromNumTotalCells(node,numStates);
 		}
 	}
 
