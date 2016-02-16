@@ -45,7 +45,9 @@ public class SlimeMoldHistoricalSimulation extends Simulation{
 		}
 	}
 	
-	@Override
+	public SlimeMoldHistoricalSimulation() {
+	}
+	
 	public Cell updateCellState(Cell cell) {
 		List<Cell> sniffNeighbors = new ArrayList<Cell>();
 		List<Cell> wiggleNeighbors = new ArrayList<Cell>();
@@ -147,24 +149,38 @@ public class SlimeMoldHistoricalSimulation extends Simulation{
 			anglesToUse -= angleDecrement;
 		}
 	}
-	@Override
 	public void createOrRemovePerStep() {
 		// TODO Auto-generated method stub
-		
 	}
-	@Override
 	public String returnTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Slime Mold";
 	}
-	@Override
+	public void setParameters(ArrayList<Double> params){
+		double DEFAULT_VALUE = getDefaultVal();
+		if(params.get(0) != DEFAULT_VALUE)
+			dropRate = params.get(0);
+		if(params.get(1) != DEFAULT_VALUE)
+			evaporationRate = params.get(1);
+		if(params.get(2) != DEFAULT_VALUE)
+			diffusionRate = params.get(2);
+		if(params.get(3) != DEFAULT_VALUE)
+			sniffThreshold = params.get(3);
+		if(params.get(4) != DEFAULT_VALUE)
+			sniffAngle = params.get(4);
+		if(params.get(5) != DEFAULT_VALUE)
+			wiggleAngle = params.get(5);
+		if(params.get(6) != DEFAULT_VALUE)
+			wiggleBias = params.get(6);
+	}
 	public ArrayList<String> getParameters() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void setParameters(ArrayList<Double> paramsList) {
-		// TODO Auto-generated method stub
-		
+		ArrayList<String> params = new ArrayList<String>();
+		params.add("dropRate");
+		params.add("evaporationRate");
+		params.add("diffusionRate");
+		params.add("sniffThreshold");
+		params.add("sniffAngle");
+		params.add("wiggleAngle");
+		params.add("wiggleBias");
+		return params;
 	}
 }

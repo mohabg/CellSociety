@@ -76,6 +76,8 @@ public class ForagingAntsSimulation extends Simulation{
 			}
 		}
 	}
+	public ForagingAntsSimulation() {
+	}
 	@Override 
 	public void createOrRemovePerStep(){
 		for(int i = 0; i < antsBornePerTimeStep; i++){
@@ -294,17 +296,58 @@ public class ForagingAntsSimulation extends Simulation{
 	}
 	@Override
 	public String returnTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Foraging Ants";
 	}
-	@Override
 	public ArrayList<String> getParameters() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> params = new ArrayList<String>();
+		params.add("homePheromoneIndex");
+		params.add("foodPheromoneIndex");
+		params.add("numberOfPheromones");
+		params.add("maximumAntsPerLocation");
+		params.add("maximumAntsInSimulation");
+		params.add("antsBornePerTimeStep");
+		params.add("antLifeTime");
+		params.add("minNumberOfPheromones");
+		params.add("numberOfPheromones");
+		params.add("maxNumberOfPheromones");
+		params.add("gradientConstant");
+		params.add("evaporationRatio");
+		params.add("diffusionRatio");
+		params.add("kProbability");
+		params.add("nProbability");
+		return params;
 	}
-	@Override
-	public void setParameters(ArrayList<Double> paramsList) {
-		// TODO Auto-generated method stub
-		
+	public void setParameters(ArrayList<Double> params){
+		double DEFAULT_VALUE = getDefaultVal();
+		if(params.get(0) != DEFAULT_VALUE)
+			homePheromoneIndex = (int)Math.round(params.get(0));
+		if(params.get(1) != DEFAULT_VALUE)
+			foodPheromoneIndex = (int)Math.round(params.get(1));
+		if(params.get(2) != DEFAULT_VALUE)
+			numberOfPheromones = (int)Math.round(params.get(2));
+		if(params.get(3) != DEFAULT_VALUE)
+			maximumAntsPerLocation = (int)Math.round(params.get(3));
+		if(params.get(4) != DEFAULT_VALUE)
+			maximumAntsInSimulation = (int)Math.round(params.get(4));
+		if(params.get(5) != DEFAULT_VALUE)
+			antsBornePerTimeStep = (int)Math.round(params.get(5));
+		if(params.get(6) != DEFAULT_VALUE)
+			antLifeTime = params.get(6);
+		if(params.get(7) != DEFAULT_VALUE)
+			minNumberOfPheromones = params.get(7);
+		if(params.get(8) != DEFAULT_VALUE)
+			numberOfPheromones = (int)Math.round(params.get(8));
+		if(params.get(9) != DEFAULT_VALUE)
+			maxNumberOfPheromones = params.get(9);
+		if(params.get(10) != DEFAULT_VALUE)
+			gradientConstant = params.get(10);
+		if(params.get(11) != DEFAULT_VALUE)
+			evaporationRatio = params.get(11);
+		if(params.get(12) != DEFAULT_VALUE)
+			diffusionRatio = params.get(12);
+		if(params.get(13) != DEFAULT_VALUE)
+			kProbability = params.get(13);
+		if(params.get(14) != DEFAULT_VALUE)
+			nProbability = params.get(14);
 	}
 }

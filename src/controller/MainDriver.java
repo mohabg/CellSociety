@@ -3,9 +3,11 @@ import src.Model.Cell;
 import src.Model.Grid;
 import src.View.Display;
 import src.controller.Simulation.FireSimulation;
+import src.controller.Simulation.ForagingAntsSimulation;
 import src.controller.Simulation.GameOfLifeSimulation;
 import src.controller.Simulation.SegregationSimulation;
 import src.controller.Simulation.Simulation;
+import src.controller.Simulation.SlimeMoldHistoricalSimulation;
 import src.controller.Simulation.WaTorSimulation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -70,6 +72,8 @@ public class MainDriver implements EventListener {
 		simTypes.put("Life", new GameOfLifeSimulation(myGrid));
 		simTypes.put("Segregation", new SegregationSimulation(myGrid));
 		simTypes.put("Wator", new WaTorSimulation(myGrid));
+		simTypes.put("Slime", new SlimeMoldHistoricalSimulation(myGrid));
+		simTypes.put("ForagingAnts", new ForagingAntsSimulation(myGrid));
 		mySim = simTypes.get(simType);
 		mySim.setParameters(paramsList);
 		return mySim;
@@ -80,6 +84,8 @@ public class MainDriver implements EventListener {
 		defaultSimTypes.put("Life", new GameOfLifeSimulation());
 		defaultSimTypes.put("Segregation", new SegregationSimulation());
 		defaultSimTypes.put("Wator", new WaTorSimulation());
+		defaultSimTypes.put("Slime", new SlimeMoldHistoricalSimulation());
+		defaultSimTypes.put("ForagingAnts", new ForagingAntsSimulation());
 	}
 
 	private void setSimulationFPS(double FPS) {

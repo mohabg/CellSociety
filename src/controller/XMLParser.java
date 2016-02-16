@@ -35,7 +35,7 @@ public class XMLParser {
 	private String edgeType = "";
 	private String shapeType = "";
 	private double sideLen;
-	private String[] simNames = {"Fire","WaTor","Life","Segregation"};
+	private String[] simNames = {"Fire","WaTor","Life","Segregation", "Slime", "ForagingAnts"};
 	private String[] shapeNames = {"Square", "Triangle", "Hexagon"};
 	private String[] edgeNames = {"Finite", "Toroidal", "Infinite"};
 	private HashMap<String, Simulation> simTypes = new HashMap<String, Simulation>();

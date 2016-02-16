@@ -11,7 +11,7 @@ public class SegregationSimulation extends Simulation {
     private int firstAgent = 1;
     private int secondAgent = 2;
     //satisfiedPercentage range: 0.0 - 1.0
-    private double satisfiedPercentage = 1;
+    private double satisfiedPercentage = 0.8;
     
     public SegregationSimulation(Grid grid) {
         super(grid);
@@ -90,18 +90,19 @@ public class SegregationSimulation extends Simulation {
     public void setParameter(double aval){
     	satisfiedPercentage = aval;
     }
-
-    @Override
-	public ArrayList<String> getParameters() {
-		return null;
-	}
-	@Override
 	public void setParameters(ArrayList<Double> paramsList){
-		
+		if(paramsList.get(0) != getDefaultVal())
+			satisfiedPercentage = paramsList.get(0);
 	}
 	@Override
 	public void createOrRemovePerStep() {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public ArrayList<String> getParameters() {
+		ArrayList<String> params = new ArrayList<String>();
+		params.add("satisfiedPercentage");
+		return params;
 	}
 }

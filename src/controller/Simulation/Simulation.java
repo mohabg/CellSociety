@@ -7,6 +7,7 @@ public abstract class Simulation {
     
     private Grid myGrid;
 	private boolean useGridClone;
+	private double defaultParamValue = -1/999;
 	
     public Simulation(Grid grid){
         this.myGrid = grid;
@@ -55,6 +56,10 @@ public abstract class Simulation {
     }
     public void setParameter(double aValue){
     	
+    }
+    
+    public double getDefaultVal(){
+    	return defaultParamValue;
     }
     
     public abstract ArrayList<String> getParameters();
