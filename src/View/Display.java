@@ -59,7 +59,7 @@ public class Display {
 		myGrid.add(myPlay, screenRow, screenColumn);
 		myGrid.add(myPause, ++screenRow, screenColumn);
 		myGrid.add(myStep, ++screenRow, screenColumn);
-		myGrid.add(mySlider, ++screenRow+1, screenColumn, 5, 1);
+		myGrid.add(mySlider, screenRow+2, screenColumn, 5, 1);
 		addToRoot(myGrid);
 	}
 	private void createCanvas(){
@@ -174,7 +174,7 @@ public class Display {
 			series1.getData().add(new XYChart.Data("", myMap.get(anInt)));
 			myGraph.getData().add(series1);
 		}
-		myGrid.add(myGraph, 10, 2, 2, 1);
+		myGrid.add(myGraph, screenColumn+4, screenRow, screenRow, 1);
 	}
 
 	public void updateGraph(HashMap<Integer, Integer> myMap){
