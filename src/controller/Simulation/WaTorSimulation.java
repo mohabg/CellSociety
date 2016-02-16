@@ -35,6 +35,14 @@ public class WaTorSimulation extends Simulation{
 	public WaTorSimulation(){
 
 	}
+	
+	public ArrayList<String> paramsList(){
+		ArrayList<String> toRet = new ArrayList<String>();
+		toRet.add("fishReproductionTime");
+		return toRet;
+		
+	}
+
 
 	public double getParameter(){
 		return fishReproductionTime;
