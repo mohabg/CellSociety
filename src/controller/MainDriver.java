@@ -147,7 +147,6 @@ public class MainDriver implements EventListener {
 		mySimType = parser.getSimType();
 		setSim(mySimType, paramsList, statesList);
 		myStage.setTitle(mySim.returnTitle());
-		//myDisplay.setGraphTitle(mySim.returnTitle());
 		myDisplay.draw(myGrid, statesMap);
 		setSimulationFPS(myFPS);
 	}

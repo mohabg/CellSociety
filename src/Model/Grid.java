@@ -52,7 +52,7 @@ public class Grid {
 		}
 		return null;
 	}
-/*
+	/*
 	public ArrayList<Cell> getNonDiagonalNeighbors(Cell cell){
 		ArrayList<Cell> neighbors = cell.getAllNeighbors();
 		Iterator<Cell> neighborIterator = neighbors.iterator();
@@ -132,6 +132,8 @@ public class Grid {
 		}
 		if(shapeType.equals("Square"))
 			cell = new SquareCell(sideLen, this, edgeType);
+		if(shapeType.equals("Hexagon"))
+			cell = new HexagonCell(sideLen, this, edgeType);
 		gridMap.put(0, new ArrayList<Cell>());
 		for(int x=0; x<cellList.size(); x++){
 			int state = cellList.get(x);
@@ -151,6 +153,8 @@ public class Grid {
 			}
 			if(shapeType.equals("Square"))
 				newCell = new SquareCell(centerX, centerY, state, sideLen, this, edgeType);
+			if(shapeType.equals("Hexagon"))
+				newCell = new HexagonCell(centerX, centerY, state, sideLen, this, edgeType);
 			newCell.setXPoints(cell.getXPoints());
 			newCell.setYPoints(cell.getYPoints());
 			newCell.setRow(nextRow);
@@ -161,7 +165,7 @@ public class Grid {
 			gridMap.put(nextRow, gridRow);
 			if(nextCol == 0 || nextRow == 0)
 				newCell.isAtEdge(true);
-			if(( centerX + sideLen) >= width){
+			if(( centerX + newCell.getWidth()) >= width){
 				newCell.isAtEdge(true);
 				nextCol = 0;
 				nextRow++;
@@ -176,25 +180,25 @@ public class Grid {
 		ArrayList<Cell> lastCol = getGridMap().get(nextCol);
 		updateEdges(lastCol);
 	}
-	
+
 	public void updateEdges(ArrayList<Cell> cells){
 		for(int x=0; x<cells.size(); x++){
 			cells.get(x).isAtEdge(true);
 		}
 	}
-	
+
 	public void setNumCols(int numCols){
 		this.numCols = numCols;
 	}
-	
+
 	public void setNumRows(int numRows){
 		this.numRows = numRows;
 	}
-	
+
 	public int getLastRow(){
 		return numRows-1;
 	}
-	
+
 	public int getLastCol(){
 		return numCols-1;
 	}

@@ -2,24 +2,16 @@ package src.Model;
 
 public class TriangleCell extends Cell{
 
-	private double height;
-	private Grid myGrid;
-
 	public TriangleCell(double x, double y, int state, double sideLen, Grid myGrid, String edgeType){
 		super(x, y, state, sideLen, 3, myGrid, edgeType);
 		setHeight(sideLen);
-		this.myGrid = myGrid;
 	}
 	public TriangleCell(double sideLen, Grid myGrid, String edgeType){
 		super(0,0,0,sideLen,3, myGrid, edgeType);
 		setHeight(sideLen);
-		this.myGrid = myGrid;
 	}
 	public void setHeight(double sideLen){
-		height = Math.sqrt(Math.pow(1/2*sideLen, 2) + Math.pow(sideLen, 2));
-	}
-	public double getHeight(){
-		return height;
+		super.setHeight(Math.sqrt(Math.pow(1/2*sideLen, 2) + Math.pow(sideLen, 2)));
 	}
 	public double XaddToNewRow(int row, int col){
 		int mod = (row+col)%2;
@@ -35,7 +27,7 @@ public class TriangleCell extends Cell{
 			newXPoints[2] = getSideLength();
 		}
 		setXPoints(newXPoints);
-		return (newXPoints[0] + newXPoints[1] + newXPoints[2])/3;
+		return getAverageValue(newXPoints);
 	}
 	public double YaddToNewRow(int row, int col){
 		int mod = (row+col)%2;
@@ -51,12 +43,12 @@ public class TriangleCell extends Cell{
 			newYPoints[2] = row*getHeight();
 		}
 		setYPoints(newYPoints);
-		return (newYPoints[0] + newYPoints[1] + newYPoints[2])/3;
+		return getAverageValue(newYPoints);
 	}
 	public double XaddToExistingRow(int row, int col){
 		int mod = (row+col)%2;
 		double[] newXPoints = new double[3];
-		double[] prevPoints = myGrid.getGridMap().get(row).get(col-1).getXPoints();
+		double[] prevPoints = getGrid().getGridMap().get(row).get(col-1).getXPoints();
 		if(mod == 0){
 			newXPoints[0] = prevPoints[2];
 			newXPoints[1] = prevPoints[1];
@@ -68,12 +60,12 @@ public class TriangleCell extends Cell{
 			newXPoints[2] = prevPoints[0] + getSideLength();
 		}
 		setXPoints(newXPoints);
-		return (newXPoints[0] + newXPoints[1] + newXPoints[2])/3;
+		return getAverageValue(newXPoints);
 	}
 	public double YaddToExistingRow(int row, int col){
 		int mod = (row+col)%2;
 		double[] newYPoints = new double[3];
-		double[] prevPoints = myGrid.getGridMap().get(row).get(col-1).getYPoints();
+		double[] prevPoints = getGrid().getGridMap().get(row).get(col-1).getYPoints();
 		if(mod == 0){
 			newYPoints[0] = prevPoints[2];
 			newYPoints[1] = prevPoints[1];
@@ -85,6 +77,9 @@ public class TriangleCell extends Cell{
 			newYPoints[2] = prevPoints[0];
 		}
 		setYPoints(newYPoints);
-		return (newYPoints[0] + newYPoints[1] + newYPoints[2])/3;
+		return getAverageValue(newYPoints);
+	}
+	public double getWidth() {
+		return getSideLength();
 	}
 }

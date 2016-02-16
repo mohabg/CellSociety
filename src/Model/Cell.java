@@ -16,13 +16,14 @@ public abstract class Cell {
 	private int myRow;
 	private int myCol;
 	private String edgeType;
-    private PatchOfGround patch;
-    private Map<Cell, List<Actor>> cellToActorMap;
-    
-    public Cell(int state){
+	private PatchOfGround patch;
+	private Map<Cell, List<Actor>> cellToActorMap;
+	private double height;
+
+	public Cell(int state){
 		currState = state;
-        patch = new PatchOfGround();
-        cellToActorMap = new HashMap<Cell, List<Actor>>();
+		patch = new PatchOfGround();
+		cellToActorMap = new HashMap<Cell, List<Actor>>();
 	}
 
 	public Cell(double centerX, double centerY, int state, double sideLength, int numSides, Grid myGrid, String edgeType){
@@ -35,43 +36,43 @@ public abstract class Cell {
 		this.numSides = numSides;
 		this.myGrid = myGrid;
 		this.edgeType = edgeType;
-        patch = new PatchOfGround();
-        cellToActorMap = new HashMap<Cell, List<Actor>>();
+		patch = new PatchOfGround();
+		cellToActorMap = new HashMap<Cell, List<Actor>>();
 	}
-	
-    public PatchOfGround getGround(){
-    	return patch;
-    }
 
-    public List<Actor> getActors(){
-    	if(cellToActorMap.containsKey(this)){
-    		 return cellToActorMap.get(this);
-    	}
-    	else return new ArrayList<Actor>();
-    }
-    public void setActor(Actor actorToSet){
-    	actorToSet.setCell(this);
-    	if(cellToActorMap.containsKey(this)){
-    		List<Actor> actors = cellToActorMap.get(this);
-    		actors.add(actorToSet);
-        	cellToActorMap.put(this, actors);
-    	}
-    	else{
-    		List<Actor> actors = new ArrayList<Actor>();
-    		actors.add(actorToSet);
-    		cellToActorMap.put(this, actors);
-    	}
-    }
-    public void removeActor(Actor actorToRemove){
-    	if(cellToActorMap.containsKey(this)){
-    	actorToRemove.setCell(null);
-    	List<Actor> actors = cellToActorMap.get(this);
-		actors.remove(actorToRemove);
-    	cellToActorMap.put(this, actors);
-    	}
-    }
+	public PatchOfGround getGround(){
+		return patch;
+	}
 
-    public Boolean isState(int state){
+	public List<Actor> getActors(){
+		if(cellToActorMap.containsKey(this)){
+			return cellToActorMap.get(this);
+		}
+		else return new ArrayList<Actor>();
+	}
+	public void setActor(Actor actorToSet){
+		actorToSet.setCell(this);
+		if(cellToActorMap.containsKey(this)){
+			List<Actor> actors = cellToActorMap.get(this);
+			actors.add(actorToSet);
+			cellToActorMap.put(this, actors);
+		}
+		else{
+			List<Actor> actors = new ArrayList<Actor>();
+			actors.add(actorToSet);
+			cellToActorMap.put(this, actors);
+		}
+	}
+	public void removeActor(Actor actorToRemove){
+		if(cellToActorMap.containsKey(this)){
+			actorToRemove.setCell(null);
+			List<Actor> actors = cellToActorMap.get(this);
+			actors.remove(actorToRemove);
+			cellToActorMap.put(this, actors);
+		}
+	}
+
+	public Boolean isState(int state){
 		return currState == state;
 	}
 	public void setState(int state){
@@ -83,6 +84,9 @@ public abstract class Cell {
 	public double getCenterY(){
 		return myCenterY;
 	}
+	public Grid getGrid(){
+		return myGrid;
+	}
 	public int getState(){
 		return currState;
 	}
@@ -92,7 +96,6 @@ public abstract class Cell {
 	public int getNumSides(){
 		return numSides;
 	}
-
 
 	public Cell getLeftNeighbor(){
 		Cell cell = myGrid.getCell(getCenterX() - getSideLength(), getCenterY());
@@ -107,7 +110,9 @@ public abstract class Cell {
 		Cell cell = myGrid.getCell(getCenterX(), getCenterY() - getSideLength());
 		if(isAtEdge && edgeType.equals("Toroidal"))
 			cell = myGrid.getGridMap().get(myGrid.getLastRow()).get(myCol);
-		return cell;
+		if(numSides != 6)
+			return cell;
+		return null;
 	}
 	public Cell getTopRightNeighbor(){
 		return myGrid.getCell(getCenterX() + getSideLength(), getCenterY() - getSideLength());
@@ -125,7 +130,9 @@ public abstract class Cell {
 		Cell cell = myGrid.getCell(getCenterX(), getCenterY() + getSideLength());
 		if(isAtEdge && edgeType.equals("Toroidal"))
 			cell = myGrid.getGridMap().get(0).get(myCol);
-		return cell;
+		if(numSides != 6)
+			return cell;
+		return null;
 	}
 	public Cell getBottomLeftNeighbor(){
 		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY() + getSideLength());
@@ -182,7 +189,6 @@ public abstract class Cell {
 		}
 	}
 
-
 	public void isAtEdge(boolean edge){
 		isAtEdge = edge;
 	}
@@ -195,9 +201,22 @@ public abstract class Cell {
 		myCol = col;
 	}
 
-	public abstract double getHeight();
+	public double getHeight(){
+		return height;
+	}
+	public void setHeight(double newHeight){
+		height = newHeight;
+	}
+	public double getAverageValue(double[] vals){
+		double sum = 0;
+		for(int x=0; x<vals.length; x++){
+			sum += vals[x];
+		}
+		return sum/vals.length;
+	}
 	public abstract double XaddToNewRow(int row, int col);
 	public abstract double YaddToNewRow(int row, int col);
 	public abstract double XaddToExistingRow(int row, int col);
 	public abstract double YaddToExistingRow(int row, int col);
+	public abstract double getWidth();
 }

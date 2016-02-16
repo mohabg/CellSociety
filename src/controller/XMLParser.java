@@ -351,9 +351,7 @@ public class XMLParser {
 	}
 
 	public Grid makeInitialGrid(ArrayList<Integer> cellList){
-		String gridWidth = myReader.getString("GridWidth");
-		String gridHeight = myReader.getString("GridHeight");
-		Grid grid = new Grid(Integer.parseInt(gridWidth), Integer.parseInt(gridHeight));
+		Grid grid = new Grid(Integer.parseInt(myReader.getString("GridWidth")), Integer.parseInt(myReader.getString("GridHeight")));
 		grid.setOutline(gridOutlined);
 		grid.createGrid(cellList, shapeType, sideLen, edgeType);
 		return grid;
