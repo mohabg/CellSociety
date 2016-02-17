@@ -1,7 +1,18 @@
 package src.Model;
 import java.util.*;
 import src.Model.Grid;
-
+/**
+ * This entire file is part of my masterpiece
+ * Mohab Gabal
+ * 
+ * This class is one of two classes that is made to make the life of the person coding a new Simulation easier. It serves
+ * the purpose of an "Actor" moving across different cells on the Grid. He may have certain characteristics such as a certain
+ * energy level, or reproduction time. In addition, it keeps track of its current cell, the last cell it was on, and the 
+ * cell it is facing based off of the direction it has been moving. This way, a lot of basic features that will be used
+ * across many Simulations are kept in this one class. To summarize, these are its health/energy, reproduction time, the last
+ * cell it was on, and its orientation (next cell).
+ *
+ */
 public class Actor {
 	private double xLocation;
 	private double yLocation;
@@ -9,17 +20,21 @@ public class Actor {
 	private double energyDepletionRate;
 	private double timeSinceReproduced = 0;
 	private Cell cell;
-	private Cell lastCell = null;
+	private Cell lastCell;
 	private double nextCellX = -1;
 	private double nextCellY = -1;
 	
-	public Actor(double x, double y){
-		xLocation = x;
-		yLocation = y;
+	public Actor(Cell startingCell){
+		xLocation = startingCell.getCenterX();
+		yLocation = startingCell.getCenterY();
+		cell = startingCell;
+		lastCell = startingCell;
 	}
-	public Actor(double x, double y, double actorEnergy, double depletionRate){
-		xLocation = x;
-		yLocation = y;
+	public Actor(Cell startingCell, double actorEnergy, double depletionRate){
+		xLocation = startingCell.getCenterX();
+		yLocation = startingCell.getCenterY();
+		cell = startingCell;
+		lastCell = startingCell;
 		energy = actorEnergy;
 		energyDepletionRate = depletionRate;
 	}
@@ -28,6 +43,37 @@ public class Actor {
 	}
 	public Cell getCell(){
 		return cell;
+	}
+	public void setOrientation(Cell nextCellInPath){
+		nextCellX = nextCellInPath.getCenterX();
+		nextCellY = nextCellInPath.getCenterY();
+	}
+	public void setNextCellX(double newX){
+		nextCellX = newX;
+	}
+	public void setNextCellY(double newY){
+		nextCellY = newY;
+	}
+	public double getNextCellX(){
+		return nextCellX;
+	}
+	public double getNextCellY(){
+		return nextCellY;
+	}
+	public Cell getCellMovedFrom(){
+		return lastCell;
+	}
+	public double getX(){
+		return xLocation;
+	}
+	public void setX(int x){
+		xLocation = x;
+	}
+	public double getY(){
+		return yLocation;
+	}
+	public void setY(int y){
+		yLocation = y;
 	}
 	public double getTimeSinceReproduced(){
 		return timeSinceReproduced;
@@ -40,6 +86,19 @@ public class Actor {
 	}
 	public void updateTimeSinceReproduced(double time){
 		timeSinceReproduced += time;
+	}
+	
+	public void depleteEnergy(){
+		energy -= energyDepletionRate;
+	}
+	public boolean isDead(){
+		return energy <= 0;
+	}
+	public void setEnergy(double newEnergy){
+		energy = newEnergy;
+	}
+	public double getEnergy(){
+		return energy;
 	}
 
 	public void moveAtRandom(List<Cell> emptyCells){
@@ -81,49 +140,5 @@ public class Actor {
 		double newX = cell.getCenterX() + xDistance;
 		double newY = cell.getCenterY() + yDistance;
 		return myGrid.getCell(newX, newY);
-	}
-	
-	public void setOrientation(Cell nextCellInPath){
-		nextCellX = nextCellInPath.getCenterX();
-		nextCellY = nextCellInPath.getCenterY();
-	}
-	public void setNextCellX(double newX){
-		nextCellX = newX;
-	}
-	public void setNextCellY(double newY){
-		nextCellY = newY;
-	}
-	public double getNextCellX(){
-		return nextCellX;
-	}
-	public double getNextCellY(){
-		return nextCellY;
-	}
-	public Cell getCellMovedFrom(){
-		return lastCell;
-	}
-	public double getX(){
-		return xLocation;
-	}
-	public void setX(int x){
-		xLocation = x;
-	}
-	public double getY(){
-		return yLocation;
-	}
-	public void setY(int y){
-		yLocation = y;
-	}
-	public void depleteEnergy(){
-		energy -= energyDepletionRate;
-	}
-	public boolean isDead(){
-		return energy <= 0;
-	}
-	public void setEnergy(double newEnergy){
-		energy = newEnergy;
-	}
-	public double getEnergy(){
-		return energy;
 	}
 }
