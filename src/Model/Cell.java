@@ -1,12 +1,17 @@
 package src.Model;
 
 import java.util.*;
-import javafx.scene.shape.Polygon;
 import src.Model.Grid;
 
+// This entire file is part of my code masterpiece.
+// I chose to include this class as part of my masterpiece (along with HexagonCell subclass) to demonstrate what I learned during this project on abstraction and the relationship between subclasses and superclasses. This includes practicing what methods should be created as abstract methods in the superclass and better ways to implement subclasses using code written in the superclass. I significantly refactored these classes this week, and this commit is an extension to the prior refactoring.  
+// Other refactoring commits: 
+// https://github.com/duke-compsci308-spring2016/cellsociety_team10/commit/bcf58bc97157bef7c72ef51ea1977e2d689ac965
+// https://github.com/duke-compsci308-spring2016/cellsociety_team10/commit/d24be9ce73ef3d27e37823836fa3a26d07a268ac
+
 public abstract class Cell {
-	protected double myCenterX, myCenterY;
-	protected int currState;
+	private double myCenterX, myCenterY;
+	private int currState;
 	private double sideLength;
 	private int numSides;
 	private Grid myGrid;
@@ -39,6 +44,12 @@ public abstract class Cell {
 		patch = new PatchOfGround();
 		cellToActorMap = new HashMap<Cell, List<Actor>>();
 	}
+	
+	public abstract double XaddToNewRow(int row, int col);
+	public abstract double YaddToNewRow(int row, int col);
+	public abstract double XaddToExistingRow(int row, int col);
+	public abstract double YaddToExistingRow(int row, int col);
+	public abstract double getWidth();
 
 	public PatchOfGround getGround(){
 		return patch;
@@ -96,17 +107,54 @@ public abstract class Cell {
 	public int getNumSides(){
 		return numSides;
 	}
-
-	public Cell getLeftNeighbor(){
+	public double[] getXPoints(){
+		return xPoints;
+	}
+	public double[] getYPoints(){
+		return yPoints;
+	}
+	public void setXPoints(double[] newXPoints){
+		for(int x=0; x<newXPoints.length; x++){
+			xPoints[x] = newXPoints[x];
+		}
+	}
+	public void setYPoints(double[] newYPoints){
+		for(int y=0; y<newYPoints.length; y++){
+			yPoints[y] = newYPoints[y];
+		}
+	}
+	public void isAtEdge(boolean edge){
+		isAtEdge = edge;
+	}
+	public double getAverageValue(double[] vals){
+		double sum = 0;
+		for(int x=0; x<vals.length; x++){
+			sum += vals[x];
+		}
+		return sum/vals.length;
+	}
+	public void setRow(int row){
+		myRow = row;
+	}
+	public void setCol(int col){
+		myCol = col;
+	}
+	public double getHeight(){
+		return height;
+	}
+	public void setHeight(double newHeight){
+		height = newHeight;
+	}
+	private Cell getLeftNeighbor(){
 		Cell cell = myGrid.getCell(getCenterX() - getSideLength(), getCenterY());
 		if(isAtEdge && edgeType.equals("Toroidal"))
 			cell = myGrid.getGridMap().get(myRow).get(myGrid.getLastCol());
 		return cell;
 	}
-	public Cell getTopLeftNeighbor(){
+	private Cell getTopLeftNeighbor(){
 		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY() - getSideLength());
 	}
-	public Cell getTopNeighbor(){
+	private Cell getTopNeighbor(){
 		Cell cell = myGrid.getCell(getCenterX(), getCenterY() - getSideLength());
 		if(isAtEdge && edgeType.equals("Toroidal"))
 			cell = myGrid.getGridMap().get(myGrid.getLastRow()).get(myCol);
@@ -114,19 +162,19 @@ public abstract class Cell {
 			return cell;
 		return null;
 	}
-	public Cell getTopRightNeighbor(){
+	private Cell getTopRightNeighbor(){
 		return myGrid.getCell(getCenterX() + getSideLength(), getCenterY() - getSideLength());
 	}
-	public Cell getRightNeighbor(){
+	private Cell getRightNeighbor(){
 		Cell cell = myGrid.getCell(getCenterX() + getSideLength(), getCenterY());
 		if(isAtEdge && edgeType.equals("Toroidal"))
 			cell = myGrid.getGridMap().get(myRow).get(0);
 		return cell;
 	}
-	public Cell getBottomRightNeighbor(){
+	private Cell getBottomRightNeighbor(){
 		return myGrid.getCell(getCenterX() + getSideLength(), getCenterY() + getSideLength());
 	}
-	public Cell getBottomNeighbor(){
+	private Cell getBottomNeighbor(){
 		Cell cell = myGrid.getCell(getCenterX(), getCenterY() + getSideLength());
 		if(isAtEdge && edgeType.equals("Toroidal"))
 			cell = myGrid.getGridMap().get(0).get(myCol);
@@ -134,7 +182,7 @@ public abstract class Cell {
 			return cell;
 		return null;
 	}
-	public Cell getBottomLeftNeighbor(){
+	private Cell getBottomLeftNeighbor(){
 		return myGrid.getCell(getCenterX() - getSideLength(), getCenterY() + getSideLength());
 	}
 
@@ -171,52 +219,4 @@ public abstract class Cell {
 			nonDiag.add(getBottomNeighbor());
 		return nonDiag;
 	}
-
-	public double[] getXPoints(){
-		return xPoints;
-	}
-	public double[] getYPoints(){
-		return yPoints;
-	}
-	public void setXPoints(double[] newXPoints){
-		for(int x=0; x<newXPoints.length; x++){
-			xPoints[x] = newXPoints[x];
-		}
-	}
-	public void setYPoints(double[] newYPoints){
-		for(int y=0; y<newYPoints.length; y++){
-			yPoints[y] = newYPoints[y];
-		}
-	}
-
-	public void isAtEdge(boolean edge){
-		isAtEdge = edge;
-	}
-
-	public void setRow(int row){
-		myRow = row;
-	}
-
-	public void setCol(int col){
-		myCol = col;
-	}
-
-	public double getHeight(){
-		return height;
-	}
-	public void setHeight(double newHeight){
-		height = newHeight;
-	}
-	public double getAverageValue(double[] vals){
-		double sum = 0;
-		for(int x=0; x<vals.length; x++){
-			sum += vals[x];
-		}
-		return sum/vals.length;
-	}
-	public abstract double XaddToNewRow(int row, int col);
-	public abstract double YaddToNewRow(int row, int col);
-	public abstract double XaddToExistingRow(int row, int col);
-	public abstract double YaddToExistingRow(int row, int col);
-	public abstract double getWidth();
 }

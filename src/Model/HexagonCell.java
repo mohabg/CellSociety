@@ -1,5 +1,8 @@
 package src.Model;
 
+// This entire file is part of my code masterpiece.
+// Code's purpose at the top of Cell.java
+
 public class HexagonCell extends Cell{
 
 	public HexagonCell(double centerX, double centerY, int state, double sideLength, Grid myGrid, String edgeType) {
@@ -11,38 +14,34 @@ public class HexagonCell extends Cell{
 		super(0,0,0,sideLen,6,grid,edgeType);
 		setHeight();
 	}
-
-	public double getWidth(){
-		return getSideLength() * Math.sqrt(2);
-	}
 	
-	public void setHeight(){
+	private void setHeight(){
 		super.setHeight(2*getInnerTriangleHeight() + getSideLength());
 	}
 	
-	public double[] shiftByHorizontalRowGap(double[] newXPoints){
+	private double[] shiftByHorizontalRowGap(double[] newXPoints){
 		for(int x=0; x<newXPoints.length; x++){
 			newXPoints[x] += getOddRowHorizontalGap();
 		}
 		return newXPoints;
 	}
 	
-	public double[] shiftByVerticalRowGap(double[] newYPoints, int col){
+	private double[] shiftByVerticalRowGap(double[] newYPoints, int col){
 		for(int x=0; x<newYPoints.length; x++){
 			newYPoints[x] += col*getOddRowVerticalGap();
 		}
 		return newYPoints;
 	}
 	
-	public double getOddRowHorizontalGap(){
+	private double getOddRowHorizontalGap(){
 		return Math.sqrt(2)/2*getSideLength();
 	}
 	
-	public double getOddRowVerticalGap(){
+	private double getOddRowVerticalGap(){
 		return -1*getInnerTriangleHeight();
 	}
 	
-	public double getInnerTriangleHeight(){
+	private double getInnerTriangleHeight(){
 		return Math.sqrt(2)/2*getSideLength();
 	}
 
@@ -88,5 +87,9 @@ public class HexagonCell extends Cell{
 		double[] prevPoints = getGrid().getGridMap().get(row).get(col-1).getYPoints();
 		setYPoints(prevPoints);
 		return getAverageValue(prevPoints);
+	}
+	
+	public double getWidth(){
+		return getSideLength() * Math.sqrt(2);
 	}
 }
